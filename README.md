@@ -90,3 +90,15 @@ For open source projects, say how it is licensed.
 
 ## Project status
 If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+
+
+
+Areas to work on:
+ - [ ] Domain (tiles, entities, etc)
+ - [ ] Split view for players and DM
+ - [ ] Generator
+ - [ ] Checker (make sure the edge is a wall and not a blank space)
+ - [ ] Downloader/Saver (he can keep a map he likes) 
+ - [ ] Requirements/Specification settings
+
+
