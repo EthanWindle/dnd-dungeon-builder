@@ -93,7 +93,7 @@ If you have run out of energy or time for your project, put a note at the top of
 
 
 
-Areas to work on:
+### Areas to work on:
  - [ ] Domain (tiles, entities, etc)
  - [ ] Split view for players and DM
  - [ ] Generator
