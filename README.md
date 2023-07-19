@@ -7,6 +7,8 @@
  - [ ] Editor
  - [ ] Downloader/Saver (he can keep a map he likes) 
  - [ ] Requirements/Specification settings
+ - [ ] Visualiser
+ 
 
 ### Members
 
