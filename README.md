@@ -1,6 +1,5 @@
 # DnD World Builder
 
-
 ### Areas to work on:
  - [ ] Domain (Rooms, towns, entities, etc)
  - [ ] Split view for players and DM
@@ -9,5 +8,13 @@
  - [ ] Downloader/Saver (he can keep a map he likes) 
  - [ ] Requirements/Specification settings
 
-|Name|Area|
-|Ethan Windle|  |
+### Members
+
+| Name | Area |
+| ------ | ------ |
+| Adam Roddrick |        |
+| Benjamin McEnovy |        |
+| Braeden Windle |        |
+| Ethan Windle |        |
+| Nathan Bennet |        |
+| Vedaanth Kannan |        |
