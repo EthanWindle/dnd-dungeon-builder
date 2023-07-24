@@ -14,7 +14,7 @@
 
 | Name | Area |
 | ------ | ------ |
-| Adam Roddrick |        |
+| Adam Roddick |        |
 | Benjamin McEnovy |        |
 | Braeden Windle |        |
 | Ethan Windle |        |
