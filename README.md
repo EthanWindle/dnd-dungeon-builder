@@ -15,8 +15,8 @@
 | Name | Area |
 | ------ | ------ |
 | Adam Roddick |        |
-| Benjamin McEnovy |        |
+| Benjamin McEvoy |        |
 | Braeden Windle |        |
 | Ethan Windle |        |
-| Nathan Bennet |        |
+| Nathan Bennett |        |
 | Vedaanth Kannan |        |
