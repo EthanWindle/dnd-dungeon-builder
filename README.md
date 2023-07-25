@@ -20,3 +20,8 @@
 | Ethan Windle |        |
 | Nathan Bennett |        |
 | Vedaanth Kannan |        |
+
+## Scope
+
+We are attempting to create a dungeon generator within a singular city map, that can be divided in multiple sections. We plan to add customisation, while giving the client as the least amount of work possible. 
+
