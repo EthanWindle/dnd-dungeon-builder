@@ -1,0 +1,20 @@
+stages: 
+  - build
+  - test
+
+build:
+  stage: build
+  image: mcr.microsoft.com/dotnet/sdk:5.0 # Use the .NET SDK image
+  script:
+    - dotnet restore # Restore NuGet packages
+    - dotnet build --configuration Release # Build the project in Release mode
+  only:
+    - main 
+
+unit-test-job:
+  stage: test    
+  script:
+    - echo "Running unit tests... This will take 1 second."
+    - sleep 1
+
+
