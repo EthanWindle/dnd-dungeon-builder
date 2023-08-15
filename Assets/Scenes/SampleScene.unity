@@ -264,8 +264,9 @@ MonoBehaviour:
   cellSize: 1
   cellSpacing: 0.025
   rooms:
-  - {fileID: 7527765315198596177, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
-  - {fileID: 1304463471847924337, guid: 23401c6cb79826145bed232f1c7bab5e, type: 3}
+  - {fileID: 5176107042835342550, guid: 95bbebd052c362d4b80451a8c0cc18ce, type: 3}
+  - {fileID: 6880877989680086973, guid: 23401c6cb79826145bed232f1c7bab5e, type: 3}
+  - {fileID: 709260183645416478, guid: 937910ad414b53945b348ab2c7e7c7a8, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
