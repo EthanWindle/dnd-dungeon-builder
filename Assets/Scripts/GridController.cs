@@ -12,7 +12,8 @@ public class GridController : MonoBehaviour{
 
     public int width;
     public int height;
-    public float cellSize;
+    public float cellSize; //Cells will always be this size, including spacing.
+    public float cellSpacing;
     private GameObject[,] gridArray;
 
     public GameObject[] rooms;
@@ -25,7 +26,7 @@ public class GridController : MonoBehaviour{
 
         foreach (GameObject room in rooms)
         {
-            room.GetComponent<RoomController>().PlaceTiles(gameObject.transform, gridArray, cellSize);
+            room.GetComponent<RoomController>().PlaceTiles(gameObject.transform, gridArray, cellSize, cellSpacing);
         }
 
         gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0);

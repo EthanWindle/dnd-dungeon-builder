@@ -29,7 +29,7 @@ public class RoomController : MonoBehaviour
     }
 
 
-    public void PlaceTiles(Transform transformParent, GameObject[,] grid, float size)
+    public void PlaceTiles(Transform transformParent, GameObject[,] grid, float size, float margin)
     {
         Assert.IsTrue(grid.GetLength(0) >= maxWidth);
         Assert.IsTrue(grid.GetLength(1) >= maxHeight);
@@ -42,8 +42,8 @@ public class RoomController : MonoBehaviour
             {
                 for (int y = shape.y1;  y < shape.y2; y++)
                 {
-                    GameObject tile = Instantiate(tilePrefab, new Vector3(x * size, y * size, 0), Quaternion.identity, transformParent);
-                    tile.GetComponent<TileController>().Init(size);
+                    GameObject tile = Instantiate(tilePrefab, new Vector3(x * (size + margin), y * (size + margin), 0), Quaternion.identity, transformParent);
+                    tile.GetComponent<TileController>().Init(size - margin * 2);
                     grid[x, y] = tile;
                 }
             }
