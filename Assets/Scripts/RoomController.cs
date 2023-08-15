@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,9 +8,11 @@ public class RoomController : MonoBehaviour
 {
 
     public GameObject tilePrefab;
+    public GameObject doorPrefab;
     public GameObject propPrefab; //TODO: make this a list of possible props - ideally a global list of some kind that is shared between rooms?
     public Shape[] shapes;
     public Shape[] props; //For now props are assumed to be 1x1.
+    public Vector2[] doors; //Should be updated to being possible door locations.
 
 
     private int maxWidth;
@@ -49,6 +52,14 @@ public class RoomController : MonoBehaviour
                     background[x, y] = tile;
                 }
             }
+        }
+
+
+        foreach (Vector2 doorLoc in doors)
+        {
+            GameObject door = Instantiate(doorPrefab, new Vector3(doorLoc.x * (size + margin), doorLoc.y * (size + margin), 1), Quaternion.identity, transformParent);
+            door.GetComponent<TileController>().Init(size - margin * 2);
+            background[(int)doorLoc.x, (int)doorLoc.y] = door;
         }
 
         foreach(Shape propLocation in props)
