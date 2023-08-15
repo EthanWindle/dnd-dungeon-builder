@@ -44,7 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6161543e1fd6d54ca2111a53f3242d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilePrefab: {fileID: 641939223718171361, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
+  tilePrefab: {fileID: 1881029730475228011, guid: 91b243421307c224fab38af570330f5d, type: 3}
+  doorPrefab: {fileID: 8307657929850565972, guid: f6467cc12861b6f43a05717cd3606fa5, type: 3}
   propPrefab: {fileID: 4583820204440450163, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
   shapes: []
   props: []
+  doors: []
