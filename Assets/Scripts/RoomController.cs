@@ -7,7 +7,10 @@ public class RoomController : MonoBehaviour
 {
 
     public GameObject tilePrefab;
+    public GameObject propPrefab; //TODO: make this a list of possible props - ideally a global list of some kind that is shared between rooms?
     public Shape[] shapes;
+    public Shape[] props; //For now props are assumed to be 1x1.
+
 
     private int maxWidth;
     private int maxHeight;
@@ -29,10 +32,9 @@ public class RoomController : MonoBehaviour
     }
 
 
-    public void PlaceTiles(Transform transformParent, GameObject[,] grid, float size, float margin)
+    public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foregound, float size, float margin)
     {
-        Assert.IsTrue(grid.GetLength(0) >= maxWidth);
-        Assert.IsTrue(grid.GetLength(1) >= maxHeight);
+
 
         
 
@@ -44,9 +46,16 @@ public class RoomController : MonoBehaviour
                 {
                     GameObject tile = Instantiate(tilePrefab, new Vector3(x * (size + margin), y * (size + margin), 0), Quaternion.identity, transformParent);
                     tile.GetComponent<TileController>().Init(size - margin * 2);
-                    grid[x, y] = tile;
+                    background[x, y] = tile;
                 }
             }
+        }
+
+        foreach(Shape propLocation in props)
+        {
+            GameObject prop = Instantiate(propPrefab, new Vector3(propLocation.x1 * (size + margin), propLocation.y1 * (size + margin), -1), Quaternion.identity, transformParent);
+            prop.GetComponent<PropController>().Init(size - margin * 2);
+            foregound[propLocation.x1, propLocation.y1] = prop;
         }
     }
 
