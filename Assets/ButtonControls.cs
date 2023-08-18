@@ -10,9 +10,25 @@ public class NewBehaviourScript : MonoBehaviour
         SceneManager.LoadScene("settingPage");
     }
 
+    public void LoadMap(){
+
+    }
+
+    public void Exit(){
+
+    }
+
 
     //Settings page Buttons
     public void BackHome(){
         SceneManager.LoadScene("homePage");
+    }
+
+    public void Generate(){
+
+    }
+
+    public void ResetValues(){
+        
     }
 }
