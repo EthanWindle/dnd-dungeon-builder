@@ -16,7 +16,9 @@ public class GridController : MonoBehaviour{
     private GameObject[,] backgroundLayer; //Layer for tiles like walls, floors, doors.
     private GameObject[,] foregroundLayer; //Layer for props and entities like players and monsters
 
-    public GameObject[] rooms;
+    public GameObject[] rooms; //Temporary, this should be replaced when random generationis implemented
+    public int[] xOffsets; //Temporary, this should be replaced when random generation is implemented
+    public int[] yOffsets; //Temporary, this should be replaced when random generation is implemented
     public GameObject wallTile;
 
     public void Awake()
@@ -26,9 +28,9 @@ public class GridController : MonoBehaviour{
         foregroundLayer = new GameObject[width, height];
         
 
-        foreach (GameObject room in rooms) //Place each room in the Grid
+        for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
-            room.GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, cellSize, cellSpacing);
+            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, cellSize, cellSpacing, xOffsets[i], yOffsets[i]);
         }
 
         List<Vector2> wallLocations = new List<Vector2>();

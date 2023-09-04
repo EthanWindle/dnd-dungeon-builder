@@ -40,7 +40,7 @@ public class RoomController : MonoBehaviour
     /**
      * Place all of the tiles and props into the game, and also insert them into the arrays for foreground and background objects.
      */
-    public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foregound, float size, float margin)
+    public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foregound, float size, float margin, int offsetX, int offsetY)
     {
 
 
@@ -52,9 +52,9 @@ public class RoomController : MonoBehaviour
             {
                 for (int y = shape.y1;  y < shape.y2; y++)
                 {
-                    GameObject tile = Instantiate(tilePrefab, new Vector3(x * (size + margin), y * (size + margin), 0), Quaternion.identity, transformParent);
+                    GameObject tile = Instantiate(tilePrefab, new Vector3((x + offsetX) * (size + margin), (y + offsetY) * (size + margin), 0), Quaternion.identity, transformParent);
                     tile.GetComponent<TileController>().Init(size - margin * 2);
-                    background[x, y] = tile;
+                    background[x + offsetX, y + offsetY] = tile;
                 }
             }
         }
@@ -62,16 +62,16 @@ public class RoomController : MonoBehaviour
 
         foreach (Vector2 doorLoc in doors)
         {
-            GameObject door = Instantiate(doorPrefab, new Vector3(doorLoc.x * (size + margin), doorLoc.y * (size + margin), 1), Quaternion.identity, transformParent);
+            GameObject door = Instantiate(doorPrefab, new Vector3((doorLoc.x + offsetX) * (size + margin), (doorLoc.y + offsetY) * (size + margin), 1), Quaternion.identity, transformParent);
             door.GetComponent<TileController>().Init(size - margin * 2);
-            background[(int)doorLoc.x, (int)doorLoc.y] = door;
+            background[(int)doorLoc.x + offsetX, (int)doorLoc.y + offsetY] = door;
         }
 
         foreach(Shape propLocation in props)
         {
-            GameObject prop = Instantiate(propPrefab, new Vector3(propLocation.x1 * (size + margin), propLocation.y1 * (size + margin), -1), Quaternion.identity, transformParent);
+            GameObject prop = Instantiate(propPrefab, new Vector3((propLocation.x1 + offsetX) * (size + margin), (propLocation.y1 + offsetY) * (size + margin), -1), Quaternion.identity, transformParent);
             prop.GetComponent<PropController>().Init(size - margin * 2);
-            foregound[propLocation.x1, propLocation.y1] = prop;
+            foregound[propLocation.x1 + offsetX, propLocation.y1 + offsetY] = prop;
         }
     }
 
