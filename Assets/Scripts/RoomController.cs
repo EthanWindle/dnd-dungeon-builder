@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Assertions;
 
+/**
+ * Controller for a Room. Contains a list of shapes and a list of prop locations
+ */
 public class RoomController : MonoBehaviour
 {
 
@@ -34,7 +37,9 @@ public class RoomController : MonoBehaviour
         //TODO: Also make sure that the shapes are not overlapping
     }
 
-
+    /**
+     * Place all of the tiles and props into the game, and also insert them into the arrays for foreground and background objects.
+     */
     public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foregound, float size, float margin)
     {
 
