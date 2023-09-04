@@ -12,28 +12,18 @@ public class RoomController : MonoBehaviour
 
     public GameObject tilePrefab;
     public GameObject doorPrefab;
-    public GameObject propPrefab; //TODO: make this a list of possible props - ideally a global list of some kind that is shared between rooms?
+    public GameObject[] propOptions;
     public Shape[] shapes;
     public Shape[] props; //For now props are assumed to be 1x1.
     public Vector2[] doors; //Should be updated to being possible door locations.
 
 
-    private int maxWidth;
-    private int maxHeight;
+    private System.Random random;
 
 
-    void Awake()
-    {
-        maxWidth = 0;
-        maxHeight = 0;
-        foreach (Shape shape in shapes)
-        {
-            maxWidth = Mathf.Max(maxWidth, shape.x1);
-            maxWidth = Mathf.Max(maxWidth, shape.x2);
-            maxHeight = Mathf.Max(maxHeight, shape.y1);
-            maxHeight = Mathf.Max(maxHeight, shape.y2);
-        }
-
+    public RoomController()
+    {   
+        random = new System.Random();
         //TODO: Also make sure that the shapes are not overlapping
     }
 
@@ -45,7 +35,7 @@ public class RoomController : MonoBehaviour
 
 
         
-
+        //Place the floors for each shape that makes up the room
         foreach (Shape shape in shapes)
         {
             for (int x = shape.x1;  x < shape.x2; x++)
@@ -59,17 +49,19 @@ public class RoomController : MonoBehaviour
             }
         }
 
-
+        //Place the doors for each door in the room
         foreach (Vector2 doorLoc in doors)
         {
             GameObject door = Instantiate(doorPrefab, new Vector3((doorLoc.x + offsetX) * (size + margin), (doorLoc.y + offsetY) * (size + margin), 1), Quaternion.identity, transformParent);
             door.GetComponent<TileController>().Init(size - margin * 2);
             background[(int)doorLoc.x + offsetX, (int)doorLoc.y + offsetY] = door;
         }
-
+        //Randomly select props for each prop location in the room.
         foreach(Shape propLocation in props)
         {
-            GameObject prop = Instantiate(propPrefab, new Vector3((propLocation.x1 + offsetX) * (size + margin), (propLocation.y1 + offsetY) * (size + margin), -1), Quaternion.identity, transformParent);
+
+
+            GameObject prop = Instantiate(propOptions[random.Next(propOptions.Length)], new Vector3((propLocation.x1 + offsetX) * (size + margin), (propLocation.y1 + offsetY) * (size + margin), -1), Quaternion.identity, transformParent);
             prop.GetComponent<PropController>().Init(size - margin * 2);
             foregound[propLocation.x1 + offsetX, propLocation.y1 + offsetY] = prop;
         }
