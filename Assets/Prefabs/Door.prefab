@@ -64,8 +64,31 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0.6415094
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 164585324546260798, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 641939223718171361, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8240042380898606541}
   m_SourcePrefab: {fileID: 100100000, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
+--- !u!1 &8307657929850565972 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 641939223718171361, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
+  m_PrefabInstance: {fileID: 8908712208824772533}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8240042380898606541
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8307657929850565972}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6fe49b6f6b56ce749a0eb03aee87d143, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  openSprite: {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
+  closeSprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}

@@ -1,8 +1,12 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileController : MonoBehaviour
+/**
+ * Controller for a Tile.
+ */
+public abstract class TileController : MonoBehaviour
 {
 
     public void Init(float size)
@@ -11,4 +15,8 @@ public class TileController : MonoBehaviour
         transform.localScale = new Vector3(size,size,1);
       
     }
+
+    public abstract Boolean CanEnter();
+
+
 }

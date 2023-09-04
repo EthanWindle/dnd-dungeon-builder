@@ -5,8 +5,7 @@ using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 /*
- * Grid full of tiles
- * 
+ * Controller for a Grid of tiles and props.
  */
 public class GridController : MonoBehaviour{
 
@@ -14,10 +13,12 @@ public class GridController : MonoBehaviour{
     public int height;
     public float cellSize; //Cells will always be this size, including spacing.
     public float cellSpacing;
-    private GameObject[,] backgroundLayer;
-    private GameObject[,] foregroundLayer;
+    private GameObject[,] backgroundLayer; //Layer for tiles like walls, floors, doors.
+    private GameObject[,] foregroundLayer; //Layer for props and entities like players and monsters
 
-    public GameObject[] rooms;
+    public GameObject[] rooms; //Temporary, this should be replaced when random generationis implemented
+    public int[] xOffsets; //Temporary, this should be replaced when random generation is implemented
+    public int[] yOffsets; //Temporary, this should be replaced when random generation is implemented
     public GameObject wallTile;
 
     public void Awake()
@@ -27,9 +28,9 @@ public class GridController : MonoBehaviour{
         foregroundLayer = new GameObject[width, height];
         
 
-        foreach (GameObject room in rooms)
+        for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
-            room.GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, cellSize, cellSpacing);
+            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, cellSize, cellSpacing, xOffsets[i], yOffsets[i]);
         }
 
         List<Vector2> wallLocations = new List<Vector2>();
@@ -40,7 +41,7 @@ public class GridController : MonoBehaviour{
             for(int y = 0; y < height; y++)
             {
                 if (shouldBeWall(x, y))
-                {
+                { //Place walls in locations that are next to floors or doors.
                     wallLocations.Add(new Vector2(x, y));
                 }
             }
@@ -55,7 +56,7 @@ public class GridController : MonoBehaviour{
             backgroundLayer[x, y] = wall;
         }
 
-        gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0);
+        gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
     }
 
     /*
@@ -66,7 +67,9 @@ public class GridController : MonoBehaviour{
         return new Vector2(x, y) * cellSize;
     }
 
-
+    /**
+     * Checks if a location should be a wall by checking if any of the 8 adjacent tiles are not null.
+     */
     private bool shouldBeWall(int x, int y)
     {
 
