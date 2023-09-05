@@ -1,5 +1,8 @@
 
 [System.Serializable]
+/**
+ * A class for storing positional data about a rectangle.
+ */
 public class Shape
 {
     public int x1;
