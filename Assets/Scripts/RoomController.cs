@@ -16,6 +16,8 @@ public class RoomController : MonoBehaviour
     public Shape[] shapes;
     public Shape[] props; //For now props are assumed to be 1x1.
     public Vector2[] doors; //Should be updated to being possible door locations.
+    public int width;
+    public int height;
 
 
     private System.Random random;
