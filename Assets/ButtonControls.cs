@@ -11,7 +11,7 @@ public class NewBehaviourScript : MonoBehaviour
     }
 
     public void LoadMap(){
-
+        SceneManager.LoadScene("loadPage");
     }
 
     public void Exit(){
