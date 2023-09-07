@@ -404,11 +404,7 @@ GameObject:
   - component: {fileID: 293450024}
   - component: {fileID: 293450023}
   m_Layer: 5
-<<<<<<< HEAD
-  m_Name: Load Map Button
-=======
   m_Name: Loade Map Button
->>>>>>> 60c25004a1de18d955e64d696ff43cd69c881ff4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
