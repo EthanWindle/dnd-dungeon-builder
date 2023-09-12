@@ -5,11 +5,18 @@ using UnityEngine.SceneManagement;
 
 public class NewBehaviourScript : MonoBehaviour
 {
+    public Animator flipPage;
+    
     //Home page Buttons
     public void GenerateNewMap(){
-        SceneManager.LoadScene("settingPage");
+        StartCoroutine(generateMap());  
     }
 
+    IEnumerator generateMap() {
+        flipPage.SetTrigger("LeftFlip");
+        yield return new WaitForSeconds(1); 
+        SceneManager.LoadScene("settingPage");
+    }
     public void LoadMap(){
         SceneManager.LoadScene("loadPage");
     }
