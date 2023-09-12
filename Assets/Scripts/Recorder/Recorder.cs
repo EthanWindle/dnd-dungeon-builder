@@ -1,11 +1,18 @@
-using System;
-using Newtonsoft.Json;
+using UnityEngine;
+
 using System.IO;
 
+[System.Serializable]
 public class Recorder
 {
-    public static void saveGame(GridController map, String fileName)
-    {
+    public int width;
+    public int height;
+    // Add other serializable fields here
 
+    public Recorder(GridController gridController)
+    {
+        width = gridController.width;
+        height = gridController.height;
+        // Initialize other serializable fields here
     }
 }
