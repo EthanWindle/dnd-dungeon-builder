@@ -134,7 +134,6 @@ GameObject:
   - component: {fileID: 60859439}
   - component: {fileID: 60859441}
   - component: {fileID: 60859440}
-  - component: {fileID: 60859442}
   m_Layer: 5
   m_Name: MenuSelect
   m_TagString: Untagged
@@ -154,7 +153,6 @@ RectTransform:
   m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
   m_ConstrainProportionsScale: 1
   m_Children:
-  - {fileID: 1737192792}
   - {fileID: 1059257465}
   - {fileID: 293450022}
   - {fileID: 82366451}
@@ -205,27 +203,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 60859438}
   m_CullTransparentMesh: 1
---- !u!95 &60859442
-Animator:
-  serializedVersion: 5
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 60859438}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 7207815f53ad9f843a4be48d25cd4082, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorStateOnDisable: 0
-  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &82366450
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,7 +484,7 @@ GameObject:
   - component: {fileID: 293450024}
   - component: {fileID: 293450023}
   m_Layer: 5
-  m_Name: Loade Map Button
+  m_Name: Load Map Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -930,7 +907,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.003967285, y: -0.0011901855}
+  m_AnchoredPosition: {x: -0.00390625, y: -0.0012207031}
   m_SizeDelta: {x: -657.14, y: -320.69}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1073122952
@@ -1066,6 +1043,7 @@ RectTransform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1073122951}
+  - {fileID: 1737192792}
   - {fileID: 60859439}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1189,7 +1167,7 @@ GameObject:
   - component: {fileID: 1737192794}
   - component: {fileID: 1737192793}
   m_Layer: 0
-  m_Name: Book_Open1
+  m_Name: Animations
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1277,14 +1255,14 @@ RectTransform:
   m_GameObject: {fileID: 1737192789}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 107.112236, y: 107.112236, z: 107.112236}
+  m_LocalScale: {x: 128.53468, y: 128.53468, z: 128.53468}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 60859439}
+  m_Father: {fileID: 1257898096}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0.99993896, y: 28}
+  m_AnchoredPosition: {x: 1.1999272, y: 0.50182724}
   m_SizeDelta: {x: 7.68, y: 6.08}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1737192793
@@ -1442,6 +1420,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flipPage: {fileID: 1737192790}
+  text: {fileID: 60859438}
 --- !u!1 &2012042101
 GameObject:
   m_ObjectHideFlags: 0
@@ -1757,7 +1736,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2094143138}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1919800627}
+        m_TargetAssemblyTypeName: NewBehaviourScript, Assembly-CSharp
+        m_MethodName: Exit
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2094143138
 MonoBehaviour:
   m_ObjectHideFlags: 0
