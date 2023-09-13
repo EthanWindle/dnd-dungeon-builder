@@ -28,7 +28,7 @@ public class NewBehaviourScript : MonoBehaviour
         SceneManager.LoadScene("loadPage");
     }
 
-    public void Exit(){
+    public void ExitGame(){
         StartCoroutine(exit());
     }
     IEnumerator exit() {
@@ -41,6 +41,12 @@ public class NewBehaviourScript : MonoBehaviour
 
     //Settings page Buttons
     public void BackHome(){
+        StartCoroutine(back());
+    }
+    IEnumerator back() {
+        text.SetActive(false);
+        flipPage.SetTrigger("RightFlip");
+        yield return new WaitForSeconds(1); 
         SceneManager.LoadScene("homePage");
     }
 
