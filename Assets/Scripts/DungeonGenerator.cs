@@ -5,10 +5,13 @@ using System.Runtime.ConstrainedExecution;
 using UnityEditor;
 using UnityEngine;
 
+/*
+ * Class which randomly places prefabs in the dungeon
+ */
 public class DungeonGenerator
 {
 
-    private int numberOfRooms = 10;
+    private int numberOfRooms = 30;
 
     public GameObject[] generateDungeon(GameObject[] initialRooms, out int[] xOffsets, out int[] yOffsets, int gridWidth, int gridHeight)
     {
@@ -52,10 +55,12 @@ public class DungeonGenerator
                     finalRooms[roomIndex] = roomToPlace;
                     xOffsets[roomIndex] = randomX;
                     yOffsets[roomIndex] = randomY;
-                    for (int x = randomX; x < randomX + roomToPlaceWidth; x++)
+                    var minRoomGap = 1;
+                    for (int x = randomX; x < randomX + roomToPlaceWidth + minRoomGap; x++)
                     {
-                        for (int y = randomY; y < randomY + roomToPlaceHeight; y++)
+                        for (int y = randomY; y < randomY + roomToPlaceHeight + minRoomGap; y++)
                         {
+                            if(x >= 0  && y >= 0 && x < gridWidth && y < gridHeight)
                             grid[x, y] = true;
                         }
                     }

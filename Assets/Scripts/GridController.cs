@@ -17,9 +17,9 @@ public class GridController : MonoBehaviour
     private GameObject[,] backgroundLayer; //Layer for tiles like walls, floors, doors.
     private GameObject[,] foregroundLayer; //Layer for props and entities like players and monsters
 
-    public GameObject[] rooms; //Temporary, this should be replaced when random generationis implemented
-    public int[] xOffsets; //Temporary, this should be replaced when random generation is implemented
-    public int[] yOffsets; //Temporary, this should be replaced when random generation is implemented
+    public GameObject[] rooms; //Each instance of a room object is stored here
+    public int[] xOffsets; //x location of room, correlates with rooms array
+    public int[] yOffsets; //y location of room, correlates with rooms array
     public GameObject wallTile;
 
     public void Awake()
@@ -88,6 +88,7 @@ public class GridController : MonoBehaviour
                 if (backgroundLayer[xi, yi] != null) return true;
             }
         }
+
 
         return false;
     }
