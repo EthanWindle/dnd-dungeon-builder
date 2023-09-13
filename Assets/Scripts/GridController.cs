@@ -7,7 +7,8 @@ using UnityEngine;
 /*
  * Controller for a Grid of tiles and props.
  */
-public class GridController : MonoBehaviour{
+public class GridController : MonoBehaviour
+{
 
     public int width;
     public int height;
@@ -16,9 +17,9 @@ public class GridController : MonoBehaviour{
     private GameObject[,] backgroundLayer; //Layer for tiles like walls, floors, doors.
     private GameObject[,] foregroundLayer; //Layer for props and entities like players and monsters
 
-    public GameObject[] rooms; //Temporary, this should be replaced when random generationis implemented
-    public int[] xOffsets; //Temporary, this should be replaced when random generation is implemented
-    public int[] yOffsets; //Temporary, this should be replaced when random generation is implemented
+    public GameObject[] rooms; //Each instance of a room object is stored here
+    public int[] xOffsets; //x location of room, correlates with rooms array
+    public int[] yOffsets; //y location of room, correlates with rooms array
     public GameObject wallTile;
 
     public void Awake()
@@ -26,15 +27,18 @@ public class GridController : MonoBehaviour{
         backgroundLayer = new GameObject[width, height];
 
         foregroundLayer = new GameObject[width, height];
-        
+
+        //Updates the arrays with the generated dungeon values
+        DungeonGenerator dungeonGenerator = new DungeonGenerator();
+        rooms = dungeonGenerator.generateDungeon(rooms, out xOffsets, out yOffsets, width, height);
 
         for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
+            //int offsetx = xOffsets[i];
             rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, cellSize, cellSpacing, xOffsets[i], yOffsets[i]);
         }
 
         List<Vector2> wallLocations = new List<Vector2>();
-
 
         for (int x = 0; x < width; x++)
         {
@@ -84,6 +88,7 @@ public class GridController : MonoBehaviour{
                 if (backgroundLayer[xi, yi] != null) return true;
             }
         }
+
 
         return false;
     }

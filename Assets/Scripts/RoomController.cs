@@ -16,6 +16,8 @@ public class RoomController : MonoBehaviour
     public Shape[] shapes;
     public Shape[] props; //For now props are assumed to be 1x1.
     public Vector2[] doors; //Should be updated to being possible door locations.
+    public int width;
+    public int height;
 
 
     private System.Random random;
@@ -33,8 +35,6 @@ public class RoomController : MonoBehaviour
     public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foregound, float size, float margin, int offsetX, int offsetY)
     {
 
-
-        
         //Place the floors for each shape that makes up the room
         foreach (Shape shape in shapes)
         {
@@ -48,7 +48,7 @@ public class RoomController : MonoBehaviour
                 }
             }
         }
-
+        
         //Place the doors for each door in the room
         foreach (Vector2 doorLoc in doors)
         {
@@ -56,8 +56,9 @@ public class RoomController : MonoBehaviour
             door.GetComponent<TileController>().Init(size - margin * 2);
             background[(int)doorLoc.x + offsetX, (int)doorLoc.y + offsetY] = door;
         }
+        
         //Randomly select props for each prop location in the room.
-        foreach(Shape propLocation in props)
+        foreach (Shape propLocation in props)
         {
 
 
