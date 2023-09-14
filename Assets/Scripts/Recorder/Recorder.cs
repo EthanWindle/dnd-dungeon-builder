@@ -19,11 +19,12 @@ public class Recorder
 
 public class GridControllerJsonSerializer : MonoBehaviour
 {
-    public void SerializeToJson(GridController gridController, string filePath)
+    public static void SerializeToJson(GridController gridController, string filePath)
     {
         Recorder serializableGridController = new Recorder(gridController);
-
+        
         string json = JsonUtility.ToJson(serializableGridController, true);
         File.WriteAllText(filePath, json);
+        Debug.Log("pee");
     }
 }
