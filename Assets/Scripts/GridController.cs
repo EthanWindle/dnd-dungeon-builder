@@ -29,16 +29,16 @@ public class GridController : MonoBehaviour
         foregroundLayer = new GameObject[width, height];
 
         //Updates the arrays with the generated dungeon values
-        DungeonGenerator dungeonGenerator = new DungeonGenerator();
-        rooms = dungeonGenerator.generateDungeon(rooms, out xOffsets, out yOffsets, width, height);
+        DungeonGenerator dungeonGenerator = gameObject.GetComponent<DungeonGenerator>();
+        rooms = dungeonGenerator.GenerateDungeon(rooms, width, height);
 
         for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
             //int offsetx = xOffsets[i];
-            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, cellSize, cellSpacing, xOffsets[i], yOffsets[i]);
+            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, cellSize, cellSpacing);
         }
 
-        List<Vector2> wallLocations = new List<Vector2>();
+        List<Vector2> wallLocations = new();
 
         for (int x = 0; x < width; x++)
         {
