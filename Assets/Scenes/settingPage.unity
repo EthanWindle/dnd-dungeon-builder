@@ -1309,7 +1309,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   flipPage: {fileID: 1022224199}
-  text: {fileID: 1040748935}
+  mainText: {fileID: 1040748935}
+  savePrefab: {fileID: 0}
+  saveParent: {fileID: 0}
 --- !u!4 &431867987
 Transform:
   m_ObjectHideFlags: 0
