@@ -7,6 +7,10 @@ public class NewBehaviourScript : MonoBehaviour
 {
     public Animator flipPage;
     public GameObject text;
+
+    public void toMain(){
+        SceneManager.LoadScene("homePage");
+    }
     
     //Home page Buttons
     public void GenerateNewMap(){
@@ -46,7 +50,7 @@ public class NewBehaviourScript : MonoBehaviour
     IEnumerator back() {
         text.SetActive(false);
         flipPage.SetTrigger("RightFlip");
-        yield return new WaitForSeconds(1); 
+        yield return new WaitForSeconds(2); 
         SceneManager.LoadScene("homePage");
     }
 
