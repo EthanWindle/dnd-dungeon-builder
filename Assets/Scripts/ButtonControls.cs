@@ -66,8 +66,8 @@ public class NewBehaviourScript : MonoBehaviour
 
 
     //load page 
-    public void SetSavedGame(string name){
-        map.text = name;
+    public void SetSavedGame(string name, TMP_Text mapText){
+        mapText.text = name;
         print("FFF");
     }
     public void GetSavedGames() {
@@ -80,7 +80,7 @@ public class NewBehaviourScript : MonoBehaviour
             GameObject newButton = Instantiate(savePrefab, saveParent);
             TMP_Text[] texts = newButton.GetComponentsInChildren<TMP_Text>();
             texts[0].text = fileName;
-            newButton.GetComponent<Button>().onClick.AddListener(SetSavedGame(fileName));// => SetSavedGame(fileName);
+            newButton.GetComponent<Button>().onClick.AddListener(() => SetSavedGame(fileName, map));
         }
     }
 
