@@ -68,7 +68,6 @@ public class NewBehaviourScript : MonoBehaviour
     //load page 
     public void SetSavedGame(string name, TMP_Text mapText){
         mapText.text = name;
-        print("FFF");
     }
     public void GetSavedGames() {
         
