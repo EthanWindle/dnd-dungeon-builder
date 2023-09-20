@@ -40,7 +40,7 @@ public class RoomController : MonoBehaviour
     /**
      * Place all of the tiles and props into the game, and also insert them into the arrays for foreground and background objects.
      */
-    public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foregound, float size, float margin)
+    public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foregound, float size, float margin, Recorder recorder)
     {
 
         //Place the floors for each shape that makes up the room
@@ -53,6 +53,7 @@ public class RoomController : MonoBehaviour
                     GameObject tile = Instantiate(tilePrefab, new Vector3((x + this.x) * (size + margin), (y + this.y) * (size + margin), 0), Quaternion.identity, transformParent);
                     tile.GetComponent<TileController>().Init(size - margin * 2);
                     background[x + this.x, y + this.y] = tile;
+                    recorder.AddTile(new RecorderTile("floor", x + this.x, y + this.y));
                 }
             }
         }
@@ -63,6 +64,7 @@ public class RoomController : MonoBehaviour
             GameObject door = Instantiate(doorPrefab, new Vector3((doorLoc.x + this.x) * (size + margin), (doorLoc.y + this.y) * (size + margin), 1), Quaternion.identity, transformParent);
             door.GetComponent<TileController>().Init(size - margin * 2);
             background[(int)doorLoc.x + this.x, (int)doorLoc.y + this.y] = door;
+            recorder.AddTile(new RecorderTile("door", (int)doorLoc.x + this.x, (int)doorLoc.y + this.y));
         }
         
         //Randomly select props for each prop location in the room.
@@ -73,6 +75,7 @@ public class RoomController : MonoBehaviour
             GameObject prop = Instantiate(propOptions[random.Next(propOptions.Length)], new Vector3((propLocation.x1 + this.x) * (size + margin), (propLocation.y1 + this.y) * (size + margin), -1), Quaternion.identity, transformParent);
             prop.GetComponent<PropController>().Init(size - margin * 2);
             foregound[propLocation.x1 + this.x, propLocation.y1 + this.y] = prop;
+            recorder.AddTile(new RecorderTile("prop", propLocation.x1 + this.x, propLocation.y1 + this.y));
         }
     }
 
@@ -84,5 +87,5 @@ public class RoomController : MonoBehaviour
     public int GetY(){
         return this.y;
     }
-    
+  
 }
