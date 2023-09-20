@@ -66,8 +66,7 @@ public class GridController : MonoBehaviour
         }
 
         gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
-       
-        GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
+
     }
 
     /*
