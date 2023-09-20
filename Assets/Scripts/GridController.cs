@@ -100,7 +100,10 @@ public class GridController : MonoBehaviour
             for (int yi = y-1; yi <= y+1; yi++)
             {
                 if (yi < 0 || yi >= height || (yi == y && xi == x)) continue;
-                if (backgroundLayer[xi, yi] != null) return true;
+                if (backgroundLayer[xi, yi] == null) continue;
+                DoorController doorTile = backgroundLayer[xi, yi].GetComponent<DoorController>();
+                if (doorTile != null) continue;
+                return true;
             }
         }
 
