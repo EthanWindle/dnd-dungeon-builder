@@ -62,10 +62,26 @@ public class GridController : MonoBehaviour
             GameObject wall = Instantiate(wallTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
             wall.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
             backgroundLayer[x, y] = wall;
-            recorder.AddTile(new RecorderTile("wall", x, y));
+            recorder.AddTile(new RecorderTile("wall", x, y, -1));
         }
 
         gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
+
+        /*Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile.json");
+        if (deserializedRecorder != null)
+        {
+            Debug.Log("Passed");
+        }
+        else
+        {
+            Debug.Log("recorder is null");
+        }*/
+        GridControllerJsonSerializer.SerializeToJson(this, "testFile2.json", recorder);
+
+    }
+
+    public GridController(Recorder deserializedRecorder)
+    {
 
     }
 
