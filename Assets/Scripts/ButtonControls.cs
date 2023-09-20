@@ -61,7 +61,7 @@ public class NewBehaviourScript : MonoBehaviour
     }
 
     public void Generate(){
-
+        SceneManager.LoadScene("mapScene");
     }
 
 
