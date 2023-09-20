@@ -22,9 +22,11 @@ public class GridController : MonoBehaviour
     public int[] yOffsets; //y location of room, correlates with rooms array
     public GameObject wallTile;
 
+    private Recorder recorder; //Records events to save the current game state
+
     public void Awake()
     {
-        Recorder recorder = new Recorder(this);
+        this.recorder = new Recorder(this);
 
         backgroundLayer = new GameObject[width, height];
 
@@ -74,6 +76,14 @@ public class GridController : MonoBehaviour
     private Vector2 GetWorldLocation(int x, int y)
     {
         return new Vector2(x, y) * cellSize;
+    }
+
+    /*
+     * Returns the current Recorder
+     */
+    public Recorder GetRecorder()
+    {
+        return this.recorder;
     }
 
     /**
