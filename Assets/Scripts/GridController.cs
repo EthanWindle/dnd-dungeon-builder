@@ -26,12 +26,16 @@ public class GridController : MonoBehaviour
 
     public void Awake()
     {
-        this.recorder = new Recorder(this);
-
         backgroundLayer = new GameObject[width, height];
 
         foregroundLayer = new GameObject[width, height];
 
+        GenerateNewMap();
+    }
+
+    public void GenerateNewMap()
+    {
+        this.recorder = new Recorder(this);
         //Updates the arrays with the generated dungeon values
         DungeonGenerator dungeonGenerator = gameObject.GetComponent<DungeonGenerator>();
         rooms = dungeonGenerator.GenerateDungeon(rooms, width, height);
