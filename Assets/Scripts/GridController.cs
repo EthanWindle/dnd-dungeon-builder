@@ -23,6 +23,57 @@ public class GridController : MonoBehaviour
     public GameObject wallTile;
 
     private Recorder recorder; //Records events to save the current game state
+    private GameObject tilePrefab;
+    private GameObject doorPrefab;
+
+    /*
+     * Loads a save file from recorder
+     */
+    public void SetObjects(Recorder deserializedRecorder)
+    {
+        width = deserializedRecorder.width;
+        height = deserializedRecorder.height;
+        cellSize = deserializedRecorder.cellSize;
+        cellSpacing = deserializedRecorder.cellSpacing;
+
+        foreach (Transform child in gameObject.transform)
+        {
+            GameObject.Destroy(child.gameObject);
+        }
+
+        backgroundLayer = new GameObject[width, height];
+        foregroundLayer = new GameObject[width, height];
+
+        rooms = new GameObject[30];
+        xOffsets = new int[30];
+        yOffsets = new int[30];
+
+        foreach (RecorderTile tile in deserializedRecorder.tiles)
+        {
+            if (tile.type.Equals("floor"))
+            {
+                // Update the backgroundLayer with floor tiles
+                GameObject floorTile = Instantiate(tilePrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 0), Quaternion.identity, gameObject.transform);
+                floorTile.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                backgroundLayer[tile.x, tile.y] = floorTile;
+            }
+            else if (tile.type.Equals("wall"))
+            {
+                // Update the backgroundLayer with wall tiles
+                wallTile = Instantiate(wallTile, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                wallTile.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                backgroundLayer[tile.x, tile.y] = wallTile;
+            }
+            else if (tile.type.Equals("door"))
+            {
+                // Update the backgroundLayer with door tiles
+                doorPrefab = Instantiate(doorPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                doorPrefab.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                backgroundLayer[tile.x, tile.y] = doorPrefab;
+            }
+        }
+
+    }
 
     public void Awake()
     {
@@ -40,6 +91,9 @@ public class GridController : MonoBehaviour
         {
             //int offsetx = xOffsets[i];
             rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, cellSize, cellSpacing, recorder);
+            RoomController roomController = rooms[i].GetComponent<RoomController>();
+            this.tilePrefab = roomController.tilePrefab;
+            this.doorPrefab = roomController.doorPrefab;
         }
 
         List<Vector2> wallLocations = new();
@@ -62,12 +116,21 @@ public class GridController : MonoBehaviour
             GameObject wall = Instantiate(wallTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
             wall.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
             backgroundLayer[x, y] = wall;
-            recorder.AddTile(new RecorderTile("wall", x, y));
+            recorder.AddTile(new RecorderTile("wall", x, y, -1));
         }
 
         gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
 
+        //Test load from file
+        //Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile2.json");
+        //SetObjects(deserializedRecorder);
+        
+        //Test save to file
+        //GridControllerJsonSerializer.SerializeToJson(this, "testFile2.json", recorder);
+
     }
+
+    
 
     /*
      * Helpers
