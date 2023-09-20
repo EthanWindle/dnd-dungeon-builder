@@ -24,6 +24,8 @@ public class GridController : MonoBehaviour
 
     public void Awake()
     {
+        Recorder recorder = new Recorder(this);
+
         backgroundLayer = new GameObject[width, height];
 
         foregroundLayer = new GameObject[width, height];
@@ -35,7 +37,7 @@ public class GridController : MonoBehaviour
         for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
             //int offsetx = xOffsets[i];
-            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, cellSize, cellSpacing);
+            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, cellSize, cellSpacing, recorder);
         }
 
         List<Vector2> wallLocations = new();
@@ -58,12 +60,12 @@ public class GridController : MonoBehaviour
             GameObject wall = Instantiate(wallTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
             wall.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
             backgroundLayer[x, y] = wall;
+            recorder.AddTile(new RecorderTile("wall", x, y));
         }
 
         gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
-
-        Recorder recorder = new Recorder(this);
-        GridControllerJsonSerializer.SerializeToJson(this, "testFile.json");
+       
+        GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
     }
 
     /*
