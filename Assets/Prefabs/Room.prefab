@@ -49,6 +49,9 @@ MonoBehaviour:
   propOptions:
   - {fileID: 7971312380810922680, guid: 8b48354e55cafcc468b1bf733e501152, type: 3}
   - {fileID: 5563324945239358460, guid: fe099cc40dbac894a8ecee0ccd1d5fd8, type: 3}
+  - {fileID: 8141686532541951112, guid: 027846af026784d4499b82b545db04e3, type: 3}
   shapes: []
   props: []
   doors: []
+  width: 0
+  height: 0
