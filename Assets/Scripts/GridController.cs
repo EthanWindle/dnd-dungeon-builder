@@ -110,4 +110,12 @@ public class GridController : MonoBehaviour
         return false;
     }
 
+
+    public void getGridBounds(out float topBound, out float leftBound, out float bottomBound, out float rightBound){
+        topBound = gameObject.transform.position.y + (height * cellSize);
+        leftBound = gameObject.transform.position.x;
+        bottomBound = gameObject.transform.position.y;
+        rightBound = gameObject.transform.position.x + (width * cellSize);
+    }
+
 }
