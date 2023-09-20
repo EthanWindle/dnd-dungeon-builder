@@ -24,6 +24,51 @@ public class GridController : MonoBehaviour
 
     private Recorder recorder; //Records events to save the current game state
 
+    public void SetObjects(Recorder deserializedRecorder)
+    {
+        width = deserializedRecorder.width;
+        height = deserializedRecorder.height;
+        cellSize = deserializedRecorder.cellSize;
+        cellSpacing = deserializedRecorder.cellSpacing;
+
+        backgroundLayer = new GameObject[width, height];
+        foregroundLayer = new GameObject[width, height];
+
+        rooms = new GameObject[30];
+
+        foreach (RecorderTile tile in deserializedRecorder.tiles)
+        {
+            if (tile.type.Equals("floor"))
+            {
+                // Update the backgroundLayer with floor tiles
+                GameObject floorTile = Instantiate(RoomController.tilePrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 0), Quaternion.identity, gameObject.transform);
+                floorTile.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                backgroundLayer[tile.x, tile.y] = floorTile;
+            }
+            else if (tile.type.Equals("wall"))
+            {
+                // Update the backgroundLayer with wall tiles
+                GameObject wallTile = Instantiate(wallTile, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                wallTile.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                backgroundLayer[tile.x, tile.y] = wallTile;
+            }
+
+            else
+            {
+
+            }
+        }
+        /*foreach (RecorderRoom room in deserializedRecorder.rooms)
+        {
+            // Create and place rooms based on deserialized data
+            GameObject newRoom = Instantiate(roomPrefab); // You may need to instantiate a room prefab or handle this differently
+            newRoom.GetComponent<RoomController>().SetPosition(room.XPos, room.YPos);
+            rooms[room.RoomNumber] = newRoom;
+            newRoom.GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, cellSize, cellSpacing, recorder);
+        }*/
+
+    }
+
     public void Awake()
     {
         this.recorder = new Recorder(this);
@@ -80,10 +125,7 @@ public class GridController : MonoBehaviour
 
     }
 
-    public GridController(Recorder deserializedRecorder)
-    {
-
-    }
+    
 
     /*
      * Helpers
