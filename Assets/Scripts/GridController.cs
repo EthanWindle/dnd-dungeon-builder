@@ -22,8 +22,12 @@ public class GridController : MonoBehaviour
     public int[] yOffsets; //y location of room, correlates with rooms array
     public GameObject wallTile;
 
+    private Recorder recorder; //Records events to save the current game state
+
     public void Awake()
     {
+        this.recorder = new Recorder(this);
+
         backgroundLayer = new GameObject[width, height];
 
         foregroundLayer = new GameObject[width, height];
@@ -35,7 +39,7 @@ public class GridController : MonoBehaviour
         for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
             //int offsetx = xOffsets[i];
-            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, cellSize, cellSpacing);
+            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, cellSize, cellSpacing, recorder);
         }
 
         List<Vector2> wallLocations = new();
@@ -58,9 +62,12 @@ public class GridController : MonoBehaviour
             GameObject wall = Instantiate(wallTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
             wall.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
             backgroundLayer[x, y] = wall;
+            recorder.AddTile(new RecorderTile("wall", x, y));
         }
 
         gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
+       
+        GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
     }
 
     /*
@@ -69,6 +76,14 @@ public class GridController : MonoBehaviour
     private Vector2 GetWorldLocation(int x, int y)
     {
         return new Vector2(x, y) * cellSize;
+    }
+
+    /*
+     * Returns the current Recorder
+     */
+    public Recorder GetRecorder()
+    {
+        return this.recorder;
     }
 
     /**
