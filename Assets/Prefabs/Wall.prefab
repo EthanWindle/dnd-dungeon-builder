@@ -102,3 +102,7 @@ MonoBehaviour:
   topRightWall: {fileID: 2800000, guid: 0fb48b8b11387a248a871105868b9d6e, type: 3}
   bottomLeftWall: {fileID: 2800000, guid: 66b3eda7faa26a4469f8d2d68a137e5c, type: 3}
   bottomRightWall: {fileID: 2800000, guid: e209f7f6e82ff3d4b935e26eca7efaa7, type: 3}
+  smallTopLeftWall: {fileID: 2800000, guid: b83f17f5be26b0040a0522458d6fdc6d, type: 3}
+  smallTopRightWall: {fileID: 2800000, guid: c30ce6e4d51223943b5aa94ba1c2cad1, type: 3}
+  smallBottomLeftWall: {fileID: 2800000, guid: bc6a7ccc489cb0148a75260fdd2c6c66, type: 3}
+  smallBottomRightWall: {fileID: 2800000, guid: 39931e9434cbf9e44b0631908725b16c, type: 3}

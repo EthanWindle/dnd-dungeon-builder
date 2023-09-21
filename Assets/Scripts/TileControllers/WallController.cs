@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,6 +22,11 @@ public class WallController : TileController
     public Texture2D bottomLeftWall;
     public Texture2D bottomRightWall;
 
+    public Texture2D smallTopLeftWall;
+    public Texture2D smallTopRightWall;
+    public Texture2D smallBottomLeftWall;
+    public Texture2D smallBottomRightWall;
+
     public override bool CanEnter()
     {
         return false;
@@ -32,39 +38,53 @@ public class WallController : TileController
     public void SetTexture(TileController[] adjacentTiles)
     {
         Texture2D texture;
+        
 
-        //Is a right wall
-        if (adjacentTiles[1] is FloorController && (adjacentTiles[0] is FloorController || adjacentTiles[2] is FloorController))
+        if (CheckLocations(adjacentTiles, 1, 2, 4)) 
+        {
+            texture = smallBottomRightWall;
+        }
+        else if (CheckLocations(adjacentTiles, 4, 7, 6))
+        {
+            texture = smallBottomLeftWall;
+        }
+        else if (CheckLocations(adjacentTiles, 1, 0, 3))
+        {
+            texture = smallTopRightWall;
+        }
+        else if (CheckLocations(adjacentTiles, 3, 5, 6))
+        {
+            texture = smallTopLeftWall;
+        }
+        else if (CheckLocations(adjacentTiles,1, 2) || CheckLocations(adjacentTiles, 1, 0))
         {
             texture = rightWall;
         }
-        //Is a right wall
-        else if (adjacentTiles[6] is FloorController && (adjacentTiles[5] is FloorController || adjacentTiles[7] is FloorController))
+        else if (CheckLocations(adjacentTiles, 6, 5) || CheckLocations(adjacentTiles, 6, 7))
         {
             texture = leftWall;
         }
-        else if (adjacentTiles[4] is FloorController && (adjacentTiles[2] is FloorController || adjacentTiles[7] is FloorController))
+        else if (CheckLocations(adjacentTiles, 4, 2) || CheckLocations(adjacentTiles, 4, 7))
         {
             texture = bottomWall;
         }
-        else if (adjacentTiles[3] is FloorController && (adjacentTiles[0] is FloorController || adjacentTiles[5] is FloorController))
+        else if (CheckLocations(adjacentTiles, 3, 0) || CheckLocations(adjacentTiles, 3, 5))
         {
             texture = topWall;
         }
-        else if (adjacentTiles[2] is FloorController)
+        else if (CheckLocations(adjacentTiles, 2))
         {
             texture = bottomRightWall;
         }
-        else if (adjacentTiles[7] is FloorController)
+        else if (CheckLocations(adjacentTiles, 7))
         {
             texture = bottomLeftWall;
         }
-        else if (adjacentTiles[0] is FloorController)
+        else if (CheckLocations(adjacentTiles, 0))
         {
             texture = topRightWall;
         }
-
-        else if (adjacentTiles[5] is FloorController)
+        else if (CheckLocations(adjacentTiles, 5))
         {
             texture =topLeftWall;
         }
@@ -79,5 +99,18 @@ public class WallController : TileController
         gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
 
     }
+
+    private bool CheckLocations(TileController[] adjacentTiles, params int[] indices)
+    {
+        for (int i = 0; i <  indices.Length; i++)
+        {
+            if (adjacentTiles[indices[i]] is not FloorController)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
 }
 
