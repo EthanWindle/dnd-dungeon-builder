@@ -18,6 +18,7 @@ public class RoomController : MonoBehaviour
     public Vector2[] doors; //Should be updated to being possible door locations.
     public int width;
     public int height;
+    public bool hasPath = false;
 
     private int x;
     private int y;
@@ -79,6 +80,10 @@ public class RoomController : MonoBehaviour
         }
     }
 
+    public void setHasPathTrue()
+    {
+        this.hasPath = true;
+    }
 
     public int GetX(){
         return this.x;

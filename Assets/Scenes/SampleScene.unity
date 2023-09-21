@@ -226,6 +226,7 @@ GameObject:
   - component: {fileID: 1031314864}
   - component: {fileID: 1031314865}
   - component: {fileID: 1031314866}
+  - component: {fileID: 1031314867}
   m_Layer: 0
   m_Name: Grid
   m_TagString: Untagged
@@ -268,8 +269,6 @@ MonoBehaviour:
   - {fileID: 5176107042835342550, guid: 95bbebd052c362d4b80451a8c0cc18ce, type: 3}
   - {fileID: 6880877989680086973, guid: 23401c6cb79826145bed232f1c7bab5e, type: 3}
   - {fileID: 709260183645416478, guid: 937910ad414b53945b348ab2c7e7c7a8, type: 3}
-  xOffsets: 
-  yOffsets: 
   wallTile: {fileID: 1601085562768460819, guid: 33e47b85cf84c004e8e1e32d717da1ff, type: 3}
 --- !u!114 &1031314866
 MonoBehaviour:
@@ -284,6 +283,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   numberOfRooms: 30
+--- !u!114 &1031314867
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1031314863}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 43ebe78953c56634a97ead8e1ae248ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
