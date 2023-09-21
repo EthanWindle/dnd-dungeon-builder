@@ -16,6 +16,11 @@ public class WallController : TileController
     public Texture2D topWall;
     public Texture2D bottomWall;
 
+    public Texture2D topLeftWall;
+    public Texture2D topRightWall;
+    public Texture2D bottomLeftWall;
+    public Texture2D bottomRightWall;
+
     public override bool CanEnter()
     {
         return false;
@@ -45,6 +50,23 @@ public class WallController : TileController
         else if (adjacentTiles[3] is FloorController && (adjacentTiles[0] is FloorController || adjacentTiles[5] is FloorController))
         {
             texture = topWall;
+        }
+        else if (adjacentTiles[2] is FloorController)
+        {
+            texture = bottomRightWall;
+        }
+        else if (adjacentTiles[7] is FloorController)
+        {
+            texture = bottomLeftWall;
+        }
+        else if (adjacentTiles[0] is FloorController)
+        {
+            texture = topRightWall;
+        }
+
+        else if (adjacentTiles[5] is FloorController)
+        {
+            texture =topLeftWall;
         }
 
         else
