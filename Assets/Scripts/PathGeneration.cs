@@ -43,16 +43,11 @@ public class PathGenerator : MonoBehaviour
                                     //Debug.Log("Found a door not part of the current room.");
                                     GridController gridController = gameObject.GetComponent<GridController>();  
                                     List<Vector2> path = GeneratePath(backgroundLayer, maxX, maxY);
-                                    foreach (Vector2 p in path)
-                                    {
-                                        Debug.Log(p);
-                                    }
                                     if (path != null)
                                     {
                                         Debug.LogError("8");
                                         foreach (Vector2 pathLoc in path)
                                         {
-                                            Debug.LogError("9");
                                             InstantiateTilePrefab(gameObject.transform, backgroundLayer, gridController.cellSize, gridController.cellSpacing,(int)pathLoc.x, (int)pathLoc.y, gridController.GetRecorder());
                                         }
                                     }
