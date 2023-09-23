@@ -8,8 +8,9 @@ using UnityEngine;
  */
 public abstract class TileController : MonoBehaviour
 {
+    protected readonly int textureSize = 16;
 
-    public void Init(float size)
+    public virtual void Init(float size)
     {
         Transform transform = gameObject.GetComponent<Transform>();
         transform.localScale = new Vector3(size,size,1);

@@ -106,7 +106,7 @@ public class GridController : MonoBehaviour
         {
             for(int y = 0; y < height; y++)
             {
-                if (shouldBeWall(x, y))
+                if (ShouldBeWall(x, y))
                 { //Place walls in locations that are next to floors or doors.
                     wallLocations.Add(new Vector2(x, y));
                 }
@@ -118,7 +118,8 @@ public class GridController : MonoBehaviour
             int x = (int)wallLocation.x;
             int y = (int)wallLocation.y;
             GameObject wall = Instantiate(wallTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
-            wall.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+            wall.GetComponent<WallController>().Init(cellSize - cellSpacing * 2);
+            wall.GetComponent<WallController>().SetTexture(GetAdjacentControllers(x, y));
             backgroundLayer[x, y] = wall;
             recorder.AddTile(new RecorderTile("wall", x, y, -1));
         }
@@ -155,28 +156,42 @@ public class GridController : MonoBehaviour
     /**
      * Checks if a location should be a wall by checking if any of the 8 adjacent tiles are not null.
      */
-    private bool shouldBeWall(int x, int y)
+    private bool ShouldBeWall(int x, int y)
     {
 
         if (backgroundLayer[x, y] != null) return false;
 
-        for (int xi = x-1; xi <= x+1; xi++)
+        
+        foreach (TileController controller in GetAdjacentControllers(x, y))
         {
-            if (xi < 0 || xi >= width) continue;
-            for (int yi = y-1; yi <= y+1; yi++)
-            {
-                if (yi < 0 || yi >= height || (yi == y && xi == x)) continue;
-                if (backgroundLayer[xi, yi] == null) continue;
-                DoorController doorTile = backgroundLayer[xi, yi].GetComponent<DoorController>();
-                if (doorTile != null) continue;
-                return true;
-            }
+            if (controller is FloorController) { return true; }
         }
-
 
         return false;
     }
 
+    private TileController[] GetAdjacentControllers(int x, int y)
+    {
+        int index = 0;
+        TileController[] controllers = new TileController[8];
+        for (int xi = x - 1; xi <= x + 1; xi++)
+        {
+            
+            for (int yi = y - 1; yi <= y + 1; yi++)
+            {
+                if (xi == x && yi == y) continue;
+
+                if (xi < 0 || xi >= width) controllers[index] = null;
+                else if (yi < 0 || yi >= height) controllers[index] = null;
+                else if (backgroundLayer[xi, yi] == null) controllers[index] = null;
+                else controllers[index] = backgroundLayer[xi, yi].GetComponent<TileController>();
+                index++;
+                
+            }
+        }
+
+        return controllers;
+    }
 
     public void getGridBounds(out float topBound, out float leftBound, out float bottomBound, out float rightBound){
         topBound = gameObject.transform.position.y + (height * cellSize);
