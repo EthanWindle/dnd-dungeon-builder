@@ -46,6 +46,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 1881029730475228011, guid: 91b243421307c224fab38af570330f5d, type: 3}
   doorPrefab: {fileID: 8307657929850565972, guid: f6467cc12861b6f43a05717cd3606fa5, type: 3}
+  fogPrefab: {fileID: 101012713752661465, guid: cffa49d762e58c54e8f59de54b6e8c63, type: 3}
   propOptions:
   - {fileID: 7971312380810922680, guid: 8b48354e55cafcc468b1bf733e501152, type: 3}
   - {fileID: 5563324945239358460, guid: fe099cc40dbac894a8ecee0ccd1d5fd8, type: 3}
