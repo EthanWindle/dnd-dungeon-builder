@@ -16,7 +16,6 @@ public class GridController : MonoBehaviour
     public float cellSpacing;
     private GameObject[,] backgroundLayer; //Layer for tiles like walls, floors, doors.
     private GameObject[,] foregroundLayer; //Layer for props and entities like players and monsters
-    private GameObject[,] fogLayer; //Layer for props and entities like players and monsters
 
     public GameObject[] rooms; //Each instance of a room object is stored here
     public int[] xOffsets; //x location of room, correlates with rooms array
@@ -191,6 +190,22 @@ public class GridController : MonoBehaviour
         for (int i = 0; i < rooms.Length; i++)
         {
             rooms[i].GetComponent<RoomController>().ClearFog(mousePos);
+        }
+    }
+
+    public void ChangeToPlayerView()
+    {
+        for (int i = 0; i < rooms.Length; i++)
+        {
+            rooms[i].GetComponent<RoomController>().ShowTiles();
+        }
+    }
+
+    public void ChangeToDMView()
+    {
+        for (int i = 0; i < rooms.Length; i++)
+        {
+            rooms[i].GetComponent<RoomController>().HideTiles();
         }
     }
 
