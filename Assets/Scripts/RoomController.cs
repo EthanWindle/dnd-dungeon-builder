@@ -107,7 +107,7 @@ public class RoomController : MonoBehaviour
             {
                 for (int h = 0; h < height; h++)
                 {
-                    Destroy(fogLayer[w, h], 1.0f);
+                    fogLayer[w, h].SetActive(false);
                 }
             }
         }
@@ -123,8 +123,6 @@ public class RoomController : MonoBehaviour
             && mousePos.y + 35 <= (this.y + this.height)
             && mousePos.y + 35 >= this.y)
         {
-            Debug.Log("Destroy");
-            Debug.Log("mousex: " + mousePos.x + " thisx : " + this.x + " thiswidth " + this.width);
             return true;
         }
         return false;
