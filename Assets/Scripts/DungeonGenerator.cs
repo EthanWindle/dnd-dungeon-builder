@@ -55,10 +55,10 @@ public class DungeonGenerator : MonoBehaviour
                 {
                     finalRooms[roomIndex] = roomToPlace;
                     roomToPlace.GetComponent<RoomController>().SetPosition(randomX, randomY);
-                    var minRoomGap = 1;
-                    for (int x = randomX; x < randomX + roomToPlaceWidth + minRoomGap; x++)
+                    var minRoomGap = 3;
+                    for (int x = randomX - minRoomGap; x < randomX + roomToPlaceWidth + minRoomGap; x++)
                     {
-                        for (int y = randomY; y < randomY + roomToPlaceHeight + minRoomGap; y++)
+                        for (int y = randomY - minRoomGap; y < randomY + roomToPlaceHeight + minRoomGap; y++)
                         {
                             if(x >= 0  && y >= 0 && x < gridWidth && y < gridHeight)
                             grid[x, y] = true;
