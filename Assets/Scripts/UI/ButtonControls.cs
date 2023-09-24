@@ -58,7 +58,7 @@ public class NewBehaviourScript : MonoBehaviour
         mainText.SetActive(false);
         flipPage.SetTrigger("LeftFlip");
         yield return new WaitForSeconds(1);
-        SceneManager.LoadScene("creditPage");
+        SceneManager.LoadScene("creditsPage");
     }
 
     public void ExitGame(){
