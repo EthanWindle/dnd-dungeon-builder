@@ -16,13 +16,12 @@ public class NewBehaviourScript : MonoBehaviour
     public Transform saveParent;
     public TMP_Text map;
 
-    private RoomController roomController;
-    private Boolean isPlayer = false;
+    private GridController grid;
 
     public void toMain(){
         SceneManager.LoadScene("homePage");
     }
-    
+
     //Home page Buttons
     public void GenerateNewMap(){
         StartCoroutine(generateMap());  
@@ -71,30 +70,19 @@ public class NewBehaviourScript : MonoBehaviour
 
     // Player and Dungeon Master Views
 
-    /*
-     *
+    /* Changes view grid view to Player view
      *
      *
      */
     public void showPMView() {
-        // hide all tiles
-        // check if player is in room
-        // if true:
-        // call clear fog
-        // else
-        // handle
-        
+        grid.ChangeToPlayerView();
     }
 
-    /*
-     *
-     *
+    /* Changes view grid view to Dungeon Master view
      *
      */
     public void showDMView() { 
-        // show all tiles
-        // have a good time
-
+        grid.ChangeToDMView();
     }
 
     //load page 
