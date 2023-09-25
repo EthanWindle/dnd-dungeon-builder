@@ -5,6 +5,7 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using TMPro;
 using System.IO;
+using System;
 
 public class NewBehaviourScript : MonoBehaviour
 {
@@ -14,6 +15,10 @@ public class NewBehaviourScript : MonoBehaviour
     public GameObject savePrefab;
     public Transform saveParent;
     public TMP_Text map;
+
+    private RoomController roomController;
+    private Boolean isPlayer = false;
+
     public void toMain(){
         SceneManager.LoadScene("homePage");
     }
@@ -64,6 +69,33 @@ public class NewBehaviourScript : MonoBehaviour
 
     }
 
+    // Player and Dungeon Master Views
+
+    /*
+     *
+     *
+     *
+     */
+    public void showPMView() {
+        // hide all tiles
+        // check if player is in room
+        // if true:
+        // call clear fog
+        // else
+        // handle
+        
+    }
+
+    /*
+     *
+     *
+     *
+     */
+    public void showDMView() { 
+        // show all tiles
+        // have a good time
+
+    }
 
     //load page 
     public void SetSavedGame(string name, TMP_Text mapText){
