@@ -200,4 +200,28 @@ public class GridController : MonoBehaviour
         rightBound = gameObject.transform.position.x + (width * cellSize);
     }
 
+    public void HandleFog(Vector3 mousePos)
+    {
+        for (int i = 0; i < rooms.Length; i++)
+        {
+            rooms[i].GetComponent<RoomController>().ClearFog(mousePos);
+        }
+    }
+
+    public void ChangeToPlayerView()
+    {
+        for (int i = 0; i < rooms.Length; i++)
+        {
+            rooms[i].GetComponent<RoomController>().ShowTiles();
+        }
+    }
+
+    public void ChangeToDMView()
+    {
+        for (int i = 0; i < rooms.Length; i++)
+        {
+            rooms[i].GetComponent<RoomController>().HideTiles();
+        }
+    }
+
 }

@@ -31,7 +31,17 @@ public class MouseHandlerController : MonoBehaviour
         HandleMoveCamera();
     }
 
-        
+    void Update()
+    {
+        HandleRemoveFog();
+
+    }
+
+    void HandleRemoveFog()
+    {
+        if (Input.GetMouseButtonDown(1))
+            gameObject.GetComponent<GridController>().HandleFog(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+    }
 
     // This is a separate function, 
     // so that the movement of players/monsters can be added as another function 
