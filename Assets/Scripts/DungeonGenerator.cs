@@ -5,22 +5,26 @@ using System.Runtime.ConstrainedExecution;
 using UnityEditor;
 using UnityEngine;
 
-public class DungeonGenerator
+/*
+ * Class which randomly places prefabs in the dungeon
+ */
+public class DungeonGenerator : MonoBehaviour
 {
 
-    private int numberOfRooms = 10;
+    public int numberOfRooms = 30;
 
-    public GameObject[] generateDungeon(GameObject[] initialRooms, out int[] xOffsets, out int[] yOffsets, int gridWidth, int gridHeight)
+    public GameObject[] GenerateDungeon(GameObject[] initialRooms, int gridWidth, int gridHeight)
     {
         GameObject[] finalRooms = new GameObject[numberOfRooms];
-        xOffsets = new int[numberOfRooms];
-        yOffsets = new int[numberOfRooms];
 
         bool[,] grid = new bool[gridWidth, gridHeight];
 
         for (int roomIndex = 0; roomIndex < numberOfRooms; roomIndex++)
         {
-            GameObject roomToPlace = initialRooms[UnityEngine.Random.Range(0, initialRooms.Length)];
+            GameObject roomToPlace = Instantiate(initialRooms[UnityEngine.Random.Range(0, initialRooms.Length)], 
+            new Vector3(0,0,0), //Could be good to change this to reflect the position of the room?
+            Quaternion.identity);
+            
             int roomToPlaceWidth = roomToPlace.GetComponent<RoomController>().width;
             int roomToPlaceHeight = roomToPlace.GetComponent<RoomController>().height;
 
@@ -50,12 +54,13 @@ public class DungeonGenerator
                 if (!overlap)
                 {
                     finalRooms[roomIndex] = roomToPlace;
-                    xOffsets[roomIndex] = randomX;
-                    yOffsets[roomIndex] = randomY;
-                    for (int x = randomX; x < randomX + roomToPlaceWidth; x++)
+                    roomToPlace.GetComponent<RoomController>().SetPosition(randomX, randomY);
+                    var minRoomGap = 3;
+                    for (int x = randomX - minRoomGap; x < randomX + roomToPlaceWidth + minRoomGap; x++)
                     {
-                        for (int y = randomY; y < randomY + roomToPlaceHeight; y++)
+                        for (int y = randomY - minRoomGap; y < randomY + roomToPlaceHeight + minRoomGap; y++)
                         {
+                            if(x >= 0  && y >= 0 && x < gridWidth && y < gridHeight)
                             grid[x, y] = true;
                         }
                     }

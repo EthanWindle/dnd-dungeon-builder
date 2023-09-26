@@ -8,14 +8,16 @@ using UnityEngine;
 public class DoorController : TileController
 {
 
-    public Sprite openSprite;
-    public Sprite closeSprite;
+    public Texture2D openTexture;
+    public Texture2D closeTexture;
 
 
     private void Awake()
     {
         _open = false;
-        gameObject.GetComponent<SpriteRenderer>().sprite = closeSprite;
+        Sprite sprite = Sprite.Create(closeTexture, new Rect(0, 0, closeTexture.width, closeTexture.height), new Vector2(0.5f, 0.5f), textureSize);
+
+        gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
     }
 
     private bool _open;
@@ -27,12 +29,16 @@ public class DoorController : TileController
     public void Open()
     {
         this._open = true;
-        gameObject.GetComponent<SpriteRenderer>().sprite = openSprite;
+        Sprite sprite = Sprite.Create(openTexture, new Rect(0, 0, openTexture.width, openTexture.height), new Vector2(0.5f, 0.5f), textureSize);
+
+        gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
     }
     public void Close()
     {
         this._open=false;
-        gameObject.GetComponent<SpriteRenderer>().sprite = closeSprite;
+        Sprite sprite = Sprite.Create(closeTexture, new Rect(0, 0, closeTexture.width, closeTexture.height), new Vector2(0.5f, 0.5f), textureSize);
+
+        gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
     }
 
 }
