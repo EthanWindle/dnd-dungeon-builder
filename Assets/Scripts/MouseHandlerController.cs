@@ -31,6 +31,9 @@ public class MouseHandlerController : MonoBehaviour
         cameraExtendHorizontal = (cameraExtendVertical * Screen.width) / Screen.height;
         controller = gameObject.GetComponent<GridController>();
         controller.getGridBounds(out topBound, out leftBound, out bottomBound, out rightBound);
+
+        grabbedEntity = null;
+
     }
 
     // Update is called once per frame
@@ -57,8 +60,31 @@ public class MouseHandlerController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Debug.Log(controller.GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
+            entityOrigin = controller.GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+            if (entityOrigin == new Vector2(-1, -1)) return;
+
+            GameObject gameObject = controller.GetForegroundObject(entityOrigin);
+
+            if (gameObject == null) return;
+
+            EntityController entityController = gameObject.GetComponent<EntityController>();
+
+            if (entityController == null) return;
+
+            grabbedEntity = gameObject;
         }
+
+        if (Input.GetMouseButton(0) && grabbedEntity != null)
+        {
+            grabbedEntity.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, -1);
+        }
+        else
+        {
+            grabbedEntity = null;
+        }
+
+
     }
 
 
@@ -80,7 +106,7 @@ public class MouseHandlerController : MonoBehaviour
             }
 
 
-            if (Input.GetMouseButtonDown(0)){
+            if (Input.GetMouseButtonDown(0) && grabbedEntity == null){
                 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 mouseDown = true;
             }
