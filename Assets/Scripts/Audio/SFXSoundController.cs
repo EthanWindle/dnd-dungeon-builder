@@ -11,4 +11,12 @@ public class SFXSoundController : MonoBehaviour
     { 
         audio.Play();
     }
+
+    private void Update()
+    {
+        if (Input.GetMouseButtonDown(0) == true)
+        {
+            audio.Play();
+        }
+    }
 }
