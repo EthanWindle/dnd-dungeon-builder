@@ -233,10 +233,13 @@ public class GridController : MonoBehaviour
             || worldPosition.x < gameObject.transform.position.x
             || worldPosition.y < gameObject.transform.position.y) return new Vector2(-1, -1);
 
-        return new Vector2(Mathf.Ceil((worldPosition.x - gameObject.transform.position.x) / (cellSize) - 0.5f * cellSize), 
+        return new Vector2(Mathf.Ceil((worldPosition.x - gameObject.transform.position.x) / (cellSize) - 0.5f * cellSize),
             Mathf.Ceil(((worldPosition.y - gameObject.transform.position.y) / cellSize) - 0.5f * cellSize));
+    }
 
 
-
+    public GameObject GetForegroundObject(Vector2 position)
+    {
+        return foregroundLayer[(int)position.x, (int)position.y];
     }
 }
