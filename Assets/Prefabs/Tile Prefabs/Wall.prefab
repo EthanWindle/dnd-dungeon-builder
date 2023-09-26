@@ -96,7 +96,7 @@ MonoBehaviour:
   defaulWall: {fileID: 2800000, guid: 612db8928447a3f48bbc26329a8bb858, type: 3}
   rightWall: {fileID: 2800000, guid: d8036b80163492f4993b144b6c074b5e, type: 3}
   leftWall: {fileID: 2800000, guid: 703ea7124bda7ea4885be88565e936ef, type: 3}
-  topWall: {fileID: 2800000, guid: 0d38bc93f820b8d4c85bdf251dea8a40, type: 3}
+  topWall: {fileID: 2800000, guid: 6263704dcbef5ff4ba470eeac09e98d4, type: 3}
   bottomWall: {fileID: 2800000, guid: 612db8928447a3f48bbc26329a8bb858, type: 3}
   topLeftWall: {fileID: 2800000, guid: 914f96b140781a644946683d692bca46, type: 3}
   topRightWall: {fileID: 2800000, guid: 0fb48b8b11387a248a871105868b9d6e, type: 3}
