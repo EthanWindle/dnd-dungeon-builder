@@ -77,7 +77,7 @@ public class MouseHandlerController : MonoBehaviour
 
         if (Input.GetMouseButton(0) && grabbedEntity != null)
         {
-            grabbedEntity.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, -1);
+            grabbedEntity.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, -5);
         }
         else if (grabbedEntity != null)
         {
