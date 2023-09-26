@@ -38,6 +38,29 @@ public class NewBehaviourScript : MonoBehaviour
         SceneManager.LoadScene("loadPage");
     }
 
+    // Multiplayer Page
+    public void loadMultiplayer() {
+        StartCoroutine(multiplayerPage());
+    }
+    IEnumerator multiplayerPage() {
+        mainText.SetActive(false);
+        flipPage.SetTrigger("LeftFlip");
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene("multiplayerPage");
+    }
+
+    // Credits Page
+    public void loadCredits() {
+        StartCoroutine(creditsPage());
+    }
+
+    IEnumerator creditsPage() {
+        mainText.SetActive(false);
+        flipPage.SetTrigger("LeftFlip");
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene("creditsPage");
+    }
+
     public void ExitGame(){
         StartCoroutine(exit());
     }
