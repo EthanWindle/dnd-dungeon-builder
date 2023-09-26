@@ -224,4 +224,19 @@ public class GridController : MonoBehaviour
         }
     }
 
+
+    public Vector2 GetGridPosition(Vector3 worldPosition)
+    {
+
+        if (worldPosition.x > gameObject.transform.position.x + (width * cellSize)
+            || worldPosition.y > gameObject.transform.position.y + (height * cellSize)
+            || worldPosition.x < gameObject.transform.position.x
+            || worldPosition.y < gameObject.transform.position.y) return new Vector2(-1, -1);
+
+        return new Vector2(Mathf.Ceil((worldPosition.x - gameObject.transform.position.x) / (cellSize) - 0.5f * cellSize), 
+            Mathf.Ceil(((worldPosition.y - gameObject.transform.position.y) / cellSize) - 0.5f * cellSize));
+
+
+
+    }
 }
