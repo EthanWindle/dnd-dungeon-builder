@@ -92,4 +92,14 @@ public class NewBehaviourScript : MonoBehaviour
         }
     }
 
+    public void ReturnToSettings(){
+        StartCoroutine(returnToSettings());
+    }
+
+    IEnumerator returnToSettings() {
+        mainText.SetActive(false);
+        flipPage.SetTrigger("Close");
+        yield return new WaitForSeconds(2); 
+        SceneManager.LoadScene("settingPage");
+    }
 }
