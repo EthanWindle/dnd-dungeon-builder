@@ -53,9 +53,17 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
+      propertyPath: m_Size.x
+      value: 0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
+      propertyPath: m_Size.y
+      value: 0.16
+      objectReference: {fileID: 0}
+    - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 21300000, guid: 612db8928447a3f48bbc26329a8bb858, type: 3}
+      objectReference: {fileID: 21300000, guid: 6811f53fa38243148ac7217277d0482c, type: 3}
     - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
       propertyPath: m_Color.b
       value: 0.62352943
@@ -67,6 +75,10 @@ PrefabInstance:
     - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
       propertyPath: m_Color.r
       value: 0.6509804
+      objectReference: {fileID: 0}
+    - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -93,11 +105,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a2ce58ff27df194fa3d4f97398d0eac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaulWall: {fileID: 2800000, guid: 612db8928447a3f48bbc26329a8bb858, type: 3}
+  defaulWall: {fileID: 2800000, guid: 6811f53fa38243148ac7217277d0482c, type: 3}
   rightWall: {fileID: 2800000, guid: d8036b80163492f4993b144b6c074b5e, type: 3}
   leftWall: {fileID: 2800000, guid: 703ea7124bda7ea4885be88565e936ef, type: 3}
   topWall: {fileID: 2800000, guid: 6263704dcbef5ff4ba470eeac09e98d4, type: 3}
-  bottomWall: {fileID: 2800000, guid: 612db8928447a3f48bbc26329a8bb858, type: 3}
+  bottomWall: {fileID: 2800000, guid: 6811f53fa38243148ac7217277d0482c, type: 3}
   topLeftWall: {fileID: 2800000, guid: 914f96b140781a644946683d692bca46, type: 3}
   topRightWall: {fileID: 2800000, guid: 0fb48b8b11387a248a871105868b9d6e, type: 3}
   bottomLeftWall: {fileID: 2800000, guid: 66b3eda7faa26a4469f8d2d68a137e5c, type: 3}
