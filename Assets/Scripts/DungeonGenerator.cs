@@ -10,14 +10,14 @@ using UnityEngine;
  */
 public class DungeonGenerator : MonoBehaviour
 {
-
     public int numberOfRooms = 30;
+    private bool[,] grid;
 
     public GameObject[] GenerateDungeon(GameObject[] initialRooms, int gridWidth, int gridHeight)
     {
         GameObject[] finalRooms = new GameObject[numberOfRooms];
 
-        bool[,] grid = new bool[gridWidth, gridHeight];
+        grid = new bool[gridWidth, gridHeight];
 
         for (int roomIndex = 0; roomIndex < numberOfRooms; roomIndex++)
         {
@@ -73,5 +73,8 @@ public class DungeonGenerator : MonoBehaviour
         return finalRooms;
     }
 
-
+    public bool[,] GetGrid()
+    {
+        return grid;
+    }
 }

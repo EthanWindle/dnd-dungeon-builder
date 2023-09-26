@@ -21,6 +21,8 @@ public class GridController : MonoBehaviour
     public GameObject wallTile;
 
     private Recorder recorder; //Records events to save the current game state
+    public GameObject placeHolderTile;
+
 
     public void Awake()
     {
@@ -62,6 +64,19 @@ public class GridController : MonoBehaviour
             backgroundLayer[x, y] = wall;
             recorder.AddTile(new RecorderTile("wall", x, y));
         }
+
+        //instantiates the default background objects as the backgroundlayer is created
+        //for (int x = 0; x < width; x++) //for each grid cell across the whole map
+        //{
+            //for (int y = 0; y < height; y++) //for each grid cell down the whole map
+            //{
+                //if (backgroundLayer[x, y] != null) continue; //If there is already a tile here, skip it.
+                //GameObject tile = Instantiate(placeHolderTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                //tile.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                //backgroundLayer[x, y] = tile;
+                //recorder.AddTile(new RecorderTile("defaultTile", x, y));
+            //}
+        //}
 
         gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
         PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
