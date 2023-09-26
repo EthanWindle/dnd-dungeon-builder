@@ -196,6 +196,7 @@ public class PathGenerator : MonoBehaviour
     }
     public void main(GameObject[,] backgroundLayer, GameObject[] rooms, int maxX, int maxY)
     {
+        int pathCount = 0;
         DoorController door1;
         DoorController door2;
         Vector2Int door1Coords;
@@ -233,29 +234,20 @@ public class PathGenerator : MonoBehaviour
                 path = findPath(door1Coords, door2Coords, backgroundLayer, maxX, maxY);
                 if (path != null)
                 {
+                    pathCount++;
                     //Debug.Log(path.Count);
                     foreach (PathNode p in path)
                     {
-                        Debug.Log("X: "+p.x);
-                        Debug.Log("Y: "+p.y);
-                        Instantiate(walkway, new Vector3(p.x*(gridController.cellSize + gridController.cellSpacing), p.y*(gridController.cellSize + gridController.cellSpacing), 0), Quaternion.identity, gameObject.transform);
+                        //Debug.Log("X: "+p.x);
+                        //Debug.Log("Y: "+p.y);
+                        Debug.Log(pathCount);
+                        var obj = Instantiate(walkway, new Vector3(p.x*(gridController.cellSize + gridController.cellSpacing), p.y*(gridController.cellSize + gridController.cellSpacing), 0), Quaternion.identity, gameObject.transform);
                     }
                 }
             }
             
         }
         
-    }
-
-    private void InstantiateTilePrefab(GameObject[,] background, float size, float margin, int x, int y)
-    {
-        // Instantiate the tile prefab at the specified position
-        //GameObject tile = Instantiate(floor, new Vector3((x) * (size + margin), (y) * (size + margin), 0), Quaternion.identity);
-        //tile.GetComponent<TileController>().Init(size - margin * 2);
-        //background[x, y] = tile;
-        //recorder.AddTile(new RecorderTile("floor", x, y));
-        // Customize or configure the instantiated tile as needed
-        // For example, you can set its properties, add components, etc.
     }
 
     private bool IsDoorInCurrentRoom(DoorController door, RoomController currentRoom)
