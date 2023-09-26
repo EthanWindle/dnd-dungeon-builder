@@ -2244,7 +2244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e61e408a4831b74f821d26be7d8cf07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cursorTexture: {fileID: 2800000, guid: 5e8b7ea3d0e7e804ebd2bd54e18ddde6, type: 3}
+  cursorTexture: {fileID: 2800000, guid: 48eaa12b993896a4d8fd82858e243f80, type: 3}
 --- !u!4 &1546033255
 Transform:
   m_ObjectHideFlags: 0
