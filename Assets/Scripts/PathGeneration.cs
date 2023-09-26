@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -9,7 +10,7 @@ using UnityEngine;
 public class PathGenerator : MonoBehaviour
 {
 
-    public GameObject floor;
+    public GameObject walkway;
     PathNode[,] grid;
     int gridMaxX = 0;
     int gridMaxY = 0;
@@ -60,12 +61,12 @@ public class PathGenerator : MonoBehaviour
                 }
             }
         }
-        Debug.LogError(door1.x +","+ door1.y);
-        Debug.LogError(door2.x + "," + door2.y);
+        //Debug.LogError(door1.x +","+ door1.y);
+        //Debug.LogError(door2.x + "," + door2.y);
         PathNode startNode = grid[(int)door1.x, (int)door1.y];
         PathNode endNode = grid[(int)door2.x, (int)door2.y];
 
-        /*
+        
         openList = new List<PathNode> { startNode };
         closedList = new List<PathNode>();
 
@@ -82,7 +83,8 @@ public class PathGenerator : MonoBehaviour
                 }
             }
         }startNode.gCost = 0;
-        startNode.hCost = CalculateDistanceCost(startNode, endNode);        
+        startNode.hCost = CalculateDistanceCost(startNode, endNode);    
+        //Debug.LogError(startNode.hCost);
         startNode.CalculateFCost();
 
         while (openList.Count > 0)
@@ -99,24 +101,26 @@ public class PathGenerator : MonoBehaviour
 
             foreach (PathNode NeighbourNode in getNeighboursList(currentNode)){
                 if(closedList.Contains(NeighbourNode)) continue;
-
-                int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, NeighbourNode);
-                if(tentativeGCost < NeighbourNode.gCost)
-                {
-                    NeighbourNode.previousNode = currentNode;
-                    NeighbourNode.gCost = tentativeGCost;
-                    NeighbourNode.hCost = CalculateDistanceCost(NeighbourNode, endNode);
-                    NeighbourNode.CalculateFCost();
-
-                    if (!openList.Contains(NeighbourNode))
+                if (NeighbourNode != null) {
+                    //Debug.Log(NeighbourNode);
+                    //Debug.Log(currentNode);
+                    int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, NeighbourNode);
+                    if (tentativeGCost < NeighbourNode.gCost)
                     {
-                        openList.Add(NeighbourNode);
+                        NeighbourNode.previousNode = currentNode;
+                        NeighbourNode.gCost = tentativeGCost;
+                        NeighbourNode.hCost = CalculateDistanceCost(NeighbourNode, endNode);
+                        NeighbourNode.CalculateFCost();
+
+                        if (!openList.Contains(NeighbourNode))
+                        {
+                            openList.Add(NeighbourNode);
+                        }
                     }
                 }
             }
         }
         //out of nodes on the openList
-        */
         return null;
     }
 
@@ -192,27 +196,61 @@ public class PathGenerator : MonoBehaviour
     }
     public void main(GameObject[,] backgroundLayer, GameObject[] rooms, int maxX, int maxY)
     {
-        Dictionary<Vector2Int, TileController> doors = new Dictionary<Vector2Int, TileController>();
+        DoorController door1;
+        DoorController door2;
+        Vector2Int door1Coords;
+        Vector2Int door2Coords;
+        Dictionary <Vector2Int, TileController> doors = new Dictionary<Vector2Int, TileController>();
+        Dictionary <Vector2Int, TileController> doorsInDifferentRooms = new Dictionary<Vector2Int, TileController>();
+        List<PathNode> path;
+        GridController gridController = gameObject.GetComponent<GridController>();
 
         for (int i = 0; i < maxX; i++)//for each grid cell across the whole map
         {
-            for(int j = 0; j < maxY; j++)//for each grid cell down the whole map
+            for (int j = 0; j < maxY; j++)//for each grid cell down the whole map
             {
-                TileController tile = backgroundLayer[i, j].GetComponent<TileController>();//get the tile at the current location
-                if (tile is DoorController)//if the tile is a door
-                {
-                    Vector2Int gridCoordinates = new Vector2Int(i, j); // Convert the grid coordinates to Vector2Int
-                    doors.Add(gridCoordinates, tile); // Add the door to the dictionary
+                if (backgroundLayer[i,j] != null) {
+                    TileController tile = backgroundLayer[i, j].GetComponent<TileController>();//get the tile at the current location
+                    if (tile is DoorController)//if the tile is a door
+                    {
+                        Vector2Int gridCoordinates = new Vector2Int(i, j); // Convert the grid coordinates to Vector2Int
+                        doors.Add(gridCoordinates, tile); // Add the door to the dictionary
+                    }
                 }
-                
             }
         }
+        var DoorList = doors.Values.ToList();
+        var DoorCoords = doors.Keys.ToList();
+        for (int i = 0; i < doors.Count - 1; i++)
+        {
+            door1 = DoorList[i] as DoorController;
+            door2 = DoorList[i + 1] as DoorController;
+
+            if (door2.GetParent() != door1.GetParent())
+            {
+                door1Coords = DoorCoords[i];
+                door2Coords = DoorCoords[i + 1];
+                path = findPath(door1Coords, door2Coords, backgroundLayer, maxX, maxY);
+                if (path != null)
+                {
+                    //Debug.Log(path.Count);
+                    foreach (PathNode p in path)
+                    {
+                        Debug.Log("X: "+p.x);
+                        Debug.Log("Y: "+p.y);
+                        Instantiate(walkway, new Vector3(p.x*(gridController.cellSize + gridController.cellSpacing), p.y*(gridController.cellSize + gridController.cellSpacing), 0), Quaternion.identity, gameObject.transform);
+                    }
+                }
+            }
+            
+        }
+        
     }
 
     private void InstantiateTilePrefab(GameObject[,] background, float size, float margin, int x, int y)
     {
         // Instantiate the tile prefab at the specified position
-        GameObject tile = Instantiate(floor, new Vector3((x) * (size + margin), (y) * (size + margin), 0), Quaternion.identity);
+        //GameObject tile = Instantiate(floor, new Vector3((x) * (size + margin), (y) * (size + margin), 0), Quaternion.identity);
         //tile.GetComponent<TileController>().Init(size - margin * 2);
         //background[x, y] = tile;
         //recorder.AddTile(new RecorderTile("floor", x, y));

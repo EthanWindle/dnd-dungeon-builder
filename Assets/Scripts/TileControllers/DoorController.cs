@@ -42,7 +42,7 @@ public class DoorController : TileController
         this.Parent = parent;
     }
 
-    public RoomController getParent()
+    public RoomController GetParent()
     {
         return this.Parent;
     }
