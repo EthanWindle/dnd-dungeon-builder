@@ -14,8 +14,14 @@ public class MouseHandlerController : MonoBehaviour
 
     float topBound, leftBound, bottomBound, rightBound;
 
+    GridController controller;
 
     GameObject cameraObject;
+
+    GameObject grabbedEntity;
+    Vector2 entityOrigin;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +29,8 @@ public class MouseHandlerController : MonoBehaviour
         cameraObject = GameObject.Find("Main Camera");
         cameraExtendVertical = cameraObject.GetComponent<Camera>().orthographicSize;
         cameraExtendHorizontal = (cameraExtendVertical * Screen.width) / Screen.height;
-        gameObject.GetComponent<GridController>().getGridBounds(out topBound, out leftBound, out bottomBound, out rightBound);
+        controller = gameObject.GetComponent<GridController>();
+        controller.getGridBounds(out topBound, out leftBound, out bottomBound, out rightBound);
     }
 
     // Update is called once per frame
@@ -34,14 +41,26 @@ public class MouseHandlerController : MonoBehaviour
     void Update()
     {
         HandleRemoveFog();
-
+        HandleMoveEntity();
     }
 
     void HandleRemoveFog()
     {
         if (Input.GetMouseButtonDown(1))
-            gameObject.GetComponent<GridController>().HandleFog(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            controller.HandleFog(Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
+
+
+
+
+    private void HandleMoveEntity()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            Debug.Log(controller.GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
+        }
+    }
+
 
     // This is a separate function, 
     // so that the movement of players/monsters can be added as another function 
