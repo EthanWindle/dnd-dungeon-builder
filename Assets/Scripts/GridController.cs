@@ -60,9 +60,12 @@ public class GridController : MonoBehaviour
             }
             else if (tile.type.Equals("wall"))
             {
+
+                float wallSize = 6.25F; //For some reason when the wall tiles are loaded they are the wrong size, multiplying the size by this value makes it the correct size
+
                 // Update the backgroundLayer with wall tiles
                 wallTile = Instantiate(wallTile, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
-                wallTile.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                wallTile.GetComponent<TileController>().Init(wallSize - cellSpacing * 2);
                 backgroundLayer[tile.x, tile.y] = wallTile;
             }
             else if (tile.type.Equals("door"))
@@ -128,7 +131,7 @@ public class GridController : MonoBehaviour
         gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
 
         //Test load from file
-        //Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile2.json");
+        //Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile.json");
         //SetObjects(deserializedRecorder);
         
         //Test save to file
