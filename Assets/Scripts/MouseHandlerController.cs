@@ -79,8 +79,12 @@ public class MouseHandlerController : MonoBehaviour
         {
             grabbedEntity.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, -1);
         }
-        else
+        else if (grabbedEntity != null)
         {
+            Vector2 destination = controller.GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+            controller.DropEntity(grabbedEntity, entityOrigin, destination);
+
             grabbedEntity = null;
         }
 
