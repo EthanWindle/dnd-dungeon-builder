@@ -54,10 +54,6 @@ public class NewBehaviourScript : MonoBehaviour
         StartCoroutine(back());
     }
     IEnumerator back() {
-
-        foreach(GameObject s in GameObject.FindGameObjectsWithTag("SettingsForLoad")){
-            DontDestroyOnLoad(s);
-        }
         mainText.SetActive(false);
         flipPage.SetTrigger("RightFlip");
         yield return new WaitForSeconds(2); 
