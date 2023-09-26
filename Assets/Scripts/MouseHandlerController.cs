@@ -14,8 +14,14 @@ public class MouseHandlerController : MonoBehaviour
 
     float topBound, leftBound, bottomBound, rightBound;
 
+    GridController controller;
 
     GameObject cameraObject;
+
+    GameObject grabbedEntity;
+    Vector2 entityOrigin;
+
+
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +29,11 @@ public class MouseHandlerController : MonoBehaviour
         cameraObject = GameObject.Find("Main Camera");
         cameraExtendVertical = cameraObject.GetComponent<Camera>().orthographicSize;
         cameraExtendHorizontal = (cameraExtendVertical * Screen.width) / Screen.height;
-        gameObject.GetComponent<GridController>().getGridBounds(out topBound, out leftBound, out bottomBound, out rightBound);
+        controller = gameObject.GetComponent<GridController>();
+        controller.getGridBounds(out topBound, out leftBound, out bottomBound, out rightBound);
+
+        grabbedEntity = null;
+
     }
 
     // Update is called once per frame
@@ -34,14 +44,53 @@ public class MouseHandlerController : MonoBehaviour
     void Update()
     {
         HandleRemoveFog();
-
+        HandleMoveEntity();
     }
 
     void HandleRemoveFog()
     {
         if (Input.GetMouseButtonDown(1))
-            gameObject.GetComponent<GridController>().HandleFog(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            controller.HandleFog(Camera.main.ScreenToWorldPoint(Input.mousePosition));
     }
+
+
+
+
+    private void HandleMoveEntity()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            entityOrigin = controller.GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+            if (entityOrigin == new Vector2(-1, -1)) return;
+
+            GameObject gameObject = controller.GetForegroundObject(entityOrigin);
+
+            if (gameObject == null) return;
+
+            EntityController entityController = gameObject.GetComponent<EntityController>();
+
+            if (entityController == null) return;
+
+            grabbedEntity = gameObject;
+        }
+
+        if (Input.GetMouseButton(0) && grabbedEntity != null)
+        {
+            grabbedEntity.transform.position = new Vector3(Camera.main.ScreenToWorldPoint(Input.mousePosition).x, Camera.main.ScreenToWorldPoint(Input.mousePosition).y, -5);
+        }
+        else if (grabbedEntity != null)
+        {
+            Vector2 destination = controller.GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+
+            controller.DropEntity(grabbedEntity, entityOrigin, destination);
+
+            grabbedEntity = null;
+        }
+
+
+    }
+
 
     // This is a separate function, 
     // so that the movement of players/monsters can be added as another function 
@@ -61,7 +110,7 @@ public class MouseHandlerController : MonoBehaviour
             }
 
 
-            if (Input.GetMouseButtonDown(0)){
+            if (Input.GetMouseButtonDown(0) && grabbedEntity == null){
                 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 mouseDown = true;
             }

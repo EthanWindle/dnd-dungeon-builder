@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 /*
  * Controller for a Grid of tiles and props.
@@ -140,9 +141,15 @@ public class GridController : MonoBehaviour
     /*
      * Helpers
      */
-    private Vector2 GetWorldLocation(int x, int y)
+    private Vector3 GetWorldLocation(int x, int y)
     {
-        return new Vector2(x, y) * cellSize;
+        return new Vector3(x * cellSize + gameObject.transform.position.x, y * cellSize + gameObject.transform.position.y, -0.5f);
+    }
+
+
+    private Vector3 GetWorldLocation(Vector2 position)
+    {
+        return GetWorldLocation((int)position.x, (int)position.y);
     }
 
     /*
@@ -221,6 +228,50 @@ public class GridController : MonoBehaviour
         for (int i = 0; i < rooms.Length; i++)
         {
             rooms[i].GetComponent<RoomController>().HideTiles();
+        }
+    }
+
+
+    public Vector2 GetGridPosition(Vector3 worldPosition)
+    {
+
+        if (worldPosition.x > gameObject.transform.position.x + (width * cellSize)
+            || worldPosition.y > gameObject.transform.position.y + (height * cellSize)
+            || worldPosition.x < gameObject.transform.position.x
+            || worldPosition.y < gameObject.transform.position.y) return new Vector2(-1, -1);
+
+        return new Vector2(Mathf.Ceil((worldPosition.x - gameObject.transform.position.x) / (cellSize) - 0.5f * cellSize),
+            Mathf.Ceil(((worldPosition.y - gameObject.transform.position.y) / cellSize) - 0.5f * cellSize));
+    }
+
+
+    public GameObject GetForegroundObject(Vector2 position)
+    {
+        return foregroundLayer[(int)position.x, (int)position.y];
+    }
+
+    public GameObject GetBackgroundObject(Vector2 position)
+    {
+        return backgroundLayer[(int)position.x, (int)position.y];
+    }
+
+
+    public void DropEntity(GameObject entity, Vector2 origin, Vector2 destination)
+    {
+        if (entity != GetForegroundObject(origin)) throw new ArgumentException("Dropped entity has the wrong origin position");
+
+        if (GetBackgroundObject(destination) == null //There is no tile at destination
+            || !GetBackgroundObject(destination).GetComponent<TileController>().CanEnter() //The destination cannot be entered (i.e. is a wall or closed door)
+            || GetForegroundObject(destination) != null) //There is already a prop or other entity at the destination.
+        {
+            entity.transform.position = GetWorldLocation(origin);
+        }
+        else
+        {
+            foregroundLayer[(int)origin.x, (int)origin.y] = null;
+            foregroundLayer[(int)destination.x, (int)destination.y] = entity;
+
+            entity.transform.position = GetWorldLocation(destination);
         }
     }
 
