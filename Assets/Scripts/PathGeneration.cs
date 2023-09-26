@@ -192,71 +192,20 @@ public class PathGenerator : MonoBehaviour
     }
     public void main(GameObject[,] backgroundLayer, GameObject[] rooms, int maxX, int maxY)
     {
-        Vector2 door1Loc;
-        Vector2 door2Loc;
+        Dictionary<Vector2Int, TileController> doors = new Dictionary<Vector2Int, TileController>();
 
-        foreach (GameObject room in rooms)
+        for (int i = 0; i < maxX; i++)//for each grid cell across the whole map
         {
-            for ()
+            for(int j = 0; j < maxY; j++)//for each grid cell down the whole map
             {
-                for ()
+                TileController tile = backgroundLayer[i, j].GetComponent<TileController>();//get the tile at the current location
+                if (tile is DoorController)//if the tile is a door
                 {
-                    GameObject cell = backgroundLayer[x, y];
-                    if(cell == null)
-                    {
-                        continue;
-                    }
-                    TileController controller = cell.GetComponent<TileController>(); // tile controller of the cell
-                    if(controller.Is)
+                    Vector2Int gridCoordinates = new Vector2Int(i, j); // Convert the grid coordinates to Vector2Int
+                    doors.Add(gridCoordinates, tile); // Add the door to the dictionary
                 }
+                
             }
-            RoomController roomController = room.GetComponent<RoomController>();
-            int roomCenterX = roomController.GetX();
-            int roomCenterY = roomController.GetY();
-            Vector2[] doors = roomController.doors;
-            int doorCount = doors.Length;
-            if (roomController.hasPath == false)
-            {
-                foreach (Vector2 door in doors)
-                {
-                    //Debug.LogError(door);
-                    door1Loc = door;//in respect to the room so wrong
-                    for (int x = 0; x < maxX; x++) //for each grid cell across the whole map
-                    {
-                        //Debug.LogError("5");
-                        for (int y = 0; y < maxY; y++) //for each grid cell down the whole map
-                        {
-                            GameObject cellObject = backgroundLayer[x, y]; //the object in the current cell
-                            if (cellObject != null && cellObject.GetComponent<DoorController>() != null) //check if the object is a door
-                            {
-                                //Debug.LogError("6");
-                                DoorController doorController = cellObject.GetComponent<DoorController>(); //get the door controller
-                                if (!IsDoorInCurrentRoom(doorController, roomController)) //check if the door is in the current room
-                                {
-                                    //Debug.LogError("7");
-                                    door2Loc = backgroundLayer[x, y].transform.position; //set the second door location
-                                    // This is a door that is not part of the current room.
-                                    //Debug.Log("Found a door not part of the current room.");
-                                    GridController gridController = gameObject.GetComponent<GridController>();
-                                    List<PathNode> path = findPath(door1Loc, door2Loc, backgroundLayer, maxX, maxY);
-                                    Debug.LogError(path.Count);
-                                    foreach (PathNode node in path)
-                                    {
-                                        //Debug.LogError("8");
-                                        InstantiateTilePrefab(backgroundLayer, gridController.cellSize, gridController.cellSpacing, node.x, node.y);
-                                    }
-                                    //break;
-                                }
-                            }
-                            //break;
-                        }
-                        //break;
-                    }
-                    //break;
-                }
-                roomController.setHasPathTrue();
-            }
-
         }
     }
 

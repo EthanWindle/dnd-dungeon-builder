@@ -64,6 +64,7 @@ public class RoomController : MonoBehaviour
         {
             GameObject door = Instantiate(doorPrefab, new Vector3((doorLoc.x + this.x) * (size + margin), (doorLoc.y + this.y) * (size + margin), 1), Quaternion.identity, transformParent);
             door.GetComponent<TileController>().Init(size - margin * 2);
+            door.GetComponent<DoorController>().SetParent(this);
             background[(int)doorLoc.x + this.x, (int)doorLoc.y + this.y] = door;
             recorder.AddTile(new RecorderTile("door", (int)doorLoc.x + this.x, (int)doorLoc.y + this.y));
         }
