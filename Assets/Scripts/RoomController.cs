@@ -12,9 +12,15 @@ public class RoomController : MonoBehaviour
 
     public GameObject tilePrefab;
     public GameObject doorPrefab;
+    public GameObject fogPrefab;
     public GameObject[] propOptions;
+    public GameObject[] monsterOptions;
+
+
+    private GameObject[,] fogLayer;
     public Shape[] shapes;
     public Shape[] props; //For now props are assumed to be 1x1.
+    public Vector2[] monsters; //locations for monsters.
     public Vector2[] doors; //Should be updated to being possible door locations.
     public int width;
     public int height;
@@ -22,8 +28,11 @@ public class RoomController : MonoBehaviour
 
     private int x;
     private int y;
+    private Boolean hidden = false;
 
     private System.Random random;
+
+    private static int roomCount = 0; //Counts the number for each room for recorder, do not modify for anything else
 
 
     public RoomController()
@@ -41,9 +50,9 @@ public class RoomController : MonoBehaviour
     /**
      * Place all of the tiles and props into the game, and also insert them into the arrays for foreground and background objects.
      */
-    public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foregound, float size, float margin, Recorder recorder)
+    public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foreground, float size, float margin, Recorder recorder)
     {
-
+        recorder.AddRoom(new RecorderRoom(++roomCount, this.x, this.y));
         //Place the floors for each shape that makes up the room
         foreach (Shape shape in shapes)
         {
@@ -54,7 +63,7 @@ public class RoomController : MonoBehaviour
                     GameObject tile = Instantiate(tilePrefab, new Vector3((x + this.x) * (size + margin), (y + this.y) * (size + margin), 0), Quaternion.identity, transformParent);
                     tile.GetComponent<TileController>().Init(size - margin * 2);
                     background[x + this.x, y + this.y] = tile;
-                    recorder.AddTile(new RecorderTile("floor", x + this.x, y + this.y));
+                    recorder.AddTile(new RecorderTile("floor", x + this.x, y + this.y, roomCount));
                 }
             }
         }
@@ -66,7 +75,7 @@ public class RoomController : MonoBehaviour
             door.GetComponent<TileController>().Init(size - margin * 2);
             door.GetComponent<DoorController>().SetParent(this);
             background[(int)doorLoc.x + this.x, (int)doorLoc.y + this.y] = door;
-            recorder.AddTile(new RecorderTile("door", (int)doorLoc.x + this.x, (int)doorLoc.y + this.y));
+            recorder.AddTile(new RecorderTile("door", (int)doorLoc.x + this.x, (int)doorLoc.y + this.y, roomCount));
         }
         
         //Randomly select props for each prop location in the room.
@@ -76,8 +85,86 @@ public class RoomController : MonoBehaviour
 
             GameObject prop = Instantiate(propOptions[random.Next(propOptions.Length)], new Vector3((propLocation.x1 + this.x) * (size + margin), (propLocation.y1 + this.y) * (size + margin), -1), Quaternion.identity, transformParent);
             prop.GetComponent<PropController>().Init(size - margin * 2);
-            foregound[propLocation.x1 + this.x, propLocation.y1 + this.y] = prop;
-            recorder.AddTile(new RecorderTile("prop", propLocation.x1 + this.x, propLocation.y1 + this.y));
+            foreground[propLocation.x1 + this.x, propLocation.y1 + this.y] = prop;
+            recorder.AddTile(new RecorderTile("prop", propLocation.x1 + this.x, propLocation.y1 + this.y, roomCount));
+        }
+
+
+        foreach (Vector2 monsterLoc in monsters)
+        {
+            GameObject monster = Instantiate(monsterOptions[random.Next(monsterOptions.Length)], new Vector3((monsterLoc.x + this.x) * (size + margin), (monsterLoc.y + this.y) * (size + margin), -1), Quaternion.identity, transformParent);
+            monster.GetComponent<MonsterController>().Init(size - margin * 2);
+            foreground[(int)(monsterLoc.x + x), (int)(monsterLoc.y + y)] = monster;
+            //TODO add recorder stuff 
+        }
+
+        fogLayer = new GameObject[width, height];
+
+        for (int w = 0; w < width; w++)
+        {
+            for (int h = 0; h < height; h++)
+            {
+                GameObject fog = Instantiate(fogPrefab, new Vector3((w + this.x) * (size + margin), (h + this.y) * (size + margin), 0), Quaternion.identity, transformParent);
+                fog.GetComponent<TileController>().Init(size - margin * 2);
+                fogLayer[w, h] = fog;
+            }
+        }
+        
+    }
+
+    /*
+     * Removes the fog if point is inside room
+     */
+    public void ClearFog(Vector3 mousePos)
+    {
+        if (InsideRoom(mousePos) && !hidden)
+        {
+            hidden = true;
+            HideTiles();
+            fogLayer = new GameObject[width, height];
+        }
+    }
+
+    /*
+     * Checks if point is within this room
+     */
+    public Boolean InsideRoom(Vector3 mousePos)
+    {
+        if (mousePos.x + 35 <= (this.x + this.width)
+            && mousePos.x + 35 >= this.x
+            && mousePos.y + 35 <= (this.y + this.height)
+            && mousePos.y + 35 >= this.y)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /*
+     * Hides all fog tiles
+     */
+    public void HideTiles()
+    {
+        for (int w = 0; w < width; w++)
+        {
+            for (int h = 0; h < height; h++)
+            {
+                fogLayer[w, h].SetActive(false);
+            }
+        }
+    }
+
+    /*
+     * Shows all fog tiles
+     */
+    public void ShowTiles()
+    {
+        for (int w = 0; w < width; w++)
+        {
+            for (int h = 0; h < height; h++)
+            {
+                fogLayer[w, h].SetActive(true);
+            }
         }
     }
 
