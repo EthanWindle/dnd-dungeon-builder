@@ -17,6 +17,7 @@ public class GridController : MonoBehaviour
     public float cellSpacing;
     private GameObject[,] backgroundLayer; //Layer for tiles like walls, floors, doors.
     private GameObject[,] foregroundLayer; //Layer for props and entities like players and monsters
+    private GameObject[,] fogLayer; //Layer for the fog
 
     public GameObject[] rooms; //Each instance of a room object is stored here
     public int[] xOffsets; //x location of room, correlates with rooms array
@@ -46,6 +47,7 @@ public class GridController : MonoBehaviour
 
         backgroundLayer = new GameObject[width, height];
         foregroundLayer = new GameObject[width, height];
+        fogLayer = new GameObject[width, height];
 
         rooms = new GameObject[30];
         xOffsets = new int[30];
@@ -84,6 +86,8 @@ public class GridController : MonoBehaviour
 
         foregroundLayer = new GameObject[width, height];
 
+        fogLayer = new GameObject[width, height];
+
         GenerateNewMap();
     }
 
@@ -97,7 +101,7 @@ public class GridController : MonoBehaviour
         for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
             //int offsetx = xOffsets[i];
-            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, cellSize, cellSpacing, recorder);
+            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder);
             RoomController roomController = rooms[i].GetComponent<RoomController>();
             this.tilePrefab = roomController.tilePrefab;
             this.doorPrefab = roomController.doorPrefab;
@@ -265,6 +269,16 @@ public class GridController : MonoBehaviour
         return backgroundLayer[(int)position.x, (int)position.y];
     }
 
+    private bool FogIsActive(Vector2 position)
+    {
+        return fogLayer[(int)position.x, (int)position.y].activeSelf;
+    }
+    public GameObject grabEntity(Vector2 position){
+        if (isInPlayerView() && FogIsActive(position)) return null;
+        return GetForegroundObject(position);
+
+    }
+
 
     public void DropEntity(GameObject entity, Vector2 origin, Vector2 destination)
     {
@@ -272,7 +286,8 @@ public class GridController : MonoBehaviour
 
         if (GetBackgroundObject(destination) == null //There is no tile at destination
             || !GetBackgroundObject(destination).GetComponent<TileController>().CanEnter() //The destination cannot be entered (i.e. is a wall or closed door)
-            || GetForegroundObject(destination) != null) //There is already a prop or other entity at the destination.
+            || GetForegroundObject(destination) != null
+            || (isInPlayerView() && FogIsActive(destination))) //There is already a prop or other entity at the destination.
         {
             entity.transform.position = GetWorldLocation(origin);
         }

@@ -49,7 +49,7 @@ public class RoomController : MonoBehaviour
     /**
      * Place all of the tiles and props into the game, and also insert them into the arrays for foreground and background objects.
      */
-    public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foreground, float size, float margin, Recorder recorder)
+    public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foreground, GameObject[,] gridFogLayer, float size, float margin, Recorder recorder)
     {
         recorder.AddRoom(new RecorderRoom(++roomCount, this.x, this.y));
         //Place the floors for each shape that makes up the room
@@ -105,6 +105,7 @@ public class RoomController : MonoBehaviour
                 GameObject fog = Instantiate(fogPrefab, new Vector3((w + this.x) * (size + margin), (h + this.y) * (size + margin), 0), Quaternion.identity, transformParent);
                 fog.GetComponent<TileController>().Init(size - margin * 2);
                 fogLayer[w, h] = fog;
+                gridFogLayer[w + x, h + y] = fog;
             }
         }
         
