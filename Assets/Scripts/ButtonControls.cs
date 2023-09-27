@@ -102,4 +102,8 @@ public class NewBehaviourScript : MonoBehaviour
         yield return new WaitForSeconds(2); 
         SceneManager.LoadScene("settingPage");
     }
+
+    public void loadContent(){
+        mainText.SetActive(true);
+    }
 }
