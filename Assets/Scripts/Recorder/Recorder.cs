@@ -54,4 +54,26 @@ public class GridControllerJsonSerializer : MonoBehaviour
             return null;
         }
     }
+
+    public static void SaveSceneAsPNG(string filePath, int width, int height, Camera topDownCamera)
+    {
+        // Create a new RenderTexture with the specified width and height
+        RenderTexture rt = new RenderTexture(width, height, 24);
+
+        // Use the top-down camera for rendering
+        topDownCamera.targetTexture = rt;
+        topDownCamera.Render();
+
+        // Create a Texture2D and read the RenderTexture data into it
+        Texture2D screenshot = new Texture2D(width, height, TextureFormat.RGB24, false);
+        RenderTexture.active = rt;
+        screenshot.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+        topDownCamera.targetTexture = null;
+        RenderTexture.active = null;
+        Destroy(rt);
+
+        // Encode the Texture2D to a PNG file and save it
+        byte[] bytes = screenshot.EncodeToPNG();
+        File.WriteAllBytes(filePath, bytes);
+    }
 }
