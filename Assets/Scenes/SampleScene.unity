@@ -318,6 +318,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   walkway: {fileID: 1881029730475228011, guid: 91b243421307c224fab38af570330f5d, type: 3}
+  wallPrefab: {fileID: 1601085562768460819, guid: 33e47b85cf84c004e8e1e32d717da1ff, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
