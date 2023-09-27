@@ -203,6 +203,7 @@ public class PathGenerator : MonoBehaviour
         Vector2Int door2Coords;
         Dictionary <Vector2Int, TileController> doors = new Dictionary<Vector2Int, TileController>();
         Dictionary <Vector2Int, TileController> doorsInDifferentRooms = new Dictionary<Vector2Int, TileController>();
+        PathNode prevPathNode = null;
         List<PathNode> path;
         GridController gridController = gameObject.GetComponent<GridController>();
 
@@ -238,11 +239,17 @@ public class PathGenerator : MonoBehaviour
                     //Debug.Log(path.Count);
                     foreach (PathNode p in path)
                     {
+                        if (prevPathNode != null && IsDiagonal(prevPathNode, p))
+                        {
+                            Vector3 tilePosition = new Vector3(p.x * (gridController.cellSize + (gridController.cellSpacing * 6)), (p.y - 1) * (gridController.cellSize + (gridController.cellSpacing * 6)), 0);
+                            InstantiateTile(tilePosition, gridController.cellSize - gridController.cellSpacing * 2);
+                        }
                         //Debug.Log("X: "+p.x);
-                        //Debug.Log("Y: "+p.y);
+                        //Debug.Log("Y: "+p.y);                  
                         Debug.Log(pathCount);
                         GameObject obj = Instantiate(walkway, new Vector3(p.x*(gridController.cellSize + (gridController.cellSpacing *6)), p.y*(gridController.cellSize + (gridController.cellSpacing *6)), 0), Quaternion.identity, gameObject.transform);
                         obj.GetComponent<TileController>().Init(gridController.cellSize - gridController.cellSpacing * 2);
+                        prevPathNode = p;
                     }
                 }
             }
@@ -272,6 +279,21 @@ public class PathGenerator : MonoBehaviour
         int x = (int)tile.x;
         int y = (int)tile.y;
         return x >= 0 && x < maxX && y >= 0 && y < maxY;
+    }
+
+    private bool IsDiagonal(PathNode node1, PathNode node2)
+    {
+        // Check if the nodes are diagonal by comparing their X and Y differences
+        int deltaX = Mathf.Abs(node1.x - node2.x);
+        int deltaY = Mathf.Abs(node1.y - node2.y);
+        return deltaX == 1 && deltaY == 1;
+    }
+
+    private void InstantiateTile(Vector3 position, float size)
+    {
+        // Instantiate the tile prefab at the specified position
+        GameObject obj = Instantiate(walkway, position, Quaternion.identity, gameObject.transform);
+        obj.GetComponent<TileController>().Init(size);
     }
 
 }
