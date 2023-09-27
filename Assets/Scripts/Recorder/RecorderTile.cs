@@ -9,7 +9,13 @@ public class RecorderTile
     public int room;
     public String layer;
 
-    public RecorderTile(String type, int x, int y, int room)
+    /*
+     * If this is a tile like a prop or monster which has different options,
+     * this value represnets its position in the array of options, otherwise is set to -1.
+     */
+    public int option = -1;
+
+    private void defaultInitialiser(String type, int x, int y, int room)
     {
         this.type = type;
         this.x = x;
@@ -27,5 +33,16 @@ public class RecorderTile
         {
             this.layer = "foreground";
         }
+    }
+
+    public RecorderTile(String type, int x, int y, int room)
+    {
+        defaultInitialiser(type, x, y, room);
+    }
+
+    public RecorderTile(String type, int x, int y, int room, int option)
+    {
+        this.option = option;
+        defaultInitialiser(type, x, y, room);
     }
 }
