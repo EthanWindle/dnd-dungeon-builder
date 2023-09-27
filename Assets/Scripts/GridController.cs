@@ -27,6 +27,8 @@ public class GridController : MonoBehaviour
     private GameObject tilePrefab;
     private GameObject doorPrefab;
 
+    private bool inPlayerView = false;
+
     /*
      * Loads a save file from recorder
      */
@@ -217,6 +219,8 @@ public class GridController : MonoBehaviour
 
     public void ChangeToPlayerView()
     {
+        if (!inPlayerView) inPlayerView = true;
+        else return;
         for (int i = 0; i < rooms.Length; i++)
         {
             rooms[i].GetComponent<RoomController>().ShowTiles();
@@ -225,12 +229,18 @@ public class GridController : MonoBehaviour
 
     public void ChangeToDMView()
     {
+        if (inPlayerView) inPlayerView = false;
+        else return;
         for (int i = 0; i < rooms.Length; i++)
         {
             rooms[i].GetComponent<RoomController>().HideTiles();
         }
     }
 
+    public bool isInPlayerView()
+    {
+        return inPlayerView;
+    }
 
     public Vector2 GetGridPosition(Vector3 worldPosition)
     {
