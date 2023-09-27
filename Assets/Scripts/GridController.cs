@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -26,6 +27,9 @@ public class GridController : MonoBehaviour
     private Recorder recorder; //Records events to save the current game state
     private GameObject tilePrefab;
     private GameObject doorPrefab;
+    private GameObject fogPrefab;
+    private GameObject[] propOptions;
+    private GameObject[] monsterOptions;
 
     /*
      * Loads a save file from recorder
@@ -64,16 +68,24 @@ public class GridController : MonoBehaviour
                 float wallSize = 6.25F; //For some reason when the wall tiles are loaded they are the wrong size, multiplying the size by this value makes it the correct size
 
                 // Update the backgroundLayer with wall tiles
-                wallTile = Instantiate(wallTile, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
-                wallTile.GetComponent<TileController>().Init(wallSize - cellSpacing * 2);
-                backgroundLayer[tile.x, tile.y] = wallTile;
+                GameObject newWallTile = Instantiate(wallTile, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                newWallTile.GetComponent<TileController>().Init(wallSize - cellSpacing * 2);
+                backgroundLayer[tile.x, tile.y] = newWallTile;
             }
             else if (tile.type.Equals("door"))
             {
                 // Update the backgroundLayer with door tiles
-                doorPrefab = Instantiate(doorPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
-                doorPrefab.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
-                backgroundLayer[tile.x, tile.y] = doorPrefab;
+                GameObject newDoorPrefab = Instantiate(doorPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                newDoorPrefab.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                backgroundLayer[tile.x, tile.y] = newDoorPrefab;
+            }
+            else if (tile.type.Equals("prop"))
+            {
+                // Update the backgroundLayer with prop tiles
+                GameObject newPropPrefab = Instantiate(propOptions[0], new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                Debug.Log(newPropPrefab);
+                newPropPrefab.GetComponent<PropController>().Init(cellSize - cellSpacing * 2);
+                foregroundLayer[tile.x, tile.y] = newPropPrefab;
             }
         }
 
@@ -102,6 +114,9 @@ public class GridController : MonoBehaviour
             RoomController roomController = rooms[i].GetComponent<RoomController>();
             this.tilePrefab = roomController.tilePrefab;
             this.doorPrefab = roomController.doorPrefab;
+            this.fogPrefab = roomController.fogPrefab;
+            this.propOptions = roomController.propOptions;
+            this.monsterOptions = roomController.monsterOptions;
         }
 
         List<Vector2> wallLocations = new();
@@ -131,8 +146,8 @@ public class GridController : MonoBehaviour
         gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
 
         //Test load from file
-        //Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile.json");
-        //SetObjects(deserializedRecorder);
+        Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile.json");
+        SetObjects(deserializedRecorder);
         
         //Test save to file
         //GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
