@@ -11,6 +11,7 @@ public class PathGenerator : MonoBehaviour
 {
 
     public GameObject walkway;
+    public GameObject wallPrefab;
     PathNode[,] grid;
     int gridMaxX = 0;
     int gridMaxY = 0;
@@ -22,17 +23,17 @@ public class PathGenerator : MonoBehaviour
         List<PathNode> openList = new List<PathNode>();
         List<PathNode> closedList = new List<PathNode>();
 
-        bool[,]walkable = new bool[maxX, maxY];
+        bool[,] walkable = new bool[maxX, maxY];
         grid = new PathNode[maxX, maxY];
 
         for (int x = 0; x < maxX; x++)
         {
             for (int y = 0; y < maxY; y++)
             {
-                if (backgroundLayer[x,y] == null)
+                if (backgroundLayer[x, y] == null)
                 {
-                    walkable[x,y] = true;
-                    grid[x,y] = new PathNode(backgroundLayer, x, y);
+                    walkable[x, y] = true;
+                    grid[x, y] = new PathNode(backgroundLayer, x, y);
                     if (x > gridMaxX)
                     {
                         gridMaxX = x;
@@ -44,11 +45,11 @@ public class PathGenerator : MonoBehaviour
                 }
                 else
                 {
-                    walkable[x,y] = false;
+                    walkable[x, y] = false;
                     if (backgroundLayer[x, y].GetComponent<DoorController>())
                     {
-                        walkable[x,y] = true;
-                        grid[x,y] = new PathNode(backgroundLayer, x, y);
+                        walkable[x, y] = true;
+                        grid[x, y] = new PathNode(backgroundLayer, x, y);
                         if (x > gridMaxX)
                         {
                             gridMaxX = x;
@@ -66,7 +67,7 @@ public class PathGenerator : MonoBehaviour
         PathNode startNode = grid[(int)door1.x, (int)door1.y];
         PathNode endNode = grid[(int)door2.x, (int)door2.y];
 
-        
+
         openList = new List<PathNode> { startNode };
         closedList = new List<PathNode>();
 
@@ -74,16 +75,17 @@ public class PathGenerator : MonoBehaviour
         {
             for (int y = 0; y < maxY; y++)
             {
-                if (walkable[x,y] == true)
+                if (walkable[x, y] == true)
                 {
                     PathNode node = grid[x, y];
                     node.gCost = int.MaxValue;
-                    node.CalculateFCost(); 
+                    node.CalculateFCost();
                     node.previousNode = null;
                 }
             }
-        }startNode.gCost = 0;
-        startNode.hCost = CalculateDistanceCost(startNode, endNode);    
+        }
+        startNode.gCost = 0;
+        startNode.hCost = CalculateDistanceCost(startNode, endNode);
         //Debug.LogError(startNode.hCost);
         startNode.CalculateFCost();
 
@@ -99,9 +101,11 @@ public class PathGenerator : MonoBehaviour
             openList.Remove(currentNode);
             closedList.Add(currentNode);
 
-            foreach (PathNode NeighbourNode in getNeighboursList(currentNode)){
-                if(closedList.Contains(NeighbourNode)) continue;
-                if (NeighbourNode != null) {
+            foreach (PathNode NeighbourNode in getNeighboursList(currentNode))
+            {
+                if (closedList.Contains(NeighbourNode)) continue;
+                if (NeighbourNode != null)
+                {
                     //Debug.Log(NeighbourNode);
                     //Debug.Log(currentNode);
                     int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, NeighbourNode);
@@ -128,18 +132,19 @@ public class PathGenerator : MonoBehaviour
     {
         List<PathNode> neighbourList = new List<PathNode>();
 
-        if(currentNode.x - 1 >= 0)//Left
+        if (currentNode.x - 1 >= 0)//Left
         {
             neighbourList.Add(grid[currentNode.x - 1, currentNode.y]);
             if (currentNode.y - 1 >= 0)//left down
             {
                 neighbourList.Add(grid[currentNode.x - 1, currentNode.y - 1]);
             }
-            if(currentNode.y + 1 < gridMaxY)//left up
+            if (currentNode.y + 1 < gridMaxY)//left up
             {
                 neighbourList.Add(grid[currentNode.x - 1, currentNode.y + 1]);
             }
-        }if(currentNode.x + 1 < gridMaxX)//Right
+        }
+        if (currentNode.x + 1 < gridMaxX)//Right
         {
             neighbourList.Add(grid[currentNode.x + 1, currentNode.y]);
             if (currentNode.y - 1 >= 0)//right down
@@ -150,10 +155,12 @@ public class PathGenerator : MonoBehaviour
             {
                 neighbourList.Add(grid[currentNode.x + 1, currentNode.y + 1]);
             }
-        }if(currentNode.y - 1 >= 0)//Down
+        }
+        if (currentNode.y - 1 >= 0)//Down
         {
             neighbourList.Add(grid[currentNode.x, currentNode.y - 1]);
-        }if(currentNode.y + 1 < gridMaxY)//Up
+        }
+        if (currentNode.y + 1 < gridMaxY)//Up
         {
             neighbourList.Add(grid[currentNode.x, currentNode.y + 1]);
         }
@@ -190,7 +197,7 @@ public class PathGenerator : MonoBehaviour
     {
         int XDistance = Mathf.Abs(startNode.x - endNode.x);
         int YDistance = Mathf.Abs(startNode.y - endNode.y);
-        int remaining = Mathf.Abs(XDistance - YDistance);   
+        int remaining = Mathf.Abs(XDistance - YDistance);
 
         return MOVE_DIAGONAL_COST * Mathf.Min(XDistance, YDistance) + MOVE_STRAIGHT_COST * remaining;
     }
@@ -201,8 +208,8 @@ public class PathGenerator : MonoBehaviour
         DoorController door2;
         Vector2Int door1Coords;
         Vector2Int door2Coords;
-        Dictionary <Vector2Int, TileController> doors = new Dictionary<Vector2Int, TileController>();
-        Dictionary <Vector2Int, TileController> doorsInDifferentRooms = new Dictionary<Vector2Int, TileController>();
+        Dictionary<Vector2Int, TileController> doors = new Dictionary<Vector2Int, TileController>();
+        Dictionary<Vector2Int, TileController> doorsInDifferentRooms = new Dictionary<Vector2Int, TileController>();
         PathNode prevPathNode = null;
         List<PathNode> path;
         GridController gridController = gameObject.GetComponent<GridController>();
@@ -211,7 +218,8 @@ public class PathGenerator : MonoBehaviour
         {
             for (int j = 0; j < maxY; j++)//for each grid cell down the whole map
             {
-                if (backgroundLayer[i,j] != null) {
+                if (backgroundLayer[i, j] != null)
+                {
                     TileController tile = backgroundLayer[i, j].GetComponent<TileController>();//get the tile at the current location
                     if (tile is DoorController)//if the tile is a door
                     {
@@ -241,21 +249,73 @@ public class PathGenerator : MonoBehaviour
                     {
                         if (prevPathNode != null && IsDiagonal(prevPathNode, p))
                         {
-                            Vector3 tilePosition = new Vector3(p.x * (gridController.cellSize + (gridController.cellSpacing * 6)), (p.y - 1) * (gridController.cellSize + (gridController.cellSpacing * 6)), 0);
-                            InstantiateTile(tilePosition, gridController.cellSize - gridController.cellSpacing * 2);
+                            Vector3 tileBelowPosition = new Vector3(p.x * (gridController.cellSize + (gridController.cellSpacing * 6)), (p.y - 1) * (gridController.cellSize + (gridController.cellSpacing * 6)), 0);
+
+                            // Check if the tile below is occupied
+                            if (!IsTileOccupied(tileBelowPosition, gridController.cellSize - gridController.cellSpacing * 2))
+                            {
+                                InstantiateTile(tileBelowPosition, gridController.cellSize - gridController.cellSpacing * 2);
+                            }
+                            else
+                            {
+                                // If the tile below is occupied, try to find an unoccupied neighboring tile
+                                Vector3 unoccupiedPosition = FindUnoccupiedNeighbor(tileBelowPosition, gridController.cellSize - gridController.cellSpacing * 2, gridController);
+                                if (unoccupiedPosition != Vector3.zero)
+                                {
+                                    InstantiateTile(unoccupiedPosition, gridController.cellSize - gridController.cellSpacing * 2);
+                                }
+                            }
+
+                            Vector3 diagRightNeighborPosition = new Vector3(p.x + 1, p.y, 0);
+                            Vector3 diagLeftNeighborPosition = new Vector3(p.x - 1, p.y, 0);
+
+                            if (!IsTileOccupied(diagRightNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2))
+                            {
+                                InstantiateWall(diagRightNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2);
+                            }
+
+                            if (!IsTileOccupied(diagLeftNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2))
+                            {
+                                InstantiateWall(diagLeftNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2);
+                            }
+                        }
+
+                        // Check right and left neighbors
+                        Vector3 rightNeighborPosition = new Vector3(p.x + 1, p.y, 0);
+                        Vector3 leftNeighborPosition = new Vector3(p.x - 1, p.y, 0);
+                        Vector3 topNeighborPosition = new Vector3(p.x, p.y + 1, 0);
+                        Vector3 bottomNeighborPosition = new Vector3(p.x, p.y - 1, 0);
+
+                        if (!IsTileOccupied(rightNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2))
+                        {
+                            InstantiateWall(rightNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2);
+                        }
+
+                        if (!IsTileOccupied(leftNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2))
+                        {
+                            InstantiateWall(leftNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2);
+                        }
+                        if (!IsTileOccupied(topNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2))
+                        {
+                            InstantiateWall(topNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2);
+                        }
+
+                        if (!IsTileOccupied(bottomNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2))
+                        {
+                            InstantiateWall(bottomNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2);
                         }
                         //Debug.Log("X: "+p.x);
                         //Debug.Log("Y: "+p.y);                  
-                        Debug.Log(pathCount);
-                        GameObject obj = Instantiate(walkway, new Vector3(p.x*(gridController.cellSize + (gridController.cellSpacing *6)), p.y*(gridController.cellSize + (gridController.cellSpacing *6)), 0), Quaternion.identity, gameObject.transform);
+                        //Debug.Log(pathCount);
+                        GameObject obj = Instantiate(walkway, new Vector3(p.x * (gridController.cellSize + (gridController.cellSpacing * 6)), p.y * (gridController.cellSize + (gridController.cellSpacing * 6)), 0), Quaternion.identity, gameObject.transform);
                         obj.GetComponent<TileController>().Init(gridController.cellSize - gridController.cellSpacing * 2);
                         prevPathNode = p;
                     }
                 }
             }
-            
+
         }
-        
+
     }
 
     private bool IsDoorInCurrentRoom(DoorController door, RoomController currentRoom)
@@ -272,13 +332,11 @@ public class PathGenerator : MonoBehaviour
         return false; // The door is not in the current room
     }
 
-
-    // Check if a tile is within bounds and not occupied
-    private bool IsValidTile(Vector2 tile, int maxX, int maxY)
+    private bool IsTileOccupied(Vector3 position, float size)
     {
-        int x = (int)tile.x;
-        int y = (int)tile.y;
-        return x >= 0 && x < maxX && y >= 0 && y < maxY;
+        // Check if the tile at the specified position is occupied by something else
+        Collider2D[] colliders = Physics2D.OverlapBoxAll(position, new Vector2(size, size), 0f);
+        return colliders.Length > 0;
     }
 
     private bool IsDiagonal(PathNode node1, PathNode node2)
@@ -294,6 +352,36 @@ public class PathGenerator : MonoBehaviour
         // Instantiate the tile prefab at the specified position
         GameObject obj = Instantiate(walkway, position, Quaternion.identity, gameObject.transform);
         obj.GetComponent<TileController>().Init(size);
+    }
+
+    private void InstantiateWall(Vector3 position, float size)
+    {
+        // Instantiate the tile prefab at the specified position
+        GameObject obj = Instantiate(wallPrefab, position, Quaternion.identity, gameObject.transform);
+        obj.GetComponent<TileController>().Init(6 * size);
+    }
+
+    private Vector3 FindUnoccupiedNeighbor(Vector3 currentPosition, float size, GridController gridController)
+    {
+        // Define possible neighbor positions (top, left, right, bottom)
+        Vector3[] possibleNeighbors = new Vector3[]
+        {
+        new Vector3(currentPosition.x, currentPosition.y + size + (gridController.cellSpacing * 6), 0), // Top neighbor
+        new Vector3(currentPosition.x - size - (gridController.cellSpacing * 6), currentPosition.y, 0), // Left neighbor
+        new Vector3(currentPosition.x + size + (gridController.cellSpacing * 6), currentPosition.y, 0), // Right neighbor
+        new Vector3(currentPosition.x, currentPosition.y - size - (gridController.cellSpacing * 6), 0)  // Bottom neighbor
+        };
+
+        foreach (Vector3 neighborPosition in possibleNeighbors)
+        {
+            // Check if the neighbor tile is not occupied
+            if (!IsTileOccupied(neighborPosition, size))
+            {
+                return neighborPosition; // Return the unoccupied neighbor position
+            }
+        }
+
+        return Vector3.zero; // Return Vector3.zero if no unoccupied neighbor is found
     }
 
 }
