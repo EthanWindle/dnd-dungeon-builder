@@ -64,12 +64,9 @@ public class GridController : MonoBehaviour
             }
             else if (tile.type.Equals("wall"))
             {
-
-                float wallSize = 6.25F; //For some reason when the wall tiles are loaded they are the wrong size, multiplying the size by this value makes it the correct size
-
                 // Update the backgroundLayer with wall tiles
                 GameObject newWallTile = Instantiate(wallTile, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
-                newWallTile.GetComponent<TileController>().Init(wallSize - cellSpacing * 2);
+                newWallTile.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
                 backgroundLayer[tile.x, tile.y] = newWallTile;
             }
             else if (tile.type.Equals("door"))
@@ -94,6 +91,17 @@ public class GridController : MonoBehaviour
                 Debug.Log(newMonsterPrefab);
                 newMonsterPrefab.GetComponent<MonsterController>().Init(cellSize - cellSpacing * 2);
                 foregroundLayer[tile.x, tile.y] = newMonsterPrefab;
+            }
+        }
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                GameObject tile = backgroundLayer[x, y];
+                if (tile != null && tile.GetComponent<TileController>() is WallController)
+                {
+                    tile.GetComponent<WallController>().SetTexture(GetAdjacentControllers(x, y));
+                }
             }
         }
 
