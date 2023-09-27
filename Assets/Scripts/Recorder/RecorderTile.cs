@@ -7,7 +7,7 @@ public class RecorderTile
     public int x;
     public int y;
     public int room;
-    public bool IsForegroundLayer;
+    public String layer;
 
     public RecorderTile(String type, int x, int y, int room)
     {
@@ -17,11 +17,15 @@ public class RecorderTile
         this.room = room;
         if (type.Equals("floor") || type.Equals("door") || type.Equals("wall"))
         {
-            this.IsForegroundLayer = false;
+            this.layer = "background";
+        }
+        else if (type.Equals("fog"))
+        {
+            this.layer = "fogLayer";
         }
         else
         {
-            this.IsForegroundLayer = true;
+            this.layer = "foreground";
         }
     }
 }

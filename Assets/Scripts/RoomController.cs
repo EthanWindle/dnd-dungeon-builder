@@ -105,6 +105,7 @@ public class RoomController : MonoBehaviour
                 GameObject fog = Instantiate(fogPrefab, new Vector3((w + this.x) * (size + margin), (h + this.y) * (size + margin), 0), Quaternion.identity, transformParent);
                 fog.GetComponent<TileController>().Init(size - margin * 2);
                 fogLayer[w, h] = fog;
+                recorder.AddTile(new RecorderTile("fog", w, h, roomCount));
             }
         }
         
