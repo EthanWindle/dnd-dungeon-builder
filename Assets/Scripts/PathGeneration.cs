@@ -265,11 +265,26 @@ public class PathGenerator : MonoBehaviour
                                     InstantiateTile(unoccupiedPosition, gridController.cellSize - gridController.cellSpacing * 2);
                                 }
                             }
+
+                            Vector3 diagRightNeighborPosition = new Vector3(p.x + 1, p.y, 0);
+                            Vector3 diagLeftNeighborPosition = new Vector3(p.x - 1, p.y, 0);
+
+                            if (!IsTileOccupied(diagRightNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2))
+                            {
+                                InstantiateWall(diagRightNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2);
+                            }
+
+                            if (!IsTileOccupied(diagLeftNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2))
+                            {
+                                InstantiateWall(diagLeftNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2);
+                            }
                         }
 
                         // Check right and left neighbors
                         Vector3 rightNeighborPosition = new Vector3(p.x + 1, p.y, 0);
                         Vector3 leftNeighborPosition = new Vector3(p.x - 1, p.y, 0);
+                        Vector3 topNeighborPosition = new Vector3(p.x, p.y + 1, 0);
+                        Vector3 bottomNeighborPosition = new Vector3(p.x, p.y - 1, 0);
 
                         if (!IsTileOccupied(rightNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2))
                         {
@@ -279,6 +294,15 @@ public class PathGenerator : MonoBehaviour
                         if (!IsTileOccupied(leftNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2))
                         {
                             InstantiateWall(leftNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2);
+                        }
+                        if (!IsTileOccupied(topNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2))
+                        {
+                            InstantiateWall(topNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2);
+                        }
+
+                        if (!IsTileOccupied(bottomNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2))
+                        {
+                            InstantiateWall(bottomNeighborPosition, gridController.cellSize - gridController.cellSpacing * 2);
                         }
                         //Debug.Log("X: "+p.x);
                         //Debug.Log("Y: "+p.y);                  
