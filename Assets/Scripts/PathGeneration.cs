@@ -241,7 +241,8 @@ public class PathGenerator : MonoBehaviour
                         //Debug.Log("X: "+p.x);
                         //Debug.Log("Y: "+p.y);
                         Debug.Log(pathCount);
-                        var obj = Instantiate(walkway, new Vector3(p.x*(gridController.cellSize + gridController.cellSpacing), p.y*(gridController.cellSize + gridController.cellSpacing), 0), Quaternion.identity, gameObject.transform);
+                        GameObject obj = Instantiate(walkway, new Vector3(p.x*(gridController.cellSize + (gridController.cellSpacing *6)), p.y*(gridController.cellSize + (gridController.cellSpacing *6)), 0), Quaternion.identity, gameObject.transform);
+                        obj.GetComponent<TileController>().Init(gridController.cellSize - gridController.cellSpacing * 2);
                     }
                 }
             }
