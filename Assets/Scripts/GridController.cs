@@ -135,7 +135,7 @@ public class GridController : MonoBehaviour
         //SetObjects(deserializedRecorder);
         
         //Test save to file
-        //GridControllerJsonSerializer.SerializeToJson(this, "testFile2.json", recorder);
+        //GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
 
     }
 

@@ -93,7 +93,7 @@ public class RoomController : MonoBehaviour
             GameObject monster = Instantiate(monsterOptions[random.Next(monsterOptions.Length)], new Vector3((monsterLoc.x + this.x) * (size + margin), (monsterLoc.y + this.y) * (size + margin), -1), Quaternion.identity, transformParent);
             monster.GetComponent<MonsterController>().Init(size - margin * 2);
             foreground[(int)(monsterLoc.x + x), (int)(monsterLoc.y + y)] = monster;
-            //TODO add recorder stuff 
+            recorder.AddTile(new RecorderTile("monster", (int)(monsterLoc.x + x), (int)(monsterLoc.y + y), roomCount));
         }
 
         fogLayer = new GameObject[width, height];
