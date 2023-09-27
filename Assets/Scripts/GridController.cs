@@ -82,10 +82,18 @@ public class GridController : MonoBehaviour
             else if (tile.type.Equals("prop"))
             {
                 // Update the backgroundLayer with prop tiles
-                GameObject newPropPrefab = Instantiate(propOptions[0], new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                GameObject newPropPrefab = Instantiate(propOptions[0], new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), -2), Quaternion.identity, gameObject.transform);
                 Debug.Log(newPropPrefab);
                 newPropPrefab.GetComponent<PropController>().Init(cellSize - cellSpacing * 2);
                 foregroundLayer[tile.x, tile.y] = newPropPrefab;
+            }
+            else if (tile.type.Equals("monster"))
+            {
+                // Update the backgroundLayer with monster tiles
+                GameObject newMonsterPrefab = Instantiate(monsterOptions[0], new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), -2), Quaternion.identity, gameObject.transform);
+                Debug.Log(newMonsterPrefab);
+                newMonsterPrefab.GetComponent<MonsterController>().Init(cellSize - cellSpacing * 2);
+                foregroundLayer[tile.x, tile.y] = newMonsterPrefab;
             }
         }
 
