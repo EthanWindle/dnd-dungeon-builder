@@ -111,7 +111,11 @@ public class ButtonControls : MonoBehaviour
             print("No File selected");
         } else {
             //call Adams Load Method
-            print("Load");
+            string str = map.text;
+            GlobalVariables.setMapName(str);
+            SceneManager.LoadScene("MapScene");
+            //Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile.json");
+            //SetObjects(deserializedRecorder);
         }
     }
 
