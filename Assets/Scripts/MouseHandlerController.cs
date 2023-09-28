@@ -50,7 +50,7 @@ public class MouseHandlerController : MonoBehaviour
     void HandleRemoveFog()
     {
         if (Input.GetMouseButtonDown(1))
-            controller.HandleFog(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+            controller.HandleFog(controller.GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
     }
 
 
@@ -71,8 +71,11 @@ public class MouseHandlerController : MonoBehaviour
             EntityController entityController = gameObject.GetComponent<EntityController>();
 
             if (entityController == null) return;
+            if (entityController.canBeMovedByPlayer() || !controller.isInPlayerView()){
+                grabbedEntity = gameObject;
+            }
 
-            grabbedEntity = gameObject;
+            
         }
 
         if (Input.GetMouseButton(0) && grabbedEntity != null)
