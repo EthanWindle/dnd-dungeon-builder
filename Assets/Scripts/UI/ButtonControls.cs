@@ -133,4 +133,9 @@ public class ButtonControls : MonoBehaviour
     public void loadContent(){
         mainText.SetActive(true);
     }
+
+    //mapScene
+    public void saveMap(InputField name){
+        
+    }
 }
