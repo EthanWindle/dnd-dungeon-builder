@@ -114,8 +114,6 @@ public class ButtonControls : MonoBehaviour
             string str = map.text;
             GlobalVariables.setMapName(str);
             SceneManager.LoadScene("MapScene");
-            //Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile.json");
-            //SetObjects(deserializedRecorder);
         }
     }
 
@@ -136,6 +134,23 @@ public class ButtonControls : MonoBehaviour
 
     //mapScene
     public void saveMap(InputField name){
+
+    }
+
+    public void SetSavedMap(string name, TMP_InputField mapName){
+        mapName.text = name;
+    }
+    public void GetSavedMaps(TMP_InputField mapName) {
         
+        DirectoryInfo dir = new DirectoryInfo("Assets/Saves");
+        FileInfo[] files = dir.GetFiles("*.json");
+
+        foreach(FileInfo file in files){
+            string fileName = Path.GetFileNameWithoutExtension(file.Name); 
+            GameObject newButton = Instantiate(savePrefab, saveParent);
+            TMP_Text[] texts = newButton.GetComponentsInChildren<TMP_Text>();
+            texts[0].text = fileName;
+            newButton.GetComponent<Button>().onClick.AddListener(() => SetSavedMap(fileName, mapName));
+        }
     }
 }
