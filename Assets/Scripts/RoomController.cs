@@ -82,20 +82,23 @@ public class RoomController : MonoBehaviour
         foreach (Shape propLocation in props)
         {
 
-
-            GameObject prop = Instantiate(propOptions[random.Next(propOptions.Length)], new Vector3((propLocation.x1 + this.x) * (size + margin), (propLocation.y1 + this.y) * (size + margin), -1), Quaternion.identity, transformParent);
+            //propIndex is used to store the random number to choose which prop is shown so that it can be given to the recorder.
+            int propIndex = random.Next(propOptions.Length);
+            GameObject prop = Instantiate(propOptions[propIndex], new Vector3((propLocation.x1 + this.x) * (size + margin), (propLocation.y1 + this.y) * (size + margin), -1), Quaternion.identity, transformParent);
             prop.GetComponent<PropController>().Init(size - margin * 2);
             foreground[propLocation.x1 + this.x, propLocation.y1 + this.y] = prop;
-            recorder.AddTile(new RecorderTile("prop", propLocation.x1 + this.x, propLocation.y1 + this.y, roomCount));
+            recorder.AddTile(new RecorderTile("prop", propLocation.x1 + this.x, propLocation.y1 + this.y, roomCount, propOptions[propIndex].ToString()));
         }
 
 
         foreach (Vector2 monsterLoc in monsters)
         {
-            GameObject monster = Instantiate(monsterOptions[random.Next(monsterOptions.Length)], new Vector3((monsterLoc.x + this.x) * (size + margin), (monsterLoc.y + this.y) * (size + margin), -1), Quaternion.identity, transformParent);
+            //monsterIndex is used to store the random number to choose which prop is shown so that it can be given to the recorder.
+            int monsterIndex = random.Next(monsterOptions.Length);
+            GameObject monster = Instantiate(monsterOptions[monsterIndex], new Vector3((monsterLoc.x + this.x) * (size + margin), (monsterLoc.y + this.y) * (size + margin), -1), Quaternion.identity, transformParent);
             monster.GetComponent<MonsterController>().Init(size - margin * 2);
             foreground[(int)(monsterLoc.x + x), (int)(monsterLoc.y + y)] = monster;
-            //TODO add recorder stuff 
+            recorder.AddTile(new RecorderTile("monster", (int)(monsterLoc.x + x), (int)(monsterLoc.y + y), roomCount, monsterOptions[monsterIndex].ToString()));
         }
 
         fogLayer = new GameObject[width, height];
@@ -107,6 +110,7 @@ public class RoomController : MonoBehaviour
                 GameObject fog = Instantiate(fogPrefab, new Vector3((w + this.x) * (size + margin), (h + this.y) * (size + margin), 0), Quaternion.identity, transformParent);
                 fog.GetComponent<TileController>().Init(size - margin * 2);
                 fogLayer[w, h] = fog;
+                recorder.AddTile(new RecorderTile("fog", w, h, roomCount));
             }
         }
         
