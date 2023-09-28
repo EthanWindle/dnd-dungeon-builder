@@ -1530,14 +1530,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec lacinia
-    neque et tincidunt molestie. Cras sed ullamcorper felis, in sagittis augue. Donec
-    dolor diam, euismod sed pulvinar ut, semper quis leo. Integer euismod ipsum sed
-    justo gravida volutpat. Nullam volutpat bibendum lorem. Praesent dolor nunc,
-    egestas vel sodales sed, porttitor ac sapien. Maecenas volutpat venenatis lectus,
-    sed consectetur nisl finibus eu. Cras convallis accumsan odio, non euismod sapien
-    gravida non. Morbi justo nisl, luctus vitae quam ac, egestas vulputate purus.
-    Cras quis dui non nunc pharetra fermentum quis quis risus. '
+  m_text: '
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ab7ffa4eb63510c4ebaaff19e83ac436, type: 2}
   m_sharedMaterial: {fileID: -41975312990940567, guid: ab7ffa4eb63510c4ebaaff19e83ac436, type: 2}
@@ -2403,7 +2398,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -115, y: 85}
+  m_AnchoredPosition: {x: -125.5, y: 69.5}
   m_SizeDelta: {x: 200, y: 25}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1022122535
@@ -2426,7 +2421,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Title of Game
+  m_text: Tales of Travellers
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6df494c160353e046a01789fc1246fd4, type: 2}
   m_sharedMaterial: {fileID: 6676942440974456689, guid: 6df494c160353e046a01789fc1246fd4, type: 2}
