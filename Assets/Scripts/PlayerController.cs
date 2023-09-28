@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterController : EntityController
+public class PlayerController : EntityController
 {
     public override bool canBeMovedByPlayer()
     {
-        return false;
+        return true;
     }
 }
