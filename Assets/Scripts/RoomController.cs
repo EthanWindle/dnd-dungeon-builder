@@ -85,7 +85,7 @@ public class RoomController : MonoBehaviour
             GameObject prop = Instantiate(propOptions[propIndex], new Vector3((propLocation.x1 + this.x) * (size + margin), (propLocation.y1 + this.y) * (size + margin), -1), Quaternion.identity, transformParent);
             prop.GetComponent<PropController>().Init(size - margin * 2);
             foreground[propLocation.x1 + this.x, propLocation.y1 + this.y] = prop;
-            recorder.AddTile(new RecorderTile("prop", propLocation.x1 + this.x, propLocation.y1 + this.y, roomCount, propIndex));
+            recorder.AddTile(new RecorderTile("prop", propLocation.x1 + this.x, propLocation.y1 + this.y, roomCount, propOptions[propIndex].ToString()));
         }
 
 
@@ -96,7 +96,7 @@ public class RoomController : MonoBehaviour
             GameObject monster = Instantiate(monsterOptions[monsterIndex], new Vector3((monsterLoc.x + this.x) * (size + margin), (monsterLoc.y + this.y) * (size + margin), -1), Quaternion.identity, transformParent);
             monster.GetComponent<MonsterController>().Init(size - margin * 2);
             foreground[(int)(monsterLoc.x + x), (int)(monsterLoc.y + y)] = monster;
-            recorder.AddTile(new RecorderTile("monster", (int)(monsterLoc.x + x), (int)(monsterLoc.y + y), roomCount, monsterIndex));
+            recorder.AddTile(new RecorderTile("monster", (int)(monsterLoc.x + x), (int)(monsterLoc.y + y), roomCount, monsterOptions[monsterIndex].ToString()));
         }
 
         fogLayer = new GameObject[width, height];

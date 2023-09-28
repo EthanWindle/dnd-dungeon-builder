@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting.FullSerializer;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.MaterialProperty;
 
 /*
  * Controller for a Grid of tiles and props.
@@ -79,8 +81,10 @@ public class GridController : MonoBehaviour
             else if (tile.type.Equals("prop"))
             {
                 // Update the backgroundLayer with prop tiles
-                GameObject newPropPrefab = Instantiate(propOptions[0], new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), -2), Quaternion.identity, gameObject.transform);
-                Debug.Log(newPropPrefab);
+                String propPath = "Assets/Prefabs/Prop Prefabs/" + tile.option + ".prefab";
+                GameObject propPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(propPath, typeof(GameObject));
+
+                GameObject newPropPrefab = Instantiate(propPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), -2), Quaternion.identity, gameObject.transform);
                 newPropPrefab.GetComponent<PropController>().Init(cellSize - cellSpacing * 2);
                 foregroundLayer[tile.x, tile.y] = newPropPrefab;
             }
@@ -164,7 +168,7 @@ public class GridController : MonoBehaviour
         //Test load from file
         Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile.json");
         SetObjects(deserializedRecorder);
-        
+
         //Test save to file
         //GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
 

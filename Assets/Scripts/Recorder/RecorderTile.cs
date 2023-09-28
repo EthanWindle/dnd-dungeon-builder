@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 [System.Serializable]
 public class RecorderTile
@@ -13,7 +14,7 @@ public class RecorderTile
      * If this is a tile like a prop or monster which has different options,
      * this value represnets its position in the array of options, otherwise is set to -1.
      */
-    public int option = -1;
+    public String option;
 
     private void defaultInitialiser(String type, int x, int y, int room)
     {
@@ -40,9 +41,27 @@ public class RecorderTile
         defaultInitialiser(type, x, y, room);
     }
 
-    public RecorderTile(String type, int x, int y, int room, int option)
+    public RecorderTile(String type, int x, int y, int room, String option)
     {
-        this.option = option;
+        this.option = RemoveLastWord(option);
         defaultInitialiser(type, x, y, room);
+    }
+
+    private static string RemoveLastWord(string input)
+    {
+        // Split the input string into words
+        string[] words = input.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+        // Check if there are more than one word in the input string
+        if (words.Length > 1)
+        {
+            // Remove the last word by creating a new string with all words except the last one
+            return string.Join(" ", words, 0, words.Length - 1);
+        }
+        else
+        {
+            // If there is only one word, return it as is
+            return input;
+        }
     }
 }
