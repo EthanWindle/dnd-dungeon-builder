@@ -1,6 +1,8 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using Unity.VisualScripting;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -23,6 +25,8 @@ public class GridController : MonoBehaviour
     public int[] xOffsets; //x location of room, correlates with rooms array
     public int[] yOffsets; //y location of room, correlates with rooms array
     public GameObject wallTile;
+    public GameObject playerEntity;
+
 
     private Recorder recorder; //Records events to save the current game state
     private GameObject tilePrefab;
@@ -131,8 +135,9 @@ public class GridController : MonoBehaviour
             recorder.AddTile(new RecorderTile("wall", x, y, -1));
         }
 
-        gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
+        Vector2 playerPosition =  PlacePlayer();
 
+        gameObject.transform.position -= new Vector3(playerPosition.x * cellSize, playerPosition.y * cellSize, 0); //Try to center the grid in the game space.    
         //Test load from file
         //Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile2.json");
         //SetObjects(deserializedRecorder);
@@ -143,6 +148,26 @@ public class GridController : MonoBehaviour
     }
 
     
+
+    private Vector2 PlacePlayer(){
+        GameObject firstRoom = rooms[0];
+        RoomController firstRoomController = firstRoom.GetComponent<RoomController>();
+
+        for (int x = firstRoomController.GetX(); x < firstRoomController.width + firstRoomController.GetX(); x++){
+            for (int y = firstRoomController.GetY(); y < firstRoomController.height + firstRoomController.GetY(); y++){
+                if (backgroundLayer[x,y] != null && backgroundLayer[x,y].GetComponent<TileController>() is FloorController && foregroundLayer[x,y] == null){
+                    GameObject player = Instantiate(playerEntity,new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 0), Quaternion.identity, gameObject.transform);
+                    foregroundLayer[x,y] = player;
+                    player.GetComponent<PlayerController>().Init(cellSize - cellSpacing * 2);
+                    firstRoomController.HideTiles();
+                    return new Vector2(x,y);
+                }
+            }
+        }
+
+        return new Vector2(-1,-1);
+    }
+
 
     /*
      * Helpers
