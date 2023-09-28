@@ -138,10 +138,14 @@ public class GridController : MonoBehaviour
         Vector2 playerPosition =  PlacePlayer();
 
         gameObject.transform.position -= new Vector3(playerPosition.x * cellSize, playerPosition.y * cellSize, 0); //Try to center the grid in the game space.    
+        PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
+        pathGen.main(backgroundLayer, rooms, width, height);
+        gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
+        
         //Test load from file
         //Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile2.json");
         //SetObjects(deserializedRecorder);
-        
+
         //Test save to file
         //GridControllerJsonSerializer.SerializeToJson(this, "testFile2.json", recorder);
 
