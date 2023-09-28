@@ -58,11 +58,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
       propertyPath: m_SortingLayer
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
       propertyPath: m_SortingLayerID
-      value: 1145225171
+      value: -1456435237
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
