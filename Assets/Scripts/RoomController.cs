@@ -114,7 +114,7 @@ public class RoomController : MonoBehaviour
     /*
      * Removes the fog if point is inside room
      */
-    public void ClearFog(Vector3 mousePos)
+    public void ClearFog(Vector2 mousePos)
     {
         if (InsideRoom(mousePos) && !hidden)
         {
@@ -127,12 +127,12 @@ public class RoomController : MonoBehaviour
     /*
      * Checks if point is within this room
      */
-    public Boolean InsideRoom(Vector3 mousePos)
+    public Boolean InsideRoom(Vector2 mousePos)
     {
-        if (mousePos.x + 35 <= (this.x + this.width)
-            && mousePos.x + 35 >= this.x
-            && mousePos.y + 35 <= (this.y + this.height)
-            && mousePos.y + 35 >= this.y)
+        if (mousePos.x <= (this.x + this.width)
+            && mousePos.x >= this.x
+            && mousePos.y <= (this.y + this.height)
+            && mousePos.y >= this.y)
         {
             return true;
         }
