@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using System.IO;
 
-public class NewBehaviourScript : MonoBehaviour
+public class ButtonControls : MonoBehaviour
 {
     public Animator flipPage;
     public GameObject mainText;
@@ -84,7 +84,7 @@ public class NewBehaviourScript : MonoBehaviour
     }
 
     public void Generate(){
-
+        SceneManager.LoadScene("mapScene");
     }
 
 
@@ -111,8 +111,26 @@ public class NewBehaviourScript : MonoBehaviour
             print("No File selected");
         } else {
             //call Adams Load Method
-            print("Load");
+            string str = map.text;
+            GlobalVariables.setMapName(str);
+            SceneManager.LoadScene("MapScene");
+            //Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile.json");
+            //SetObjects(deserializedRecorder);
         }
     }
 
+    public void ReturnToSettings(){
+        StartCoroutine(returnToSettings());
+    }
+
+    IEnumerator returnToSettings() {
+        mainText.SetActive(false);
+        flipPage.SetTrigger("Close");
+        yield return new WaitForSeconds(2); 
+        SceneManager.LoadScene("settingPage");
+    }
+
+    public void loadContent(){
+        mainText.SetActive(true);
+    }
 }

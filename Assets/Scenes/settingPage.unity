@@ -451,7 +451,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 139600723}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 431867986}
+        m_TargetAssemblyTypeName: NewBehaviourScript, Assembly-CSharp
+        m_MethodName: Generate
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &139600723
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2704,7 +2716,7 @@ GameObject:
   - component: {fileID: 965840020}
   m_Layer: 5
   m_Name: RoomCountSlider
-  m_TagString: Untagged
+  m_TagString: SettingsForLoad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2781,7 +2793,19 @@ MonoBehaviour:
   m_Value: 4
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &992196432
 GameObject:
   m_ObjectHideFlags: 0
@@ -4771,7 +4795,7 @@ GameObject:
   - component: {fileID: 1542490405}
   m_Layer: 5
   m_Name: DungeonCountSlider
-  m_TagString: Untagged
+  m_TagString: SettingsForLoad
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

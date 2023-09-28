@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Furnace
       objectReference: {fileID: 0}
+    - target: {fileID: 4583820204440450163, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
+      propertyPath: m_Layer
+      value: 7
+      objectReference: {fileID: 0}
     - target: {fileID: 5042483346139501837, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
       propertyPath: m_Size.y
       value: 2
@@ -62,7 +66,7 @@ PrefabInstance:
       objectReference: {fileID: 21300000, guid: f13a56206ff0ec64c890419d067fa6f1, type: 3}
     - target: {fileID: 5042483346139501837, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
       propertyPath: m_SortingLayer
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5042483346139501837, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
       propertyPath: m_SortingLayerID
