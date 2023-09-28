@@ -14,12 +14,17 @@ public class RoomController : MonoBehaviour
     public GameObject doorPrefab;
     public GameObject fogPrefab;
     public GameObject[] propOptions;
+    public GameObject[] monsterOptions;
+
+
     private GameObject[,] fogLayer;
     public Shape[] shapes;
     public Shape[] props; //For now props are assumed to be 1x1.
+    public Vector2[] monsters; //locations for monsters.
     public Vector2[] doors; //Should be updated to being possible door locations.
     public int width;
     public int height;
+    public bool hasPath = false;
 
     private int x;
     private int y;
@@ -68,6 +73,7 @@ public class RoomController : MonoBehaviour
         {
             GameObject door = Instantiate(doorPrefab, new Vector3((doorLoc.x + this.x) * (size + margin), (doorLoc.y + this.y) * (size + margin), 1), Quaternion.identity, transformParent);
             door.GetComponent<TileController>().Init(size - margin * 2);
+            door.GetComponent<DoorController>().SetParent(this);
             background[(int)doorLoc.x + this.x, (int)doorLoc.y + this.y] = door;
             recorder.AddTile(new RecorderTile("door", (int)doorLoc.x + this.x, (int)doorLoc.y + this.y, roomCount));
         }
@@ -81,6 +87,15 @@ public class RoomController : MonoBehaviour
             prop.GetComponent<PropController>().Init(size - margin * 2);
             foreground[propLocation.x1 + this.x, propLocation.y1 + this.y] = prop;
             recorder.AddTile(new RecorderTile("prop", propLocation.x1 + this.x, propLocation.y1 + this.y, roomCount));
+        }
+
+
+        foreach (Vector2 monsterLoc in monsters)
+        {
+            GameObject monster = Instantiate(monsterOptions[random.Next(monsterOptions.Length)], new Vector3((monsterLoc.x + this.x) * (size + margin), (monsterLoc.y + this.y) * (size + margin), -1), Quaternion.identity, transformParent);
+            monster.GetComponent<MonsterController>().Init(size - margin * 2);
+            foreground[(int)(monsterLoc.x + x), (int)(monsterLoc.y + y)] = monster;
+            //TODO add recorder stuff 
         }
 
         fogLayer = new GameObject[width, height];
@@ -153,6 +168,10 @@ public class RoomController : MonoBehaviour
         }
     }
 
+    public void setHasPathTrue()
+    {
+        this.hasPath = true;
+    }
 
     public int GetX(){
         return this.x;

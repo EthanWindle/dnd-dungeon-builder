@@ -51,8 +51,12 @@ MonoBehaviour:
   - {fileID: 7971312380810922680, guid: 8b48354e55cafcc468b1bf733e501152, type: 3}
   - {fileID: 5563324945239358460, guid: fe099cc40dbac894a8ecee0ccd1d5fd8, type: 3}
   - {fileID: 8141686532541951112, guid: 027846af026784d4499b82b545db04e3, type: 3}
+  monsterOptions:
+  - {fileID: 4043491269063095105, guid: 8c35ac4e827d23f4fb77fb8477c1684d, type: 3}
+  - {fileID: 2935016586314316573, guid: 4a57f90edaeb4344db52eb89fef522fc, type: 3}
   shapes: []
   props: []
+  monsters: []
   doors: []
   width: 0
   height: 0

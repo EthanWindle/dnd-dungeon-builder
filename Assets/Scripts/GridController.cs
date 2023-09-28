@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 /*
  * Controller for a Grid of tiles and props.
@@ -25,6 +26,8 @@ public class GridController : MonoBehaviour
     private Recorder recorder; //Records events to save the current game state
     private GameObject tilePrefab;
     private GameObject doorPrefab;
+
+    private bool inPlayerView = false;
 
     /*
      * Loads a save file from recorder
@@ -124,12 +127,14 @@ public class GridController : MonoBehaviour
             recorder.AddTile(new RecorderTile("wall", x, y, -1));
         }
 
+        PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
+        pathGen.main(backgroundLayer, rooms, width, height);
         gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
-
+        
         //Test load from file
         //Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile2.json");
         //SetObjects(deserializedRecorder);
-        
+
         //Test save to file
         //GridControllerJsonSerializer.SerializeToJson(this, "testFile2.json", recorder);
 
@@ -140,9 +145,15 @@ public class GridController : MonoBehaviour
     /*
      * Helpers
      */
-    private Vector2 GetWorldLocation(int x, int y)
+    private Vector3 GetWorldLocation(int x, int y)
     {
-        return new Vector2(x, y) * cellSize;
+        return new Vector3(x * cellSize + gameObject.transform.position.x, y * cellSize + gameObject.transform.position.y, -0.5f);
+    }
+
+
+    private Vector3 GetWorldLocation(Vector2 position)
+    {
+        return GetWorldLocation((int)position.x, (int)position.y);
     }
 
     /*
@@ -210,6 +221,8 @@ public class GridController : MonoBehaviour
 
     public void ChangeToPlayerView()
     {
+        if (!inPlayerView) inPlayerView = true;
+        else return;
         for (int i = 0; i < rooms.Length; i++)
         {
             rooms[i].GetComponent<RoomController>().ShowTiles();
@@ -218,9 +231,59 @@ public class GridController : MonoBehaviour
 
     public void ChangeToDMView()
     {
+        if (inPlayerView) inPlayerView = false;
+        else return;
         for (int i = 0; i < rooms.Length; i++)
         {
             rooms[i].GetComponent<RoomController>().HideTiles();
+        }
+    }
+
+    public bool isInPlayerView()
+    {
+        return inPlayerView;
+    }
+
+    public Vector2 GetGridPosition(Vector3 worldPosition)
+    {
+
+        if (worldPosition.x > gameObject.transform.position.x + (width * cellSize)
+            || worldPosition.y > gameObject.transform.position.y + (height * cellSize)
+            || worldPosition.x < gameObject.transform.position.x
+            || worldPosition.y < gameObject.transform.position.y) return new Vector2(-1, -1);
+
+        return new Vector2(Mathf.Ceil((worldPosition.x - gameObject.transform.position.x) / (cellSize) - 0.5f * cellSize),
+            Mathf.Ceil(((worldPosition.y - gameObject.transform.position.y) / cellSize) - 0.5f * cellSize));
+    }
+
+
+    public GameObject GetForegroundObject(Vector2 position)
+    {
+        return foregroundLayer[(int)position.x, (int)position.y];
+    }
+
+    public GameObject GetBackgroundObject(Vector2 position)
+    {
+        return backgroundLayer[(int)position.x, (int)position.y];
+    }
+
+
+    public void DropEntity(GameObject entity, Vector2 origin, Vector2 destination)
+    {
+        if (entity != GetForegroundObject(origin)) throw new ArgumentException("Dropped entity has the wrong origin position");
+
+        if (GetBackgroundObject(destination) == null //There is no tile at destination
+            || !GetBackgroundObject(destination).GetComponent<TileController>().CanEnter() //The destination cannot be entered (i.e. is a wall or closed door)
+            || GetForegroundObject(destination) != null) //There is already a prop or other entity at the destination.
+        {
+            entity.transform.position = GetWorldLocation(origin);
+        }
+        else
+        {
+            foregroundLayer[(int)origin.x, (int)origin.y] = null;
+            foregroundLayer[(int)destination.x, (int)destination.y] = entity;
+
+            entity.transform.position = GetWorldLocation(destination);
         }
     }
 

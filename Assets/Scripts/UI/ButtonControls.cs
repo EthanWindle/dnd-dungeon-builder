@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 using TMPro;
 using System.IO;
 
-public class NewBehaviourScript : MonoBehaviour
+public class ButtonControls : MonoBehaviour
 {
     public Animator flipPage;
     public GameObject mainText;
@@ -36,6 +36,29 @@ public class NewBehaviourScript : MonoBehaviour
         flipPage.SetTrigger("LeftFlip");
         yield return new WaitForSeconds(1); 
         SceneManager.LoadScene("loadPage");
+    }
+
+    // Multiplayer Page
+    public void loadMultiplayer() {
+        StartCoroutine(multiplayerPage());
+    }
+    IEnumerator multiplayerPage() {
+        mainText.SetActive(false);
+        flipPage.SetTrigger("LeftFlip");
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene("multiplayerPage");
+    }
+
+    // Credits Page
+    public void loadCredits() {
+        StartCoroutine(creditsPage());
+    }
+
+    IEnumerator creditsPage() {
+        mainText.SetActive(false);
+        flipPage.SetTrigger("LeftFlip");
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene("creditsPage");
     }
 
     public void ExitGame(){
