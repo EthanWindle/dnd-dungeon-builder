@@ -3,9 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using Unity.VisualScripting;
+using System.Linq;
 using Unity.VisualScripting.FullSerializer;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.MaterialProperty;
 
 /*
  * Controller for a Grid of tiles and props.
@@ -31,6 +34,9 @@ public class GridController : MonoBehaviour
     private Recorder recorder; //Records events to save the current game state
     private GameObject tilePrefab;
     private GameObject doorPrefab;
+    private GameObject fogPrefab;
+    private GameObject[] propOptions;
+    private GameObject[] monsterOptions;
 
     private bool inPlayerView = false;
 
@@ -69,16 +75,48 @@ public class GridController : MonoBehaviour
             else if (tile.type.Equals("wall"))
             {
                 // Update the backgroundLayer with wall tiles
-                wallTile = Instantiate(wallTile, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
-                wallTile.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
-                backgroundLayer[tile.x, tile.y] = wallTile;
+                GameObject newWallTile = Instantiate(wallTile, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                newWallTile.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                backgroundLayer[tile.x, tile.y] = newWallTile;
             }
             else if (tile.type.Equals("door"))
             {
                 // Update the backgroundLayer with door tiles
-                doorPrefab = Instantiate(doorPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
-                doorPrefab.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
-                backgroundLayer[tile.x, tile.y] = doorPrefab;
+                GameObject newDoorPrefab = Instantiate(doorPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                newDoorPrefab.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                backgroundLayer[tile.x, tile.y] = newDoorPrefab;
+            }
+            else if (tile.type.Equals("prop"))
+            {
+                // Update the backgroundLayer with prop tiles
+                String propPath = "Assets/Prefabs/Prop Prefabs/" + tile.option + ".prefab";
+                GameObject propPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(propPath, typeof(GameObject));
+
+                GameObject newPropPrefab = Instantiate(propPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), -2), Quaternion.identity, gameObject.transform);
+                newPropPrefab.GetComponent<PropController>().Init(cellSize - cellSpacing * 2);
+                foregroundLayer[tile.x, tile.y] = newPropPrefab;
+            }
+            else if (tile.type.Equals("monster"))
+            {
+                // Update the backgroundLayer with monster tiles
+                String monsterPath = "Assets/Prefabs/Entity Prefabs/" + tile.option + ".prefab";
+                GameObject mosterPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(monsterPath, typeof(GameObject));
+
+                GameObject newMonsterPrefab = Instantiate(mosterPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), -2), Quaternion.identity, gameObject.transform);
+                Debug.Log(newMonsterPrefab);
+                newMonsterPrefab.GetComponent<MonsterController>().Init(cellSize - cellSpacing * 2);
+                foregroundLayer[tile.x, tile.y] = newMonsterPrefab;
+            }
+        }
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                GameObject tile = backgroundLayer[x, y];
+                if (tile != null && tile.GetComponent<TileController>() is WallController)
+                {
+                    tile.GetComponent<WallController>().SetTexture(GetAdjacentControllers(x, y));
+                }
             }
         }
 
@@ -109,6 +147,9 @@ public class GridController : MonoBehaviour
             RoomController roomController = rooms[i].GetComponent<RoomController>();
             this.tilePrefab = roomController.tilePrefab;
             this.doorPrefab = roomController.doorPrefab;
+            this.fogPrefab = roomController.fogPrefab;
+            this.propOptions = roomController.propOptions;
+            this.monsterOptions = roomController.monsterOptions;
         }
 
         List<Vector2> wallLocations = new();
@@ -147,7 +188,7 @@ public class GridController : MonoBehaviour
         //SetObjects(deserializedRecorder);
 
         //Test save to file
-        //GridControllerJsonSerializer.SerializeToJson(this, "testFile2.json", recorder);
+        //GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
 
     }
 
