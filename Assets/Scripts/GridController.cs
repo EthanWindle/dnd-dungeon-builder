@@ -191,10 +191,9 @@ public class GridController : MonoBehaviour
         //GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
 
         //Test save as PNG
-        ChangeToDMView();
-        GameObject topDownCamera = GameObject.Find("topDownCamera");
-        Camera camera = topDownCamera.GetComponent<Camera>();
-        GridControllerJsonSerializer.SaveSceneAsPNG("testImage.png", 3840, 2160, camera);
+        //GameObject topDownCamera = GameObject.Find("topDownCamera");
+        //Camera camera = topDownCamera.GetComponent<Camera>();
+        //GridControllerJsonSerializer.SaveSceneAsPNG("testImage.png", 3840, 2160, camera);
 
     }
 

@@ -76,3 +76,7 @@ crashlytics-build.properties
 *testFile.json
 *testFile2.json
 *testImage.png
+
+# save folder
+/saves/*
+!/saves/.gitkeep
