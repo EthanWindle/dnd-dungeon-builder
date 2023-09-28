@@ -50,7 +50,7 @@ public class RoomController : MonoBehaviour
     /**
      * Place all of the tiles and props into the game, and also insert them into the arrays for foreground and background objects.
      */
-    public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foreground, float size, float margin, Recorder recorder)
+    public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foreground, GameObject[,] gridFogLayer, float size, float margin, Recorder recorder)
     {
         recorder.AddRoom(new RecorderRoom(++roomCount, this.x, this.y));
         //Place the floors for each shape that makes up the room
@@ -110,6 +110,7 @@ public class RoomController : MonoBehaviour
                 GameObject fog = Instantiate(fogPrefab, new Vector3((w + this.x) * (size + margin), (h + this.y) * (size + margin), 0), Quaternion.identity, transformParent);
                 fog.GetComponent<TileController>().Init(size - margin * 2);
                 fogLayer[w, h] = fog;
+                gridFogLayer[w + x, h + y] = fog;
                 recorder.AddTile(new RecorderTile("fog", w, h, roomCount));
             }
         }
@@ -119,7 +120,7 @@ public class RoomController : MonoBehaviour
     /*
      * Removes the fog if point is inside room
      */
-    public void ClearFog(Vector3 mousePos)
+    public void ClearFog(Vector2 mousePos)
     {
         if (InsideRoom(mousePos) && !hidden)
         {
@@ -132,12 +133,12 @@ public class RoomController : MonoBehaviour
     /*
      * Checks if point is within this room
      */
-    public Boolean InsideRoom(Vector3 mousePos)
+    public Boolean InsideRoom(Vector2 mousePos)
     {
-        if (mousePos.x + 35 <= (this.x + this.width)
-            && mousePos.x + 35 >= this.x
-            && mousePos.y + 35 <= (this.y + this.height)
-            && mousePos.y + 35 >= this.y)
+        if (mousePos.x <= (this.x + this.width)
+            && mousePos.x >= this.x
+            && mousePos.y <= (this.y + this.height)
+            && mousePos.y >= this.y)
         {
             return true;
         }
