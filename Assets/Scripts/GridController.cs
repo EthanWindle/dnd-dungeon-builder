@@ -33,6 +33,8 @@ public class GridController : MonoBehaviour
     private GameObject[] propOptions;
     private GameObject[] monsterOptions;
 
+    private bool inPlayerView = false;
+
     /*
      * Loads a save file from recorder
      */
@@ -166,11 +168,13 @@ public class GridController : MonoBehaviour
             recorder.AddTile(new RecorderTile("wall", x, y, -1));
         }
 
+        PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
+        pathGen.main(backgroundLayer, rooms, width, height);
         gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
-
+        
         //Test load from file
-        Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile.json");
-        SetObjects(deserializedRecorder);
+        //Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile2.json");
+        //SetObjects(deserializedRecorder);
 
         //Test save to file
         //GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
@@ -258,6 +262,8 @@ public class GridController : MonoBehaviour
 
     public void ChangeToPlayerView()
     {
+        if (!inPlayerView) inPlayerView = true;
+        else return;
         for (int i = 0; i < rooms.Length; i++)
         {
             rooms[i].GetComponent<RoomController>().ShowTiles();
@@ -266,12 +272,18 @@ public class GridController : MonoBehaviour
 
     public void ChangeToDMView()
     {
+        if (inPlayerView) inPlayerView = false;
+        else return;
         for (int i = 0; i < rooms.Length; i++)
         {
             rooms[i].GetComponent<RoomController>().HideTiles();
         }
     }
 
+    public bool isInPlayerView()
+    {
+        return inPlayerView;
+    }
 
     public Vector2 GetGridPosition(Vector3 worldPosition)
     {
