@@ -144,13 +144,14 @@ public class ButtonControls : MonoBehaviour
         
         DirectoryInfo dir = new DirectoryInfo("Assets/Saves");
         FileInfo[] files = dir.GetFiles("*.json");
-
+        Debug.Log("loop");
         foreach(FileInfo file in files){
             string fileName = Path.GetFileNameWithoutExtension(file.Name); 
             GameObject newButton = Instantiate(savePrefab, saveParent);
             TMP_Text[] texts = newButton.GetComponentsInChildren<TMP_Text>();
             texts[0].text = fileName;
             newButton.GetComponent<Button>().onClick.AddListener(() => SetSavedMap(fileName, mapName));
+            Debug.Log(fileName);
         }
     }
 }
