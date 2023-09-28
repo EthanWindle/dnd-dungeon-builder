@@ -182,7 +182,7 @@ public class GridController : MonoBehaviour
         PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
         pathGen.main(backgroundLayer, rooms, width, height);
         gameObject.transform.position -= new Vector3(playerPosition.x * cellSize, playerPosition.y * cellSize, 0); //Try to center the grid in the game space.    
-        
+
         //Test load from file
         if(!string.IsNullOrWhiteSpace(GlobalVariables.getMap())){
             Debug.Log("Loading Map");
@@ -194,9 +194,14 @@ public class GridController : MonoBehaviour
         //Test save to file
         //GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
 
+        //Test save as PNG
+        //GameObject topDownCamera = GameObject.Find("topDownCamera");
+        //Camera camera = topDownCamera.GetComponent<Camera>();
+        //GridControllerJsonSerializer.SaveSceneAsPNG("saves/testImage.png", 3840, 2160, camera);
+
     }
 
-    
+
 
     private Vector2 PlacePlayer(){
         GameObject firstRoom = rooms[0];
