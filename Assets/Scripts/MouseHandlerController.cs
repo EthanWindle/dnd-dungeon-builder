@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MouseHandlerController : MonoBehaviour
 {
-    public GameObject map;
     Vector3 mousePosition;
     bool mouseDown;
 
@@ -112,7 +111,7 @@ public class MouseHandlerController : MonoBehaviour
             }
 
 
-            if (Input.GetMouseButtonDown(0) && grabbedEntity == null){
+            if (OverMap() && Input.GetMouseButtonDown(0) && grabbedEntity == null){
                 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 mouseDown = true;
             }
@@ -123,13 +122,13 @@ public class MouseHandlerController : MonoBehaviour
 
         // This just makes sure that the camera is only moved when map is dragged
         bool OverMap(){
-            //Mesh mesh = map.GetComponent<MeshFilter>().mesh;
-            //Vector3[] vert = mesh.vertices;
-            
-            //Vector3 currentMousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);;
             RaycastHit hit;
-            return false;//Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hit, Mathf.Infinity, layerMask);
-            //Ray ray = map.ScreenToWorldPoint(Input.mousePosition);
-            //return Physics.Raycast(ray, out hit);
+            if(Physics.Raycast(ray, out hit))
+		    {
+			    return hit.collider.name == "Map";
+		    }
+
+            return false;
         }
     }
