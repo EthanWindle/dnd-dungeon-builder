@@ -266,6 +266,7 @@ public class PathGenerator : MonoBehaviour
                         GameObject obj = Instantiate(walkway, new Vector3(p.x * gridController.cellSize, p.y * gridController.cellSize, 0), Quaternion.identity, gameObject.transform);
                         backgroundLayer[p.x,p.y] = obj;
                         obj.GetComponent<TileController>().Init(gridController.cellSize - gridController.cellSpacing * 2);
+                        gridController.GetRecorder().AddTile(new RecorderTile("floor", p.x, p.y, -1));
                     
                 }
         }
