@@ -200,11 +200,21 @@ public class GridController : MonoBehaviour
         {
             int x = (int)wallLocation.x;
             int y = (int)wallLocation.y;
-            GameObject wall = Instantiate(wallTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+
+            GameObject wall;
+
+            if (backgroundLayer[x,y] != null){
+                wall = backgroundLayer[x,y];
+            }
+            else{
+                wall = Instantiate(wallTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                recorder.AddTile(new RecorderTile("wall", x, y, -1));
+            }
+
             wall.GetComponent<WallController>().Init(cellSize - cellSpacing * 2);
             wall.GetComponent<WallController>().SetTexture(GetAdjacentControllers(x, y));
             backgroundLayer[x, y] = wall;
-            recorder.AddTile(new RecorderTile("wall", x, y, -1));
+            
         }
     }
 
@@ -256,7 +266,10 @@ public class GridController : MonoBehaviour
     private bool ShouldBeWall(int x, int y)
     {
 
-        if (backgroundLayer[x, y] != null) return false;
+        if (backgroundLayer[x, y] != null){
+
+            return backgroundLayer[x,y].GetComponent<TileController>() is WallController;
+        } 
 
         
         foreach (TileController controller in GetAdjacentControllers(x, y))
