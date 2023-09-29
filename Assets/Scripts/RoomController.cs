@@ -77,17 +77,19 @@ public class RoomController : MonoBehaviour
             background[(int)doorLoc.x + this.x, (int)doorLoc.y + this.y] = door;
             recorder.AddTile(new RecorderTile("door", (int)doorLoc.x + this.x, (int)doorLoc.y + this.y, roomCount));
         }
-        
-        //Randomly select props for each prop location in the room.
-        foreach (Shape propLocation in props)
-        {
 
-            //propIndex is used to store the random number to choose which prop is shown so that it can be given to the recorder.
-            int propIndex = random.Next(propOptions.Length);
-            GameObject prop = Instantiate(propOptions[propIndex], new Vector3((propLocation.x1 + this.x) * (size + margin), (propLocation.y1 + this.y) * (size + margin), -1), Quaternion.identity, transformParent);
-            prop.GetComponent<PropController>().Init(size - margin * 2);
-            foreground[propLocation.x1 + this.x, propLocation.y1 + this.y] = prop;
-            recorder.AddTile(new RecorderTile("prop", propLocation.x1 + this.x, propLocation.y1 + this.y, roomCount, propOptions[propIndex].ToString()));
+        //Randomly select props for each prop location in the room.
+        if (customGeneration.HasProps())
+        {
+            foreach (Shape propLocation in props)
+            {
+                //propIndex is used to store the random number to choose which prop is shown so that it can be given to the recorder.
+                int propIndex = random.Next(propOptions.Length);
+                GameObject prop = Instantiate(propOptions[propIndex], new Vector3((propLocation.x1 + this.x) * (size + margin), (propLocation.y1 + this.y) * (size + margin), -1), Quaternion.identity, transformParent);
+                prop.GetComponent<PropController>().Init(size - margin * 2);
+                foreground[propLocation.x1 + this.x, propLocation.y1 + this.y] = prop;
+                recorder.AddTile(new RecorderTile("prop", propLocation.x1 + this.x, propLocation.y1 + this.y, roomCount, propOptions[propIndex].ToString()));
+            }
         }
 
 

@@ -138,7 +138,7 @@ public class GridController : MonoBehaviour
     public void GenerateNewMap()
     {
         this.recorder = new Recorder(this);
-        this.customGeneration = new CustomGeneration(20, false, true);
+        this.customGeneration = new CustomGeneration(20, true, false);
         //Updates the arrays with the generated dungeon values
         DungeonGenerator dungeonGenerator = gameObject.GetComponent<DungeonGenerator>();
         rooms = dungeonGenerator.GenerateDungeon(rooms, width, height, customGeneration);

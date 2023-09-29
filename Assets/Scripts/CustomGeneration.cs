@@ -24,4 +24,9 @@ public class CustomGeneration
         return this.hasMonsters;
     }
 
+    public bool HasProps()
+    {
+        return this.hasProps;
+    }
+
 }
