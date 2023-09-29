@@ -99,31 +99,6 @@ public class RoomController : MonoBehaviour
         }
 
         fogLayer = new GameObject[width + 2, height + 2];
-        /*
-        int wStart = 0;
-        if (this.x > 0) wStart = -1;
-        int wEnd = width;
-        if (width < gridWidth) wEnd = width + 1;
-        int hStart = 0;
-        if (this.y > 0) hStart = -1;
-        int hEnd = 0;
-        if (height < gridHeight) hEnd = height + 1;
-
-        while (wStart < wEnd)
-        {
-            while (hStart < hEnd)
-            {
-                GameObject fog = Instantiate(fogPrefab, new Vector3((wStart + this.x) * (size + margin), (hStart + this.y) * (size + margin), 0), Quaternion.identity, transformParent);
-                fog.GetComponent<TileController>().Init(size - margin * 2);
-                fogLayer[wStart + 1, hStart + 1] = fog;
-                Debug.Log("index " + wStart + " : " + hStart + " x: " + this.x + " y " + this.y);
-                gridFogLayer[wStart + this.x, hStart + this.y] = fog;
-                hStart++;
-            }
-            wStart++;
-        }
-        */
-
         
         for (int w = 0; w < width; w++)
         {
@@ -188,57 +163,7 @@ public class RoomController : MonoBehaviour
                 gridFogLayer[w + this.x, h + this.y].GetComponent<FogController>().lowerOpacity();
             }
         }
-        /*
-        int wStart = 0;
-        if (this.x > 0) wStart = -1;
-        int wEnd = width;
-        if (width < gridWidth) wEnd = width + 1;
-        int hStart = 0;
-        if (this.y > 0) hStart = -1;
-        int hEnd = 0;
-        if (height < gridHeight) hEnd = height + 1;
-
-
-        while (wStart < wEnd)
-        {
-            while (hStart < hEnd)
-            {
-                if (wStart  > -1 && wStart < width && hStart > -1 && hStart < height) continue;
-                gridFogLayer[wStart + this.x, hStart + this.y].GetComponent<FogController>().lowerOpacity();
-                hStart++;
-            }
-            wStart++;
-        }
-        */
-
-        /*
-        for (int w = -1; w < width + 1; w++)
-        {
-            for (int h = -1; h < height + 1; h++)
-            {
-
-                if (w > -1 && w < width && h > -1 && h < height) fogLayer[w, h].SetActive(false);
-                else fogLayer[w, h].GetComponent<FogController>().lowerOpacity();
-
-                //fogLayer[w, h].GetComponent<Renderer>().material.color.a = 20;
-                //fogLayer[w, h].SetActive(false);
-                    //fogLayer[w, h].GetComponent<FogController>().lowerOpacity();
-                //.lowerOpacity();
-                // gameObject.GetComponent<Renderer>().material.color.a = 0
-            }
-        }
-        */
     }
-
-    /* Need to:
-     * Generate map of fog tiles in gridcontroller which covers whole map
-     * Create function in gridcontroller to show/hide these for dm/player (function is kinda already existing)
-     *  - Will no longer need to show/hide in the individual room for dm/player
-     * Roomcontroller will contain an array of references to the objects stored in grid so the grid show/hide still works
-     * - array will need to be 1 greater in each direction to have the low opacity tile
-     * Rooms will also have to deal with removing fog for neighbouring paths
-     * 
-     */
 
     /*
      * Shows all fog tiles
@@ -252,7 +177,7 @@ public class RoomController : MonoBehaviour
                 fogLayer[w, h].SetActive(true);
             }
         }
-        /*
+        
         for (int w = -1; w < width + 1; w++)
         {
             for (int h = -1; h < height + 1; h++)
@@ -261,7 +186,7 @@ public class RoomController : MonoBehaviour
                 gridFogLayer[w + this.x, h + this.y].GetComponent<FogController>().raiseOpacity();
             }
         }
-        */
+        
     }
 
     public void setHasPathTrue()
