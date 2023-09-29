@@ -14,6 +14,10 @@ public class ButtonControls : MonoBehaviour
     public GameObject savePrefab;
     public Transform saveParent;
     public TMP_Text map;
+
+    public GameObject Grid;
+    public GameObject Override;
+
     public void toMain(){
         SceneManager.LoadScene("homePage");
     }
@@ -133,25 +137,45 @@ public class ButtonControls : MonoBehaviour
     }
 
     //mapScene
-    public void saveMap(InputField name){
-
-    }
-
     public void SetSavedMap(string name, TMP_InputField mapName){
         mapName.text = name;
     }
     public void GetSavedMaps(TMP_InputField mapName) {
-        
         DirectoryInfo dir = new DirectoryInfo("Assets/Saves");
         FileInfo[] files = dir.GetFiles("*.json");
-        Debug.Log("loop");
         foreach(FileInfo file in files){
             string fileName = Path.GetFileNameWithoutExtension(file.Name); 
             GameObject newButton = Instantiate(savePrefab, saveParent);
             TMP_Text[] texts = newButton.GetComponentsInChildren<TMP_Text>();
             texts[0].text = fileName;
             newButton.GetComponent<Button>().onClick.AddListener(() => SetSavedMap(fileName, mapName));
-            Debug.Log(fileName);
         }
+    }
+
+     public void saveMap(TMP_InputField name){
+        if(!string.IsNullOrWhiteSpace(name.text)){
+            //Check if exsiting file is going to be overwriten
+            DirectoryInfo dir = new DirectoryInfo("Assets/Saves");
+            FileInfo[] files = dir.GetFiles("*.json");
+            bool newFile = true;
+            foreach(FileInfo file in files){
+                string fileName = Path.GetFileNameWithoutExtension(file.Name); 
+                if(Equals(fileName, name.text)){
+                    newFile = false;
+                    break;
+                }
+            }
+
+            if(newFile){
+                saveFile(name);
+            } else {
+                Override.SetActive(true);
+            }
+        }
+    }
+
+    public void saveFile(TMP_InputField name){
+        string fullFileName = "Assets/Saves/" + name.text + ".json";
+        Grid.GetComponent<GridController>().Save(fullFileName);
     }
 }
