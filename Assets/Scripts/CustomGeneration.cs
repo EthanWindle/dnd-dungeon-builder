@@ -13,4 +13,10 @@ public class CustomGeneration
         this.hasMonsters = hasMonsters;
         this.hasProps = hasProps;
     }
+
+    public int GetRoomCount() 
+    { 
+        return this.roomCount; 
+    } 
+
 }

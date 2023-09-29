@@ -40,6 +40,8 @@ public class GridController : MonoBehaviour
 
     private bool inPlayerView = false;
 
+    private CustomGeneration customGeneration;
+
     /*
      * Loads a save file from recorder
      */
@@ -138,7 +140,7 @@ public class GridController : MonoBehaviour
         this.recorder = new Recorder(this);
         //Updates the arrays with the generated dungeon values
         DungeonGenerator dungeonGenerator = gameObject.GetComponent<DungeonGenerator>();
-        rooms = dungeonGenerator.GenerateDungeon(rooms, width, height);
+        rooms = dungeonGenerator.GenerateDungeon(rooms, width, height, customGeneration);
 
         for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
