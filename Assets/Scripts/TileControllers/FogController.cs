@@ -6,12 +6,12 @@ using UnityEngine;
  */
 public class FogController : TileController
 {
-    public Texture2D highOpacity;
-    public Texture2D lowOpacity;
+    public Texture2D highOpacityTile;
+    public Texture2D lowOpacityTile;
 
     private void Awake()
     {
-        Sprite sprite = Sprite.Create(highOpacity, new Rect(0, 0, highOpacity.width, highOpacity.height), new Vector2(0.5f, 0.5f), textureSize);
+        Sprite sprite = Sprite.Create(highOpacityTile, new Rect(0, 0, highOpacityTile.width, highOpacityTile.height), new Vector2(0.5f, 0.5f), textureSize);
         gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
     }
 
@@ -22,13 +22,13 @@ public class FogController : TileController
 
     public void lowerOpacity()
     {
-        Sprite sprite = Sprite.Create(lowOpacity, new Rect(0, 0, lowOpacity.width, lowOpacity.height), new Vector2(0.5f, 0.5f), textureSize);
+        Sprite sprite = Sprite.Create(lowOpacityTile, new Rect(0, 0, lowOpacityTile.width, lowOpacityTile.height), new Vector2(0.5f, 0.5f), textureSize);
         gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
     }
 
     public void raiseOpacity()
     {
-        Sprite sprite = Sprite.Create(highOpacity, new Rect(0, 0, highOpacity.width, highOpacity.height), new Vector2(0.5f, 0.5f), textureSize);
+        Sprite sprite = Sprite.Create(highOpacityTile, new Rect(0, 0, highOpacityTile.width, highOpacityTile.height), new Vector2(0.5f, 0.5f), textureSize);
         gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
     }
 

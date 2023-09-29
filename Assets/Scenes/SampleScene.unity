@@ -280,7 +280,7 @@ MonoBehaviour:
   xOffsets: 
   yOffsets: 
   wallTile: {fileID: 1601085562768460819, guid: 33e47b85cf84c004e8e1e32d717da1ff, type: 3}
-  fogPrefab: {fileID: 101012713752661465, guid: cffa49d762e58c54e8f59de54b6e8c63, type: 3}
+  fogTile: {fileID: 101012713752661465, guid: cffa49d762e58c54e8f59de54b6e8c63, type: 3}
 --- !u!114 &1031314866
 MonoBehaviour:
   m_ObjectHideFlags: 0

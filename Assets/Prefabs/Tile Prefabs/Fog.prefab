@@ -93,5 +93,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b8e0fa3b835d0045a67ed99318df0d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highOpacity: {fileID: 2800000, guid: 54c85af44121a664e890a58e03dc1d80, type: 3}
-  lowOpacity: {fileID: 2800000, guid: 7bd9d5a57b5ee2645b4efc6f3159dc5d, type: 3}
+  highOpacityTile: {fileID: 2800000, guid: 97e2688f64864a64e8f4cd2cc44d8f2e, type: 3}
+  lowOpacityTile: {fileID: 2800000, guid: 6eb2477a763503249838243e20df4186, type: 3}
