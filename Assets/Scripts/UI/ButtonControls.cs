@@ -95,6 +95,7 @@ public class ButtonControls : MonoBehaviour
     //load page 
     public void SetSavedGame(string name, TMP_Text mapText){
         mapText.text = name;
+        
     }
     public void GetSavedGames() {
         
@@ -107,6 +108,7 @@ public class ButtonControls : MonoBehaviour
             TMP_Text[] texts = newButton.GetComponentsInChildren<TMP_Text>();
             texts[0].text = fileName;
             newButton.GetComponent<Button>().onClick.AddListener(() => SetSavedGame(fileName, map));
+
         }
     }
 
