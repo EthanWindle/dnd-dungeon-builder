@@ -17,11 +17,13 @@ public class GridController : MonoBehaviour
     public float cellSpacing;
     private GameObject[,] backgroundLayer; //Layer for tiles like walls, floors, doors.
     private GameObject[,] foregroundLayer; //Layer for props and entities like players and monsters
+    private GameObject[,] fogLayer;
 
     public GameObject[] rooms; //Each instance of a room object is stored here
     public int[] xOffsets; //x location of room, correlates with rooms array
     public int[] yOffsets; //y location of room, correlates with rooms array
     public GameObject wallTile;
+    public GameObject fogTile;
 
     private Recorder recorder; //Records events to save the current game state
     private GameObject tilePrefab;
@@ -84,6 +86,8 @@ public class GridController : MonoBehaviour
 
         foregroundLayer = new GameObject[width, height];
 
+        fogLayer = new GameObject[width, height];
+
         GenerateNewMap();
     }
 
@@ -97,7 +101,7 @@ public class GridController : MonoBehaviour
         for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
             //int offsetx = xOffsets[i];
-            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, cellSize, cellSpacing, recorder);
+            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder);
             RoomController roomController = rooms[i].GetComponent<RoomController>();
             this.tilePrefab = roomController.tilePrefab;
             this.doorPrefab = roomController.doorPrefab;
@@ -107,7 +111,7 @@ public class GridController : MonoBehaviour
 
         for (int x = 0; x < width; x++)
         {
-            for(int y = 0; y < height; y++)
+            for (int y = 0; y < height; y++)
             {
                 if (ShouldBeWall(x, y))
                 { //Place walls in locations that are next to floors or doors.
@@ -129,8 +133,7 @@ public class GridController : MonoBehaviour
 
         PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
         pathGen.main(backgroundLayer, rooms, width, height);
-        gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
-        
+
         //Test load from file
         //Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile2.json");
         //SetObjects(deserializedRecorder);
@@ -138,9 +141,23 @@ public class GridController : MonoBehaviour
         //Test save to file
         //GridControllerJsonSerializer.SerializeToJson(this, "testFile2.json", recorder);
 
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (fogLayer[x, y] != null) continue;
+                Debug.Log("is fogtile. x: " + x + " y: " + y);
+                GameObject fog = Instantiate(fogTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                fogLayer[x, y] = fog;
+            }
+        }
+
+
+        gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
+
     }
 
-    
+
 
     /*
      * Helpers
@@ -172,7 +189,7 @@ public class GridController : MonoBehaviour
 
         if (backgroundLayer[x, y] != null) return false;
 
-        
+
         foreach (TileController controller in GetAdjacentControllers(x, y))
         {
             if (controller is FloorController) { return true; }
@@ -187,7 +204,7 @@ public class GridController : MonoBehaviour
         TileController[] controllers = new TileController[8];
         for (int xi = x - 1; xi <= x + 1; xi++)
         {
-            
+
             for (int yi = y - 1; yi <= y + 1; yi++)
             {
                 if (xi == x && yi == y) continue;
@@ -197,14 +214,15 @@ public class GridController : MonoBehaviour
                 else if (backgroundLayer[xi, yi] == null) controllers[index] = null;
                 else controllers[index] = backgroundLayer[xi, yi].GetComponent<TileController>();
                 index++;
-                
+
             }
         }
 
         return controllers;
     }
 
-    public void getGridBounds(out float topBound, out float leftBound, out float bottomBound, out float rightBound){
+    public void getGridBounds(out float topBound, out float leftBound, out float bottomBound, out float rightBound)
+    {
         topBound = gameObject.transform.position.y + (height * cellSize);
         leftBound = gameObject.transform.position.x;
         bottomBound = gameObject.transform.position.y;
@@ -215,7 +233,7 @@ public class GridController : MonoBehaviour
     {
         for (int i = 0; i < rooms.Length; i++)
         {
-            rooms[i].GetComponent<RoomController>().ClearFog(mousePos);
+            rooms[i].GetComponent<RoomController>().ClearFog(mousePos, fogLayer, width, height);
         }
     }
 
@@ -225,7 +243,7 @@ public class GridController : MonoBehaviour
         else return;
         for (int i = 0; i < rooms.Length; i++)
         {
-            rooms[i].GetComponent<RoomController>().ShowTiles();
+            rooms[i].GetComponent<RoomController>().ShowFogTiles(fogLayer, width, height);
         }
     }
 
@@ -235,7 +253,7 @@ public class GridController : MonoBehaviour
         else return;
         for (int i = 0; i < rooms.Length; i++)
         {
-            rooms[i].GetComponent<RoomController>().HideTiles();
+            rooms[i].GetComponent<RoomController>().HideFogTiles(fogLayer, width, height);
         }
     }
 

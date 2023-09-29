@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_SortingLayerID
       value: 528640251
       objectReference: {fileID: 0}
+    - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: d0e934dde57d1ed48b8164b3a83a0a7d, type: 2}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -89,3 +93,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b8e0fa3b835d0045a67ed99318df0d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  highOpacity: {fileID: 2800000, guid: 54c85af44121a664e890a58e03dc1d80, type: 3}
+  lowOpacity: {fileID: 2800000, guid: 7bd9d5a57b5ee2645b4efc6f3159dc5d, type: 3}
