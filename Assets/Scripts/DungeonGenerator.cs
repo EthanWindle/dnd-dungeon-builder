@@ -32,8 +32,8 @@ public class DungeonGenerator : MonoBehaviour
             for (int attempt = 0; attempt < maxAttempts; attempt++)
             {
                 // Generate random position within grid boundaries
-                int randomX = UnityEngine.Random.Range(0, gridWidth - roomToPlaceWidth + 1);
-                int randomY = UnityEngine.Random.Range(0, gridHeight - roomToPlaceHeight + 1);
+                int randomX = UnityEngine.Random.Range(1, gridWidth - roomToPlaceWidth);
+                int randomY = UnityEngine.Random.Range(1, gridHeight - roomToPlaceHeight);
 
                 // Check if the room would overlap with any existing rooms
                 bool overlap = false;
