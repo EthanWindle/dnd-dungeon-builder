@@ -17,6 +17,11 @@ public class CustomGeneration
     public int GetRoomCount() 
     { 
         return this.roomCount; 
-    } 
+    }
+    
+    public bool HasMonsters()
+    {
+        return this.hasMonsters;
+    }
 
 }

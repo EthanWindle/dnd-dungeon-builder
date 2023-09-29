@@ -138,6 +138,7 @@ public class GridController : MonoBehaviour
     public void GenerateNewMap()
     {
         this.recorder = new Recorder(this);
+        this.customGeneration = new CustomGeneration(20, false, true);
         //Updates the arrays with the generated dungeon values
         DungeonGenerator dungeonGenerator = gameObject.GetComponent<DungeonGenerator>();
         rooms = dungeonGenerator.GenerateDungeon(rooms, width, height, customGeneration);
@@ -145,7 +146,7 @@ public class GridController : MonoBehaviour
         for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
             //int offsetx = xOffsets[i];
-            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder);
+            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder, customGeneration);
             RoomController roomController = rooms[i].GetComponent<RoomController>();
             this.tilePrefab = roomController.tilePrefab;
             this.doorPrefab = roomController.doorPrefab;
