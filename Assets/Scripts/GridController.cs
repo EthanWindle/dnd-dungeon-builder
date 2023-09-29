@@ -23,6 +23,7 @@ public class GridController : MonoBehaviour
     public int[] xOffsets; //x location of room, correlates with rooms array
     public int[] yOffsets; //y location of room, correlates with rooms array
     public GameObject wallTile;
+    
     public GameObject fogTile;
 
     private Recorder recorder; //Records events to save the current game state
@@ -141,12 +142,12 @@ public class GridController : MonoBehaviour
         //Test save to file
         //GridControllerJsonSerializer.SerializeToJson(this, "testFile2.json", recorder);
 
+
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
             {
                 if (fogLayer[x, y] != null) continue;
-                Debug.Log("is fogtile. x: " + x + " y: " + y);
                 GameObject fog = Instantiate(fogTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
                 fogLayer[x, y] = fog;
             }
