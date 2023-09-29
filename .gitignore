@@ -75,3 +75,4 @@ crashlytics-build.properties
 # Recorder testing files
 *testFile.json
 *testFile2.json
+*testImage.png
