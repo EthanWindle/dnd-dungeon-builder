@@ -40,7 +40,7 @@ public class GridController : MonoBehaviour
 
     private bool inPlayerView = false;
 
-    private CustomGeneration customGeneration;
+    private CustomGeneration customGeneration = new CustomGeneration(20, true, true); //current default generation parameters
 
     /*
      * Loads a save file from recorder
@@ -138,7 +138,6 @@ public class GridController : MonoBehaviour
     public void GenerateNewMap()
     {
         this.recorder = new Recorder(this);
-        this.customGeneration = new CustomGeneration(20, true, false);
         //Updates the arrays with the generated dungeon values
         DungeonGenerator dungeonGenerator = gameObject.GetComponent<DungeonGenerator>();
         rooms = dungeonGenerator.GenerateDungeon(rooms, width, height, customGeneration);
