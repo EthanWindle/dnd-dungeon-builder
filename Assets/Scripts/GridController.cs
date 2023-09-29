@@ -397,4 +397,7 @@ public class GridController : MonoBehaviour
         }
     }
 
+    public void Save(string filePath){
+        GridControllerJsonSerializer.SerializeToJson(this, filePath, recorder);
+    }
 }
