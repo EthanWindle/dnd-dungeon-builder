@@ -40,6 +40,8 @@ public class GridController : MonoBehaviour
 
     private bool inPlayerView = false;
 
+    private CustomGeneration customGeneration = new CustomGeneration(20, true, true); //current default generation parameters
+
     /*
      * Loads a save file from recorder
      */
@@ -138,12 +140,12 @@ public class GridController : MonoBehaviour
         this.recorder = new Recorder(this);
         //Updates the arrays with the generated dungeon values
         DungeonGenerator dungeonGenerator = gameObject.GetComponent<DungeonGenerator>();
-        rooms = dungeonGenerator.GenerateDungeon(rooms, width, height);
+        rooms = dungeonGenerator.GenerateDungeon(rooms, width, height, customGeneration);
 
         for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
             //int offsetx = xOffsets[i];
-            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder);
+            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder, customGeneration);
             RoomController roomController = rooms[i].GetComponent<RoomController>();
             this.tilePrefab = roomController.tilePrefab;
             this.doorPrefab = roomController.doorPrefab;
