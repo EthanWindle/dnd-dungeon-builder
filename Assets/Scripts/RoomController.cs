@@ -32,6 +32,9 @@ public class RoomController : MonoBehaviour
 
     private System.Random random;
 
+
+    public List<Path> paths {get; private set;}
+
     private static int roomCount = 0; //Counts the number for each room for recorder, do not modify for anything else
 
 
@@ -52,6 +55,9 @@ public class RoomController : MonoBehaviour
      */
     public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foreground, GameObject[,] gridFogLayer, float size, float margin, Recorder recorder)
     {
+
+        this.paths = new();
+
         recorder.AddRoom(new RecorderRoom(++roomCount, this.x, this.y));
         //Place the floors for each shape that makes up the room
         foreach (Shape shape in shapes)
