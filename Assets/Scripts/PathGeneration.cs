@@ -1,11 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Unity.Collections;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PathGenerator : MonoBehaviour
@@ -19,7 +13,7 @@ public class PathGenerator : MonoBehaviour
     int gridMaxY = 0;
     const int MOVE_STRAIGHT_COST = 10;
 
-    public Path findPath(Vector2 door1, Vector2 door2, GameObject[,] backgroundLayer, int maxX, int maxY)
+    public Path FindPath(Vector2 door1, Vector2 door2, GameObject[,] backgroundLayer, int maxX, int maxY)
     {
 
         bool[,] walkable = new bool[maxX, maxY];
@@ -61,14 +55,12 @@ public class PathGenerator : MonoBehaviour
                 }
             }
         }
-        //Debug.LogError(door1.x +","+ door1.y);
-        //Debug.LogError(door2.x + "," + door2.y);
         PathNode startNode = grid[(int)door1.x, (int)door1.y];
         PathNode endNode = grid[(int)door2.x, (int)door2.y];
 
 
-        List<PathNode> openList = new List<PathNode> { startNode };
-        List<PathNode> closedList = new List<PathNode>();
+        List<PathNode> openList = new() { startNode };
+        List<PathNode> closedList = new();
 
         for (int x = 0; x < maxX; x++)
         {
@@ -88,7 +80,6 @@ public class PathGenerator : MonoBehaviour
 
         startNode.gCost = 0;
         startNode.hCost = CalculateDistanceCost(startNode, endNode);
-        //Debug.LogError(startNode.hCost);
         startNode.CalculateFCost();
 
         while (openList.Count > 0)
@@ -110,8 +101,6 @@ public class PathGenerator : MonoBehaviour
                 if (closedList.Contains(NeighbourNode)) continue;
                 if (NeighbourNode != null)
                 {
-                    //Debug.Log(NeighbourNode);
-                    //Debug.Log(currentNode);
                     int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, NeighbourNode);
                     if (tentativeGCost < NeighbourNode.gCost)
                     {
@@ -134,7 +123,7 @@ public class PathGenerator : MonoBehaviour
 
     private List<PathNode> getNeighboursList(PathNode currentNode)
     {
-        List<PathNode> neighbourList = new List<PathNode>();
+        List<PathNode> neighbourList = new();
 
         if (currentNode.x - 1 >= 0)//Left
         {
@@ -156,7 +145,7 @@ public class PathGenerator : MonoBehaviour
     }
     private Path CalculatePath(PathNode endNode)
     {
-        Path path = new Path();
+        Path path = new();
         path.Add(endNode);
         PathNode currentNode = endNode;
         while (currentNode.previousNode != null)
@@ -193,7 +182,7 @@ public class PathGenerator : MonoBehaviour
 
 
     public Vector2Int GetClosestDoorInDifferentRoom(Dictionary<Vector2Int, TileController> doors, DoorController door, Vector2Int location){
-        Vector2Int closest = new Vector2Int(-1, -1);
+        Vector2Int closest = new(-1, -1);
 
         foreach (Vector2Int doorLocation in doors.Keys){
             DoorController otherDoor = doors[doorLocation] as DoorController;
@@ -211,12 +200,6 @@ public class PathGenerator : MonoBehaviour
         for (int pathIndex = 1; pathIndex < path.Count() - 1; pathIndex++)
                     {
                         PathNode p = path.get(pathIndex);
-
-
-
-                        //Debug.Log("X: "+p.x);
-                        //Debug.Log("Y: "+p.y);                  
-                        //Debug.Log(pathCount);
                         GameObject obj = Instantiate(walkway, new Vector3(p.x * gridController.cellSize, p.y * gridController.cellSize, 0), Quaternion.identity, gameObject.transform);
                         backgroundLayer[p.x,p.y] = obj;
                         obj.GetComponent<TileController>().Init(gridController.cellSize - gridController.cellSpacing * 2);
@@ -224,12 +207,12 @@ public class PathGenerator : MonoBehaviour
                 }
     }
 
-    public void main(GameObject[,] backgroundLayer, GameObject[] rooms, int maxX, int maxY)
+    public void ConnectAllRooms(GameObject[,] backgroundLayer, GameObject[] rooms, int maxX, int maxY)
     {
         DoorController door1;
         Vector2Int door1Coords;
         Vector2Int door2Coords;
-        Dictionary<Vector2Int, TileController> doors = new Dictionary<Vector2Int, TileController>();
+        Dictionary<Vector2Int, TileController> doors = new();
         GridController gridController = gameObject.GetComponent<GridController>();
 
         for (int i = 0; i < maxX; i++)//for each grid cell across the whole map
@@ -241,7 +224,7 @@ public class PathGenerator : MonoBehaviour
                     TileController tile = backgroundLayer[i, j].GetComponent<TileController>();//get the tile at the current location
                     if (tile is DoorController)//if the tile is a door
                     {
-                        Vector2Int gridCoordinates = new Vector2Int(i, j); // Convert the grid coordinates to Vector2Int
+                        Vector2Int gridCoordinates = new(i, j); // Convert the grid coordinates to Vector2Int
                         doors.Add(gridCoordinates, tile); // Add the door to the dictionary
                     }
                 }
@@ -254,13 +237,13 @@ public class PathGenerator : MonoBehaviour
         List<Path> paths = new();
 
         for (int i = 0; i < doors.Count - 1; i++)
-        {
+        { //Connect each door to the closest door in a different room, if the distance is < maxLength
                 door1 = DoorList[i] as DoorController;
                 door1Coords = DoorCoords[i];
                 door2Coords = GetClosestDoorInDifferentRoom(doors, door1, DoorCoords[i]);
                 
                 
-                Path path = findPath(door1Coords, door2Coords, backgroundLayer, maxX, maxY);
+                Path path = FindPath(door1Coords, door2Coords, backgroundLayer, maxX, maxY);
                 if (path != null && path.Count() <= maxLength)
                 {
                     path.SetRooms(backgroundLayer);
@@ -271,28 +254,26 @@ public class PathGenerator : MonoBehaviour
         }
         
 
-
-        
         List<HashSet<RoomController>> disjointGroups = GetDisjointRoomGroups(rooms);
 
-        while (disjointGroups.Count() > 1){
-            Debug.Log("Connecting groups");
-            List<RoomController> firstGroup = new List<RoomController>(disjointGroups[0]);
-            List<RoomController> controllers = new List<RoomController>();
+        while (disjointGroups.Count() > 1)
+        { //Connect each disjoint group of rooms, ignoring max path length
+            List<RoomController> firstGroup = new(disjointGroups[0]);
+            List<RoomController> controllers = new();
             foreach (GameObject gameObject in rooms){
                 RoomController controller =  gameObject.GetComponent<RoomController>();
                 if (!firstGroup.Contains(controller)) {
                     controllers.Add(gameObject.GetComponent<RoomController>());
                 }
             }
-            
-            Vector2Int originDoor;
-            Vector2Int destinationDoor;
-            FindClosestDoors(firstGroup, controllers, out originDoor, out destinationDoor);
 
-            Path path = findPath(originDoor, destinationDoor, backgroundLayer, maxX, maxY);
+            FindClosestDoors(firstGroup, controllers, out Vector2Int originDoor, out Vector2Int destinationDoor);
 
-            if (path == null){
+            Path path = FindPath(originDoor, destinationDoor, backgroundLayer, maxX, maxY);
+
+            if (path == null)
+            { //There is not valid path between the two doors. Must return otherwise the code will infinitely loop
+                Debug.Log("Could not generate path between closest doors in disjoint groups of rooms");
                 Debug.Log(originDoor);
                 Debug.Log(destinationDoor);
                 return;
@@ -307,7 +288,8 @@ public class PathGenerator : MonoBehaviour
         }
         
 
-        foreach(Path path in paths){
+        foreach(Path path in paths)
+        {
             PlacePath(path, backgroundLayer, gridController);
         }
 
@@ -315,13 +297,11 @@ public class PathGenerator : MonoBehaviour
 
     private void FindClosestDoors(List<RoomController> origins, List<RoomController> destinations, out Vector2Int originDoor, out Vector2Int destinationDoor){
         float distance = -1f;
-        Vector2Int closestOriginDoor = new Vector2Int(-1, -1);
-        Vector2Int closestDestinationDoor = new Vector2Int(-1, -1);
+        Vector2Int closestOriginDoor = new(-1, -1);
+        Vector2Int closestDestinationDoor = new(-1, -1);
         foreach (RoomController originRoom in origins){
             foreach (RoomController destinationRoom in destinations){
-                Vector2Int origin;
-                Vector2Int destination;
-                float currentDistance = FindClosestDoorsInRooms(originRoom, destinationRoom, out origin, out destination);
+                float currentDistance = FindClosestDoorsInRooms(originRoom, destinationRoom, out Vector2Int origin, out Vector2Int destination);
                 if (distance == -1f || currentDistance < distance){
                     distance = currentDistance;
                     closestOriginDoor = origin;
@@ -337,12 +317,12 @@ public class PathGenerator : MonoBehaviour
 
     private float FindClosestDoorsInRooms(RoomController originRoom, RoomController destinationRoom, out Vector2Int originDoor, out Vector2Int destinationDoor){
         float distance = -1f;
-        Vector2Int closestOrigin = new Vector2Int(-1, -1);
-        Vector2Int closestDestination = new Vector2Int(-1, -1);
+        Vector2Int closestOrigin = new(-1, -1);
+        Vector2Int closestDestination = new(-1, -1);
         foreach(Vector2 originVector in originRoom.doors){
-            Vector2Int origin = new Vector2Int((int)originVector.x + originRoom.GetX(), (int)originVector.y + originRoom.GetY());
+            Vector2Int origin = new((int)originVector.x + originRoom.GetX(), (int)originVector.y + originRoom.GetY());
             foreach (Vector2 destinationVector in destinationRoom.doors){
-                Vector2Int destination = new Vector2Int((int)destinationVector.x + destinationRoom.GetX(), (int)destinationVector.y + destinationRoom.GetY());
+                Vector2Int destination = new((int)destinationVector.x + destinationRoom.GetX(), (int)destinationVector.y + destinationRoom.GetY());
                 float currentDistance = Vector2Int.Distance(origin, destination);
                 if (distance == -1f || currentDistance < distance){
                     distance = currentDistance;
@@ -360,7 +340,7 @@ public class PathGenerator : MonoBehaviour
 
 
     }
-
+    
     private List<HashSet<RoomController>> GetDisjointRoomGroups(GameObject[] rooms){
         List<HashSet<RoomController>> roomGroups = new();
 

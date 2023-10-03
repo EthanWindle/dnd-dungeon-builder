@@ -158,7 +158,7 @@ public class GridController : MonoBehaviour
 
 
         PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
-        pathGen.main(backgroundLayer, rooms, width, height);
+        pathGen.ConnectAllRooms(backgroundLayer, rooms, width, height);
         PlaceWalls();
         gameObject.transform.position -= new Vector3(playerPosition.x * cellSize, playerPosition.y * cellSize, 0); //Try to center the grid in the game space.    
 
