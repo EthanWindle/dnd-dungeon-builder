@@ -225,7 +225,7 @@ public class GridController : MonoBehaviour
         for (int x = firstRoomController.GetX(); x < firstRoomController.width + firstRoomController.GetX(); x++){
             for (int y = firstRoomController.GetY(); y < firstRoomController.height + firstRoomController.GetY(); y++){
                 if (backgroundLayer[x,y] != null && backgroundLayer[x,y].GetComponent<TileController>() is FloorController && foregroundLayer[x,y] == null){
-                    GameObject player = Instantiate(playerEntity,new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 0), Quaternion.identity, gameObject.transform);
+                    GameObject player = Instantiate(playerEntity,new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), -1), Quaternion.identity, gameObject.transform);
                     foregroundLayer[x,y] = player;
                     player.GetComponent<PlayerController>().Init(cellSize - cellSpacing * 2);
                     firstRoomController.HideTiles();

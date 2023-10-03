@@ -113,7 +113,7 @@ public class RoomController : MonoBehaviour
         {
             for (int h = 0; h < height; h++)
             {
-                GameObject fog = Instantiate(fogPrefab, new Vector3((w + this.x) * (size + margin), (h + this.y) * (size + margin), 0), Quaternion.identity, transformParent);
+                GameObject fog = Instantiate(fogPrefab, new Vector3((w + this.x) * (size + margin), (h + this.y) * (size + margin), -2), Quaternion.identity, transformParent);
                 fog.GetComponent<TileController>().Init(size - margin * 2);
                 fogLayer[w, h] = fog;
                 gridFogLayer[w + x, h + y] = fog;
