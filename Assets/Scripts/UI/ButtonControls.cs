@@ -102,7 +102,7 @@ public class ButtonControls : MonoBehaviour
         FileInfo[] files = dir.GetFiles("*.json");
 
         foreach(FileInfo file in files){
-            string fileName = Path.GetFileNameWithoutExtension(file.Name); 
+            string fileName = System.IO.Path.GetFileNameWithoutExtension(file.Name); 
             GameObject newButton = Instantiate(savePrefab, saveParent);
             TMP_Text[] texts = newButton.GetComponentsInChildren<TMP_Text>();
             texts[0].text = fileName;
@@ -144,7 +144,7 @@ public class ButtonControls : MonoBehaviour
         DirectoryInfo dir = new DirectoryInfo("Assets/Saves");
         FileInfo[] files = dir.GetFiles("*.json");
         foreach(FileInfo file in files){
-            string fileName = Path.GetFileNameWithoutExtension(file.Name); 
+            string fileName = System.IO.Path.GetFileNameWithoutExtension(file.Name); 
             GameObject newButton = Instantiate(savePrefab, saveParent);
             TMP_Text[] texts = newButton.GetComponentsInChildren<TMP_Text>();
             texts[0].text = fileName;
@@ -159,7 +159,7 @@ public class ButtonControls : MonoBehaviour
             FileInfo[] files = dir.GetFiles("*.json");
             bool newFile = true;
             foreach(FileInfo file in files){
-                string fileName = Path.GetFileNameWithoutExtension(file.Name); 
+                string fileName = System.IO.Path.GetFileNameWithoutExtension(file.Name); 
                 if(Equals(fileName, name.text)){
                     newFile = false;
                     break;
