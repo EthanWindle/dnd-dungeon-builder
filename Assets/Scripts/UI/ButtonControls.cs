@@ -98,7 +98,7 @@ public class ButtonControls : MonoBehaviour
         FileInfo[] files = dir.GetFiles("*.json");
 
         foreach(FileInfo file in files){
-            string fileName = Path.GetFileNameWithoutExtension(file.Name); 
+            string fileName = System.IO.Path.GetFileNameWithoutExtension(file.Name); 
             GameObject newButton = Instantiate(savePrefab, saveParent);
             TMP_Text[] texts = newButton.GetComponentsInChildren<TMP_Text>();
             texts[0].text = fileName;
