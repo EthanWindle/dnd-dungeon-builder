@@ -40,6 +40,8 @@ public class GridController : MonoBehaviour
 
     private bool inPlayerView = false;
 
+    private CustomGeneration customGeneration = new CustomGeneration(20, true, true); //current default generation parameters
+
     /*
      * Loads a save file from recorder
      */
@@ -138,12 +140,12 @@ public class GridController : MonoBehaviour
         this.recorder = new Recorder(this);
         //Updates the arrays with the generated dungeon values
         DungeonGenerator dungeonGenerator = gameObject.GetComponent<DungeonGenerator>();
-        rooms = dungeonGenerator.GenerateDungeon(rooms, width, height);
+        rooms = dungeonGenerator.GenerateDungeon(rooms, width, height, customGeneration);
 
         for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
             //int offsetx = xOffsets[i];
-            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder);
+            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder, customGeneration);
             RoomController roomController = rooms[i].GetComponent<RoomController>();
             this.tilePrefab = roomController.tilePrefab;
             this.doorPrefab = roomController.doorPrefab;
@@ -158,7 +160,7 @@ public class GridController : MonoBehaviour
 
 
         PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
-        pathGen.main(backgroundLayer, rooms, width, height);
+        pathGen.ConnectAllRooms(backgroundLayer, rooms, width, height);
         PlaceWalls();
         gameObject.transform.position -= new Vector3(playerPosition.x * cellSize, playerPosition.y * cellSize, 0); //Try to center the grid in the game space.    
 
@@ -225,7 +227,7 @@ public class GridController : MonoBehaviour
         for (int x = firstRoomController.GetX(); x < firstRoomController.width + firstRoomController.GetX(); x++){
             for (int y = firstRoomController.GetY(); y < firstRoomController.height + firstRoomController.GetY(); y++){
                 if (backgroundLayer[x,y] != null && backgroundLayer[x,y].GetComponent<TileController>() is FloorController && foregroundLayer[x,y] == null){
-                    GameObject player = Instantiate(playerEntity,new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 0), Quaternion.identity, gameObject.transform);
+                    GameObject player = Instantiate(playerEntity,new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), -1), Quaternion.identity, gameObject.transform);
                     foregroundLayer[x,y] = player;
                     player.GetComponent<PlayerController>().Init(cellSize - cellSpacing * 2);
                     firstRoomController.HideTiles();
