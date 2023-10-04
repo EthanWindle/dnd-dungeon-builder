@@ -1,9 +1,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using Unity.VisualScripting;
+using System.Linq;
 using Unity.VisualScripting.FullSerializer;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
+using static UnityEditor.MaterialProperty;
 
 /*
  * Controller for a Grid of tiles and props.
@@ -17,20 +22,27 @@ public class GridController : MonoBehaviour
     public float cellSpacing;
     private GameObject[,] backgroundLayer; //Layer for tiles like walls, floors, doors.
     private GameObject[,] foregroundLayer; //Layer for props and entities like players and monsters
-    private GameObject[,] fogLayer;
+    private GameObject[,] fogLayer; //Layer for the fog
 
     public GameObject[] rooms; //Each instance of a room object is stored here
     public int[] xOffsets; //x location of room, correlates with rooms array
     public int[] yOffsets; //y location of room, correlates with rooms array
     public GameObject wallTile;
+    public GameObject playerEntity;
+
     
     public GameObject fogTile;
 
     private Recorder recorder; //Records events to save the current game state
     private GameObject tilePrefab;
     private GameObject doorPrefab;
+    private GameObject fogPrefab;
+    private GameObject[] propOptions;
+    private GameObject[] monsterOptions;
 
     private bool inPlayerView = false;
+
+    private CustomGeneration customGeneration = new CustomGeneration(20, true, true); //current default generation parameters
 
     /*
      * Loads a save file from recorder
@@ -49,6 +61,7 @@ public class GridController : MonoBehaviour
 
         backgroundLayer = new GameObject[width, height];
         foregroundLayer = new GameObject[width, height];
+        fogLayer = new GameObject[width, height];
 
         rooms = new GameObject[30];
         xOffsets = new int[30];
@@ -66,16 +79,48 @@ public class GridController : MonoBehaviour
             else if (tile.type.Equals("wall"))
             {
                 // Update the backgroundLayer with wall tiles
-                wallTile = Instantiate(wallTile, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
-                wallTile.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
-                backgroundLayer[tile.x, tile.y] = wallTile;
+                GameObject newWallTile = Instantiate(wallTile, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                newWallTile.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                backgroundLayer[tile.x, tile.y] = newWallTile;
             }
             else if (tile.type.Equals("door"))
             {
                 // Update the backgroundLayer with door tiles
-                doorPrefab = Instantiate(doorPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
-                doorPrefab.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
-                backgroundLayer[tile.x, tile.y] = doorPrefab;
+                GameObject newDoorPrefab = Instantiate(doorPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                newDoorPrefab.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                backgroundLayer[tile.x, tile.y] = newDoorPrefab;
+            }
+            else if (tile.type.Equals("prop"))
+            {
+                // Update the backgroundLayer with prop tiles
+                String propPath = "Assets/Prefabs/Prop Prefabs/" + tile.option + ".prefab";
+                GameObject propPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(propPath, typeof(GameObject));
+
+                GameObject newPropPrefab = Instantiate(propPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), -2), Quaternion.identity, gameObject.transform);
+                newPropPrefab.GetComponent<PropController>().Init(cellSize - cellSpacing * 2);
+                foregroundLayer[tile.x, tile.y] = newPropPrefab;
+            }
+            else if (tile.type.Equals("monster"))
+            {
+                // Update the backgroundLayer with monster tiles
+                String monsterPath = "Assets/Prefabs/Entity Prefabs/" + tile.option + ".prefab";
+                GameObject mosterPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(monsterPath, typeof(GameObject));
+
+                GameObject newMonsterPrefab = Instantiate(mosterPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), -2), Quaternion.identity, gameObject.transform);
+                Debug.Log(newMonsterPrefab);
+                newMonsterPrefab.GetComponent<MonsterController>().Init(cellSize - cellSpacing * 2);
+                foregroundLayer[tile.x, tile.y] = newMonsterPrefab;
+            }
+        }
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                GameObject tile = backgroundLayer[x, y];
+                if (tile != null && tile.GetComponent<TileController>() is WallController)
+                {
+                    tile.GetComponent<WallController>().SetTexture(GetAdjacentControllers(x, y));
+                }
             }
         }
 
@@ -89,6 +134,8 @@ public class GridController : MonoBehaviour
 
         fogLayer = new GameObject[width, height];
 
+        fogLayer = new GameObject[width, height];
+
         GenerateNewMap();
     }
 
@@ -97,21 +144,56 @@ public class GridController : MonoBehaviour
         this.recorder = new Recorder(this);
         //Updates the arrays with the generated dungeon values
         DungeonGenerator dungeonGenerator = gameObject.GetComponent<DungeonGenerator>();
-        rooms = dungeonGenerator.GenerateDungeon(rooms, width, height);
+        rooms = dungeonGenerator.GenerateDungeon(rooms, width, height, customGeneration);
 
         for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
             //int offsetx = xOffsets[i];
-            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder);
+            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder, customGeneration);
             RoomController roomController = rooms[i].GetComponent<RoomController>();
             this.tilePrefab = roomController.tilePrefab;
             this.doorPrefab = roomController.doorPrefab;
+            this.fogPrefab = roomController.fogPrefab;
+            this.propOptions = roomController.propOptions;
+            this.monsterOptions = roomController.monsterOptions;
         }
 
+        PlaceWalls();
+
+        Vector2 playerPosition = PlacePlayer();
+
+
+        PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
+        pathGen.ConnectAllRooms(backgroundLayer, rooms, width, height);
+        PlaceWalls();
+        gameObject.transform.position -= new Vector3(playerPosition.x * cellSize, playerPosition.y * cellSize, 0); //Try to center the grid in the game space.    
+
+        //Test load from file
+        if (!string.IsNullOrWhiteSpace(GlobalVariables.getMap()))
+        {
+            Debug.Log("Loading Map");
+            Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson(GlobalVariables.getMap());
+            GlobalVariables.clearMap();
+            SetObjects(deserializedRecorder);
+        }
+
+        //Test save to file
+        //GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
+
+        //Test save as PNG
+        //GameObject topDownCamera = GameObject.Find("topDownCamera");
+        //Camera camera = topDownCamera.GetComponent<Camera>();
+        //GridControllerJsonSerializer.SaveSceneAsPNG("saves/testImage.png", 3840, 2160, camera);
+
+    }
+
+    private void PlaceWalls()
+    {
         List<Vector2> wallLocations = new();
 
         for (int x = 0; x < width; x++)
         {
+            for (int y = 0; y < height; y++)
             for (int y = 0; y < height; y++)
             {
                 if (ShouldBeWall(x, y))
@@ -125,24 +207,22 @@ public class GridController : MonoBehaviour
         {
             int x = (int)wallLocation.x;
             int y = (int)wallLocation.y;
-            GameObject wall = Instantiate(wallTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+
+            GameObject wall;
+
+            if (backgroundLayer[x,y] != null){
+                wall = backgroundLayer[x,y];
+            }
+            else{
+                wall = Instantiate(wallTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                recorder.AddTile(new RecorderTile("wall", x, y, -1));
+            }
+
             wall.GetComponent<WallController>().Init(cellSize - cellSpacing * 2);
             wall.GetComponent<WallController>().SetTexture(GetAdjacentControllers(x, y));
             backgroundLayer[x, y] = wall;
-            recorder.AddTile(new RecorderTile("wall", x, y, -1));
+            
         }
-
-        PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
-        pathGen.main(backgroundLayer, rooms, width, height);
-
-        //Test load from file
-        //Recorder deserializedRecorder = GridControllerJsonSerializer.DeserializeFromJson("testFile2.json");
-        //SetObjects(deserializedRecorder);
-
-        //Test save to file
-        //GridControllerJsonSerializer.SerializeToJson(this, "testFile2.json", recorder);
-
-
         for (int x = 0; x < width; x++)
         {
             for (int y = 0; y < height; y++)
@@ -156,8 +236,27 @@ public class GridController : MonoBehaviour
 
         gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
 
+            
     }
 
+    private Vector2 PlacePlayer(){
+        GameObject firstRoom = rooms[0];
+        RoomController firstRoomController = firstRoom.GetComponent<RoomController>();
+
+        for (int x = firstRoomController.GetX(); x < firstRoomController.width + firstRoomController.GetX(); x++){
+            for (int y = firstRoomController.GetY(); y < firstRoomController.height + firstRoomController.GetY(); y++){
+                if (backgroundLayer[x,y] != null && backgroundLayer[x,y].GetComponent<TileController>() is FloorController && foregroundLayer[x,y] == null){
+                    GameObject player = Instantiate(playerEntity,new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), -1), Quaternion.identity, gameObject.transform);
+                    foregroundLayer[x,y] = player;
+                    player.GetComponent<PlayerController>().Init(cellSize - cellSpacing * 2);
+                    firstRoomController.HideTiles();
+                    return new Vector2(x,y);
+                }
+            }
+        }
+
+        return new Vector2(-1,-1);
+    }
 
 
     /*
@@ -188,7 +287,10 @@ public class GridController : MonoBehaviour
     private bool ShouldBeWall(int x, int y)
     {
 
-        if (backgroundLayer[x, y] != null) return false;
+        if (backgroundLayer[x, y] != null){
+
+            return backgroundLayer[x,y].GetComponent<TileController>() is WallController;
+        } 
 
 
         foreach (TileController controller in GetAdjacentControllers(x, y))
@@ -286,6 +388,16 @@ public class GridController : MonoBehaviour
         return backgroundLayer[(int)position.x, (int)position.y];
     }
 
+    private bool FogIsActive(Vector2 position)
+    {
+        return fogLayer[(int)position.x, (int)position.y].activeSelf;
+    }
+    public GameObject grabEntity(Vector2 position){
+        if (isInPlayerView() && FogIsActive(position)) return null;
+        return GetForegroundObject(position);
+
+    }
+
 
     public void DropEntity(GameObject entity, Vector2 origin, Vector2 destination)
     {
@@ -293,7 +405,8 @@ public class GridController : MonoBehaviour
 
         if (GetBackgroundObject(destination) == null //There is no tile at destination
             || !GetBackgroundObject(destination).GetComponent<TileController>().CanEnter() //The destination cannot be entered (i.e. is a wall or closed door)
-            || GetForegroundObject(destination) != null) //There is already a prop or other entity at the destination.
+            || GetForegroundObject(destination) != null
+            || (isInPlayerView() && FogIsActive(destination))) //There is already a prop or other entity at the destination.
         {
             entity.transform.position = GetWorldLocation(origin);
         }
@@ -306,4 +419,7 @@ public class GridController : MonoBehaviour
         }
     }
 
+    public void Save(string filePath){
+        GridControllerJsonSerializer.SerializeToJson(this, filePath, recorder);
+    }
 }

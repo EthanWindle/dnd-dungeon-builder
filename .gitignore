@@ -73,5 +73,10 @@ crashlytics-build.properties
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # Recorder testing files
+/saves/
+/saves/*
+/Assets/Saves/
+/Assets/Saves/*
 *testFile.json
 *testFile2.json
+*testImage.png

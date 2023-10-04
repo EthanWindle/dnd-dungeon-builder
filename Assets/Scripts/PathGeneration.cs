@@ -1,38 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using System.Drawing;
-using System.IO;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PathGenerator : MonoBehaviour
 {
 
     public GameObject walkway;
+    public GameObject wallPrefab;
+    private readonly int maxLength = 20;
     PathNode[,] grid;
     int gridMaxX = 0;
     int gridMaxY = 0;
     const int MOVE_STRAIGHT_COST = 10;
-    const int MOVE_DIAGONAL_COST = 14;
 
-    public List<PathNode> findPath(Vector2 door1, Vector2 door2, GameObject[,] backgroundLayer, int maxX, int maxY)
+    public Path FindPath(Vector2 door1, Vector2 door2, GameObject[,] backgroundLayer, int maxX, int maxY)
     {
-        List<PathNode> openList = new List<PathNode>();
-        List<PathNode> closedList = new List<PathNode>();
 
-        bool[,]walkable = new bool[maxX, maxY];
+        bool[,] walkable = new bool[maxX, maxY];
         grid = new PathNode[maxX, maxY];
 
         for (int x = 0; x < maxX; x++)
         {
             for (int y = 0; y < maxY; y++)
             {
-                if (backgroundLayer[x,y] == null)
+                if (backgroundLayer[x, y] == null)
                 {
-                    walkable[x,y] = true;
-                    grid[x,y] = new PathNode(backgroundLayer, x, y);
+                    walkable[x, y] = true;
+                    grid[x, y] = new PathNode(backgroundLayer, x, y);
                     if (x > gridMaxX)
                     {
                         gridMaxX = x;
@@ -44,11 +38,11 @@ public class PathGenerator : MonoBehaviour
                 }
                 else
                 {
-                    walkable[x,y] = false;
+                    walkable[x, y] = false;
                     if (backgroundLayer[x, y].GetComponent<DoorController>())
                     {
-                        walkable[x,y] = true;
-                        grid[x,y] = new PathNode(backgroundLayer, x, y);
+                        walkable[x, y] = true;
+                        grid[x, y] = new PathNode(backgroundLayer, x, y);
                         if (x > gridMaxX)
                         {
                             gridMaxX = x;
@@ -61,30 +55,31 @@ public class PathGenerator : MonoBehaviour
                 }
             }
         }
-        //Debug.LogError(door1.x +","+ door1.y);
-        //Debug.LogError(door2.x + "," + door2.y);
         PathNode startNode = grid[(int)door1.x, (int)door1.y];
         PathNode endNode = grid[(int)door2.x, (int)door2.y];
 
-        
-        openList = new List<PathNode> { startNode };
-        closedList = new List<PathNode>();
+
+        List<PathNode> openList = new() { startNode };
+        List<PathNode> closedList = new();
 
         for (int x = 0; x < maxX; x++)
         {
             for (int y = 0; y < maxY; y++)
             {
-                if (walkable[x,y] == true)
+                if (walkable[x, y] == true)
                 {
                     PathNode node = grid[x, y];
                     node.gCost = int.MaxValue;
-                    node.CalculateFCost(); 
+                    node.CalculateFCost();
                     node.previousNode = null;
                 }
             }
-        }startNode.gCost = 0;
-        startNode.hCost = CalculateDistanceCost(startNode, endNode);    
-        //Debug.LogError(startNode.hCost);
+        }
+
+        if (startNode == null || endNode == null) return null;
+
+        startNode.gCost = 0;
+        startNode.hCost = CalculateDistanceCost(startNode, endNode);
         startNode.CalculateFCost();
 
         while (openList.Count > 0)
@@ -92,18 +87,20 @@ public class PathGenerator : MonoBehaviour
             PathNode currentNode = GetLowestFCostNode(openList);
             if (currentNode == endNode)
             {
+
                 //reached final node
-                return CalculatePath(endNode);
+                Path path =  CalculatePath(endNode);
+                return path;
             }
 
             openList.Remove(currentNode);
             closedList.Add(currentNode);
 
-            foreach (PathNode NeighbourNode in getNeighboursList(currentNode)){
-                if(closedList.Contains(NeighbourNode)) continue;
-                if (NeighbourNode != null) {
-                    //Debug.Log(NeighbourNode);
-                    //Debug.Log(currentNode);
+            foreach (PathNode NeighbourNode in getNeighboursList(currentNode))
+            {
+                if (closedList.Contains(NeighbourNode)) continue;
+                if (NeighbourNode != null)
+                {
                     int tentativeGCost = currentNode.gCost + CalculateDistanceCost(currentNode, NeighbourNode);
                     if (tentativeGCost < NeighbourNode.gCost)
                     {
@@ -126,42 +123,29 @@ public class PathGenerator : MonoBehaviour
 
     private List<PathNode> getNeighboursList(PathNode currentNode)
     {
-        List<PathNode> neighbourList = new List<PathNode>();
+        List<PathNode> neighbourList = new();
 
-        if(currentNode.x - 1 >= 0)//Left
+        if (currentNode.x - 1 >= 0)//Left
         {
             neighbourList.Add(grid[currentNode.x - 1, currentNode.y]);
-            if (currentNode.y - 1 >= 0)//left down
-            {
-                neighbourList.Add(grid[currentNode.x - 1, currentNode.y - 1]);
-            }
-            if(currentNode.y + 1 < gridMaxY)//left up
-            {
-                neighbourList.Add(grid[currentNode.x - 1, currentNode.y + 1]);
-            }
-        }if(currentNode.x + 1 < gridMaxX)//Right
+        }
+        if (currentNode.x + 1 < gridMaxX)//Right
         {
             neighbourList.Add(grid[currentNode.x + 1, currentNode.y]);
-            if (currentNode.y - 1 >= 0)//right down
-            {
-                neighbourList.Add(grid[currentNode.x + 1, currentNode.y - 1]);
-            }
-            if (currentNode.y + 1 < gridMaxY)//right up
-            {
-                neighbourList.Add(grid[currentNode.x + 1, currentNode.y + 1]);
-            }
-        }if(currentNode.y - 1 >= 0)//Down
+        }
+        if (currentNode.y - 1 >= 0)//Down
         {
             neighbourList.Add(grid[currentNode.x, currentNode.y - 1]);
-        }if(currentNode.y + 1 < gridMaxY)//Up
+        }
+        if (currentNode.y + 1 < gridMaxY)//Up
         {
             neighbourList.Add(grid[currentNode.x, currentNode.y + 1]);
         }
         return neighbourList;
     }
-    private List<PathNode> CalculatePath(PathNode endNode)
+    private Path CalculatePath(PathNode endNode)
     {
-        List<PathNode> path = new List<PathNode>();
+        Path path = new();
         path.Add(endNode);
         PathNode currentNode = endNode;
         while (currentNode.previousNode != null)
@@ -170,6 +154,7 @@ public class PathGenerator : MonoBehaviour
             currentNode = currentNode.previousNode;
         }
         path.Reverse();
+
         return path;
     }
 
@@ -190,32 +175,57 @@ public class PathGenerator : MonoBehaviour
     {
         int XDistance = Mathf.Abs(startNode.x - endNode.x);
         int YDistance = Mathf.Abs(startNode.y - endNode.y);
-        int remaining = Mathf.Abs(XDistance - YDistance);   
+        int remaining = Mathf.Abs(XDistance - YDistance);
 
-        return MOVE_DIAGONAL_COST * Mathf.Min(XDistance, YDistance) + MOVE_STRAIGHT_COST * remaining;
+        return MOVE_STRAIGHT_COST * remaining;
     }
-    public void main(GameObject[,] backgroundLayer, GameObject[] rooms, int maxX, int maxY)
+
+
+    public Vector2Int GetClosestDoorInDifferentRoom(Dictionary<Vector2Int, TileController> doors, DoorController door, Vector2Int location){
+        Vector2Int closest = new(-1, -1);
+
+        foreach (Vector2Int doorLocation in doors.Keys){
+            DoorController otherDoor = doors[doorLocation] as DoorController;
+            if (otherDoor.GetParent() == door.GetParent()) continue;
+            if (closest == new Vector2Int(-1, -1) || Vector2Int.Distance(doorLocation, location) < Vector2Int.Distance(closest, location)){
+                closest = doorLocation;
+            }
+        }
+
+        return closest;
+    }
+
+
+    private void PlacePath(Path path, GameObject[,] backgroundLayer, GridController gridController){
+        for (int pathIndex = 1; pathIndex < path.Count() - 1; pathIndex++)
+                    {
+                        PathNode p = path.get(pathIndex);
+                        GameObject obj = Instantiate(walkway, new Vector3(p.x * gridController.cellSize, p.y * gridController.cellSize, 0), Quaternion.identity, gameObject.transform);
+                        backgroundLayer[p.x,p.y] = obj;
+                        obj.GetComponent<TileController>().Init(gridController.cellSize - gridController.cellSpacing * 2);
+                        gridController.GetRecorder().AddTile(new RecorderTile("floor", p.x, p.y, -1));
+                    
+                }
+    }
+
+    public void ConnectAllRooms(GameObject[,] backgroundLayer, GameObject[] rooms, int maxX, int maxY)
     {
-        int pathCount = 0;
         DoorController door1;
-        DoorController door2;
         Vector2Int door1Coords;
         Vector2Int door2Coords;
-        Dictionary <Vector2Int, TileController> doors = new Dictionary<Vector2Int, TileController>();
-        Dictionary <Vector2Int, TileController> doorsInDifferentRooms = new Dictionary<Vector2Int, TileController>();
-        PathNode prevPathNode = null;
-        List<PathNode> path;
+        Dictionary<Vector2Int, TileController> doors = new();
         GridController gridController = gameObject.GetComponent<GridController>();
 
         for (int i = 0; i < maxX; i++)//for each grid cell across the whole map
         {
             for (int j = 0; j < maxY; j++)//for each grid cell down the whole map
             {
-                if (backgroundLayer[i,j] != null) {
+                if (backgroundLayer[i, j] != null)
+                {
                     TileController tile = backgroundLayer[i, j].GetComponent<TileController>();//get the tile at the current location
                     if (tile is DoorController)//if the tile is a door
                     {
-                        Vector2Int gridCoordinates = new Vector2Int(i, j); // Convert the grid coordinates to Vector2Int
+                        Vector2Int gridCoordinates = new(i, j); // Convert the grid coordinates to Vector2Int
                         doors.Add(gridCoordinates, tile); // Add the door to the dictionary
                     }
                 }
@@ -223,77 +233,140 @@ public class PathGenerator : MonoBehaviour
         }
         var DoorList = doors.Values.ToList();
         var DoorCoords = doors.Keys.ToList();
-        for (int i = 0; i < doors.Count - 1; i++)
-        {
-            door1 = DoorList[i] as DoorController;
-            door2 = DoorList[i + 1] as DoorController;
 
-            if (door2.GetParent() != door1.GetParent())
-            {
+
+        List<Path> paths = new();
+
+        for (int i = 0; i < doors.Count - 1; i++)
+        { //Connect each door to the closest door in a different room, if the distance is < maxLength
+                door1 = DoorList[i] as DoorController;
                 door1Coords = DoorCoords[i];
-                door2Coords = DoorCoords[i + 1];
-                path = findPath(door1Coords, door2Coords, backgroundLayer, maxX, maxY);
-                if (path != null)
+                door2Coords = GetClosestDoorInDifferentRoom(doors, door1, DoorCoords[i]);
+                
+                
+                Path path = FindPath(door1Coords, door2Coords, backgroundLayer, maxX, maxY);
+                if (path != null && path.Count() <= maxLength)
                 {
-                    pathCount++;
-                    //Debug.Log(path.Count);
-                    foreach (PathNode p in path)
-                    {
-                        if (prevPathNode != null && IsDiagonal(prevPathNode, p))
-                        {
-                            Vector3 tilePosition = new Vector3(p.x * (gridController.cellSize + (gridController.cellSpacing * 6)), (p.y - 1) * (gridController.cellSize + (gridController.cellSpacing * 6)), 0);
-                            InstantiateTile(tilePosition, gridController.cellSize - gridController.cellSpacing * 2);
-                        }
-                        //Debug.Log("X: "+p.x);
-                        //Debug.Log("Y: "+p.y);                  
-                        Debug.Log(pathCount);
-                        GameObject obj = Instantiate(walkway, new Vector3(p.x*(gridController.cellSize + (gridController.cellSpacing *6)), p.y*(gridController.cellSize + (gridController.cellSpacing *6)), 0), Quaternion.identity, gameObject.transform);
-                        obj.GetComponent<TileController>().Init(gridController.cellSize - gridController.cellSpacing * 2);
-                        prevPathNode = p;
-                    }
-                }
+                    path.SetRooms(backgroundLayer);
+                    paths.Add(path);
+                    
             }
-            
+
         }
         
+
+        List<HashSet<RoomController>> disjointGroups = GetDisjointRoomGroups(rooms);
+
+        while (disjointGroups.Count() > 1)
+        { //Connect each disjoint group of rooms, ignoring max path length
+            List<RoomController> firstGroup = new(disjointGroups[0]);
+            List<RoomController> controllers = new();
+            foreach (GameObject gameObject in rooms){
+                RoomController controller =  gameObject.GetComponent<RoomController>();
+                if (!firstGroup.Contains(controller)) {
+                    controllers.Add(gameObject.GetComponent<RoomController>());
+                }
+            }
+
+            FindClosestDoors(firstGroup, controllers, out Vector2Int originDoor, out Vector2Int destinationDoor);
+
+            Path path = FindPath(originDoor, destinationDoor, backgroundLayer, maxX, maxY);
+
+            if (path == null)
+            { //There is not valid path between the two doors. Must return otherwise the code will infinitely loop
+                Debug.Log("Could not generate path between closest doors in disjoint groups of rooms");
+                Debug.Log(originDoor);
+                Debug.Log(destinationDoor);
+                return;
+            }
+
+            path.SetRooms(backgroundLayer);
+
+            paths.Add(path);
+            
+            disjointGroups = GetDisjointRoomGroups(rooms);
+
+        }
+        
+
+        foreach(Path path in paths)
+        {
+            PlacePath(path, backgroundLayer, gridController);
+        }
+
     }
 
-    private bool IsDoorInCurrentRoom(DoorController door, RoomController currentRoom)
-    {
-        Vector3 doorPosition = door.transform.position; // Convert the door's position to Vector3
-        foreach (Vector2 roomDoor in currentRoom.doors)
-        {
-            Vector3 roomDoorPosition = new Vector3(roomDoor.x, roomDoor.y, 0f); // Convert roomDoor to Vector3
-            if (doorPosition == roomDoorPosition)
-            {
-                return true; // The door is in the current room
+    private void FindClosestDoors(List<RoomController> origins, List<RoomController> destinations, out Vector2Int originDoor, out Vector2Int destinationDoor){
+        float distance = -1f;
+        Vector2Int closestOriginDoor = new(-1, -1);
+        Vector2Int closestDestinationDoor = new(-1, -1);
+        foreach (RoomController originRoom in origins){
+            foreach (RoomController destinationRoom in destinations){
+                float currentDistance = FindClosestDoorsInRooms(originRoom, destinationRoom, out Vector2Int origin, out Vector2Int destination);
+                if (distance == -1f || currentDistance < distance){
+                    distance = currentDistance;
+                    closestOriginDoor = origin;
+                    closestDestinationDoor = destination;
+                }
             }
         }
-        return false; // The door is not in the current room
+
+        originDoor = closestOriginDoor;
+        destinationDoor = closestDestinationDoor;
+        Debug.Log(distance);
     }
 
+    private float FindClosestDoorsInRooms(RoomController originRoom, RoomController destinationRoom, out Vector2Int originDoor, out Vector2Int destinationDoor){
+        float distance = -1f;
+        Vector2Int closestOrigin = new(-1, -1);
+        Vector2Int closestDestination = new(-1, -1);
+        foreach(Vector2 originVector in originRoom.doors){
+            Vector2Int origin = new((int)originVector.x + originRoom.GetX(), (int)originVector.y + originRoom.GetY());
+            foreach (Vector2 destinationVector in destinationRoom.doors){
+                Vector2Int destination = new((int)destinationVector.x + destinationRoom.GetX(), (int)destinationVector.y + destinationRoom.GetY());
+                float currentDistance = Vector2Int.Distance(origin, destination);
+                if (distance == -1f || currentDistance < distance){
+                    distance = currentDistance;
+                    closestOrigin = origin;
+                    closestDestination = destination;
+                }
 
-    // Check if a tile is within bounds and not occupied
-    private bool IsValidTile(Vector2 tile, int maxX, int maxY)
-    {
-        int x = (int)tile.x;
-        int y = (int)tile.y;
-        return x >= 0 && x < maxX && y >= 0 && y < maxY;
+            }
+        }
+
+        originDoor = closestOrigin;
+        destinationDoor = closestDestination;
+
+        return distance;
+
+
     }
+    
+    private List<HashSet<RoomController>> GetDisjointRoomGroups(GameObject[] rooms){
+        List<HashSet<RoomController>> roomGroups = new();
 
-    private bool IsDiagonal(PathNode node1, PathNode node2)
-    {
-        // Check if the nodes are diagonal by comparing their X and Y differences
-        int deltaX = Mathf.Abs(node1.x - node2.x);
-        int deltaY = Mathf.Abs(node1.y - node2.y);
-        return deltaX == 1 && deltaY == 1;
-    }
+        List<RoomController> unvisitedRooms = new();
 
-    private void InstantiateTile(Vector3 position, float size)
-    {
-        // Instantiate the tile prefab at the specified position
-        GameObject obj = Instantiate(walkway, position, Quaternion.identity, gameObject.transform);
-        obj.GetComponent<TileController>().Init(size);
+        foreach (GameObject gameObject in rooms){
+            unvisitedRooms.Add(gameObject.GetComponent<RoomController>());
+        }
+
+
+        while (unvisitedRooms.Count > 0){
+            HashSet<RoomController> visitedRooms = new();
+
+            if (unvisitedRooms[0].paths.Count > 0){
+                visitedRooms = unvisitedRooms[0].paths[0].GetReachableRooms(visitedRooms);
+            }
+            else{
+                visitedRooms.Add(unvisitedRooms[0]);
+            }
+            roomGroups.Add(visitedRooms);
+            
+            unvisitedRooms.RemoveAll((room) => visitedRooms.Any((otherRoom) => room == otherRoom));
+        }
+
+        return roomGroups;
     }
 
 }

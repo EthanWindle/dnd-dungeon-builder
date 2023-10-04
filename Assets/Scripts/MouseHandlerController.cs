@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MouseHandlerController : MonoBehaviour
 {
-
     Vector3 mousePosition;
     bool mouseDown;
 
@@ -50,9 +49,7 @@ public class MouseHandlerController : MonoBehaviour
     void HandleRemoveFog()
     {
         if (Input.GetMouseButtonDown(1))
-        {
-            controller.HandleFog(Camera.main.ScreenToWorldPoint(Input.mousePosition));
-        }
+            controller.HandleFog(controller.GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
     }
 
 
@@ -73,8 +70,11 @@ public class MouseHandlerController : MonoBehaviour
             EntityController entityController = gameObject.GetComponent<EntityController>();
 
             if (entityController == null) return;
+            if (entityController.canBeMovedByPlayer() || !controller.isInPlayerView()){
+                grabbedEntity = gameObject;
+            }
 
-            grabbedEntity = gameObject;
+            
         }
 
         if (Input.GetMouseButton(0) && grabbedEntity != null)
@@ -112,12 +112,24 @@ public class MouseHandlerController : MonoBehaviour
             }
 
 
-            if (Input.GetMouseButtonDown(0) && grabbedEntity == null){
+            if (OverMap() && Input.GetMouseButtonDown(0) && grabbedEntity == null){
                 mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
                 mouseDown = true;
             }
             else if (!Input.GetMouseButton(0)){
                 mouseDown = false;
             }
+        }
+
+        // This just makes sure that the camera is only moved when map is dragged
+        bool OverMap(){
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);;
+            RaycastHit hit;
+            if(Physics.Raycast(ray, out hit))
+		    {
+			    return hit.collider.name == "Map";
+		    }
+
+            return false;
         }
     }
