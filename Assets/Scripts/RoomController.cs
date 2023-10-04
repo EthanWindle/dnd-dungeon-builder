@@ -132,14 +132,17 @@ public class RoomController : MonoBehaviour
     /*
      * Removes the fog if point is inside room
      */
-    public void ClearFog(Vector3 mousePos, GameObject[,] gridFogLayer, int gridWidth, int gridHeight)
+    public bool ClearFog(Vector3 mousePos, GameObject[,] gridFogLayer, int gridWidth, int gridHeight)
     {
         if (InsideRoom(mousePos) && !hidden)
         {
             hidden = true;
             HideFogTiles(gridFogLayer, gridWidth, gridHeight);
+            fogLayer = new GameObject[width, height];
+            return true;
             //fogLayer = new GameObject[width, height];
         }
+        return false;
     }
 
     /*

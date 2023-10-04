@@ -62,12 +62,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
       propertyPath: m_SortingLayerID
-      value: -1456435237
+      value: 528640251
       objectReference: {fileID: 0}
     - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: d0e934dde57d1ed48b8164b3a83a0a7d, type: 2}
+      objectReference: {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

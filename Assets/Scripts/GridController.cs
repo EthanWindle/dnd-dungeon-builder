@@ -176,6 +176,16 @@ public class GridController : MonoBehaviour
             GlobalVariables.clearMap();
             SetObjects(deserializedRecorder);
         }
+        ChangeToDMView();
+        /*
+        for (int w = 0; w < width; w++)
+        {
+            for (int h = 0; h < height; h++)
+            {
+                fogLayer[w, h].SetActive(false);
+                Debug.Log("gridcont setting fog as active");
+            }
+        }*/
 
         //Test save to file
         //GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
@@ -193,7 +203,6 @@ public class GridController : MonoBehaviour
 
         for (int x = 0; x < width; x++)
         {
-            for (int y = 0; y < height; y++)
             for (int y = 0; y < height; y++)
             {
                 if (ShouldBeWall(x, y))
@@ -233,10 +242,6 @@ public class GridController : MonoBehaviour
             }
         }
 
-
-        gameObject.transform.position -= new Vector3(width * cellSize / 2, width * cellSize / 2, 0); //Try to center the grid in the game space.
-
-            
     }
 
     private Vector2 PlacePlayer(){
@@ -249,7 +254,7 @@ public class GridController : MonoBehaviour
                     GameObject player = Instantiate(playerEntity,new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), -1), Quaternion.identity, gameObject.transform);
                     foregroundLayer[x,y] = player;
                     player.GetComponent<PlayerController>().Init(cellSize - cellSpacing * 2);
-                    firstRoomController.HideTiles();
+                    firstRoomController.HideFogTiles(fogLayer, width, height);
                     return new Vector2(x,y);
                 }
             }
@@ -336,7 +341,17 @@ public class GridController : MonoBehaviour
     {
         for (int i = 0; i < rooms.Length; i++)
         {
-            rooms[i].GetComponent<RoomController>().ClearFog(mousePos, fogLayer, width, height);
+            bool clear = rooms[i].GetComponent<RoomController>().ClearFog(mousePos, fogLayer, width, height);
+            if (clear) return;
+
+            //TODO:
+            /* Upon path generation the fog has to be created for the path, inside the Path.cs class. 
+             *  This has to be done before the "filling" fog is generated in gridcontroller.
+             * Path.cs then needs functions to show and hide fog as well as to remove fog, same as room controller.
+             *  Will be called from roomcontroller
+             * 
+             */
+            
         }
     }
 
