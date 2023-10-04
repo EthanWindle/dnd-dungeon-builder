@@ -118,6 +118,7 @@ public class RoomController : MonoBehaviour
         {
             for (int h = 0; h < height; h++)
             {
+                if (gridFogLayer[w + this.x, h + this.y] != null) continue;
                 GameObject fog = Instantiate(fogPrefab, new Vector3((w + this.x) * (size + margin), (h + this.y) * (size + margin), -2), Quaternion.identity, transformParent);
                 fog.GetComponent<TileController>().Init(size - margin * 2);
                 fogLayer[w, h] = fog;
@@ -139,8 +140,14 @@ public class RoomController : MonoBehaviour
             hidden = true;
             HideFogTiles(gridFogLayer, gridWidth, gridHeight);
             fogLayer = new GameObject[width, height];
-            return true;
             //fogLayer = new GameObject[width, height];
+            //TODO: check this!!!!!
+
+            foreach (Path path in paths)
+            {
+                path.HideFogTiles();
+            }
+            return true;
         }
         return false;
     }
@@ -181,6 +188,11 @@ public class RoomController : MonoBehaviour
                 gridFogLayer[w + this.x, h + this.y].GetComponent<FogController>().lowerOpacity();
             }
         }
+
+        foreach (Path path in paths)
+        {
+            path.HideFogTiles();
+        }
     }
 
     /*
@@ -204,7 +216,11 @@ public class RoomController : MonoBehaviour
                 gridFogLayer[w + this.x, h + this.y].GetComponent<FogController>().raiseOpacity();
             }
         }
-        
+        foreach (Path path in paths)
+        {
+            path.HideFogTiles();
+        }
+
     }
 
     public void setHasPathTrue()

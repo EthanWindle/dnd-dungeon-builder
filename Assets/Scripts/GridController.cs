@@ -134,8 +134,6 @@ public class GridController : MonoBehaviour
 
         fogLayer = new GameObject[width, height];
 
-        fogLayer = new GameObject[width, height];
-
         GenerateNewMap();
     }
 
@@ -160,12 +158,21 @@ public class GridController : MonoBehaviour
 
         PlaceWalls();
 
+        PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
+        pathGen.ConnectAllRooms(backgroundLayer, rooms, width, height, gameObject.transform, fogLayer, cellSize, cellSpacing);
+
+        //TODO:
+        /* Upon path generation the fog has to be created for the path, inside the Path.cs class. 
+         *  This has to be done before the "filling" fog is generated in gridcontroller.
+         * Path.cs then needs functions to show and hide fog as well as to remove fog, same as room controller.
+         *  Will be called from roomcontroller
+         * 
+         */
+
+        PlaceWalls();
+        PlaceBackgroundFog();
         Vector2 playerPosition = PlacePlayer();
 
-
-        PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
-        pathGen.ConnectAllRooms(backgroundLayer, rooms, width, height);
-        PlaceWalls();
         gameObject.transform.position -= new Vector3(playerPosition.x * cellSize, playerPosition.y * cellSize, 0); //Try to center the grid in the game space.    
 
         //Test load from file
@@ -177,15 +184,6 @@ public class GridController : MonoBehaviour
             SetObjects(deserializedRecorder);
         }
         ChangeToDMView();
-        /*
-        for (int w = 0; w < width; w++)
-        {
-            for (int h = 0; h < height; h++)
-            {
-                fogLayer[w, h].SetActive(false);
-                Debug.Log("gridcont setting fog as active");
-            }
-        }*/
 
         //Test save to file
         //GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
@@ -195,6 +193,19 @@ public class GridController : MonoBehaviour
         //Camera camera = topDownCamera.GetComponent<Camera>();
         //GridControllerJsonSerializer.SaveSceneAsPNG("saves/testImage.png", 3840, 2160, camera);
 
+    }
+
+    private void PlaceBackgroundFog()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (fogLayer[x, y] != null) continue;
+                GameObject fog = Instantiate(fogTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                fogLayer[x, y] = fog;
+            }
+        }
     }
 
     private void PlaceWalls()
@@ -231,15 +242,6 @@ public class GridController : MonoBehaviour
             wall.GetComponent<WallController>().SetTexture(GetAdjacentControllers(x, y));
             backgroundLayer[x, y] = wall;
             
-        }
-        for (int x = 0; x < width; x++)
-        {
-            for (int y = 0; y < height; y++)
-            {
-                if (fogLayer[x, y] != null) continue;
-                GameObject fog = Instantiate(fogTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
-                fogLayer[x, y] = fog;
-            }
         }
 
     }
@@ -342,16 +344,7 @@ public class GridController : MonoBehaviour
         for (int i = 0; i < rooms.Length; i++)
         {
             bool clear = rooms[i].GetComponent<RoomController>().ClearFog(mousePos, fogLayer, width, height);
-            if (clear) return;
-
-            //TODO:
-            /* Upon path generation the fog has to be created for the path, inside the Path.cs class. 
-             *  This has to be done before the "filling" fog is generated in gridcontroller.
-             * Path.cs then needs functions to show and hide fog as well as to remove fog, same as room controller.
-             *  Will be called from roomcontroller
-             * 
-             */
-            
+            if (clear) return;            
         }
     }
 

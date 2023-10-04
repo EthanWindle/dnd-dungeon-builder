@@ -1666,7 +1666,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 972de3e5369545144912d87ad89d55d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfRooms: 20
+  numberOfRooms: 19
 --- !u!114 &735019961
 MonoBehaviour:
   m_ObjectHideFlags: 0

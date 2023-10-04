@@ -10,6 +10,7 @@ public class PathNode
     public int gCost;
     public int hCost;
     public int fCost;
+    GameObject fog;
 
     public PathNode previousNode;
     public PathNode(GameObject[,] grid, int x, int y)
@@ -17,6 +18,23 @@ public class PathNode
         this.grid = grid;
         this.x = x;
         this.y = y;
+    }
+
+    public void CreateFog(Transform transformParent, GameObject fogPrefab, GameObject[,] gridFogLayer, float size, float margin)
+    {
+        fog = UnityEngine.Object.Instantiate(fogPrefab, new Vector3((x) * (size + margin), (y) * (size + margin), -2), Quaternion.identity, transformParent);
+        fog.GetComponent<TileController>().Init(size - margin * 2);
+        gridFogLayer[x, y] = fog;
+    }
+
+    public void hideFogTile()
+    {
+        fog.SetActive(false);
+    }
+
+    public void showFogTile()
+    {
+        fog.SetActive(true);
     }
 
     public void CalculateFCost()
