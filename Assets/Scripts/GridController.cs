@@ -73,7 +73,7 @@ public class GridController : MonoBehaviour
             {
                 // Update the backgroundLayer with floor tiles
                 GameObject floorTile = Instantiate(tilePrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 0), Quaternion.identity, gameObject.transform);
-                floorTile.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                floorTile.GetComponent<FloorController>().Init(cellSize - cellSpacing * 2, spritesheetManager);
                 backgroundLayer[tile.x, tile.y] = floorTile;
             }
             else if (tile.type.Equals("wall"))
@@ -87,7 +87,7 @@ public class GridController : MonoBehaviour
             {
                 // Update the backgroundLayer with door tiles
                 GameObject newDoorPrefab = Instantiate(doorPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
-                newDoorPrefab.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                newDoorPrefab.GetComponent<DoorController>().Init(cellSize - cellSpacing * 2, spritesheetManager);
                 backgroundLayer[tile.x, tile.y] = newDoorPrefab;
             }
             else if (tile.type.Equals("prop"))
@@ -149,7 +149,7 @@ public class GridController : MonoBehaviour
         for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
             //int offsetx = xOffsets[i];
-            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder, customGeneration);
+            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder, customGeneration, spritesheetManager);
             RoomController roomController = rooms[i].GetComponent<RoomController>();
             this.tilePrefab = roomController.tilePrefab;
             this.doorPrefab = roomController.doorPrefab;
@@ -164,7 +164,7 @@ public class GridController : MonoBehaviour
 
 
         PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
-        pathGen.ConnectAllRooms(backgroundLayer, rooms, width, height);
+        pathGen.ConnectAllRooms(backgroundLayer, rooms, width, height, spritesheetManager);
         PlaceWalls();
         gameObject.transform.position -= new Vector3(playerPosition.x * cellSize, playerPosition.y * cellSize, 0); //Try to center the grid in the game space.    
 

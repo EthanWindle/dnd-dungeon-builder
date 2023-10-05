@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 /**
@@ -8,16 +9,26 @@ using UnityEngine;
 public class DoorController : TileController
 {
 
-    public Texture2D openTexture;
-    public Texture2D closeTexture;
+    private Sprite openSprite;
+    private Sprite closeSprite;
 
 
     private void Awake()
     {
         _open = false;
-        Sprite sprite = Sprite.Create(closeTexture, new Rect(0, 0, closeTexture.width, closeTexture.height), new Vector2(0.5f, 0.5f), textureSize);
+    }
 
-        gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+
+
+    public void Init(float size, SpritesheetManager spritesheetManager)
+    {
+        openSprite = spritesheetManager.Get("Open Door");
+        closeSprite = spritesheetManager.Get("Closed Door");
+
+        gameObject.GetComponent<SpriteRenderer>().sprite = closeSprite;
+
+        base.Init(size);
+
     }
 
     private bool _open;
@@ -29,16 +40,14 @@ public class DoorController : TileController
     public void Open()
     {
         this._open = true;
-        Sprite sprite = Sprite.Create(openTexture, new Rect(0, 0, openTexture.width, openTexture.height), new Vector2(0.5f, 0.5f), textureSize);
 
-        gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+        gameObject.GetComponent<SpriteRenderer>().sprite = openSprite;
     }
     public void Close()
     {
         this._open=false;
-        Sprite sprite = Sprite.Create(closeTexture, new Rect(0, 0, closeTexture.width, closeTexture.height), new Vector2(0.5f, 0.5f), textureSize);
 
-        gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
+        gameObject.GetComponent<SpriteRenderer>().sprite = closeSprite;
     }
 
     private RoomController Parent;
