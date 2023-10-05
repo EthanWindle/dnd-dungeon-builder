@@ -196,12 +196,20 @@ public class GridController : MonoBehaviour
                 if (fogLayer[x, y] != null)
                 {
                     fogLayer[x, y] = null;
+                    if (backgroundLayer[x, y] == null)
+                    {
+                        GameObject cornerFog = Instantiate(fogTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                        fogLayer[x, y] = cornerFog;
+                    }
                     continue;
                 }
                 GameObject fog = Instantiate(fogTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
                 fogLayer[x, y] = fog;
+
             }
         }
+
+        // check if there is a tile behind the fogtile, if not then place a fogtile there
     }
 
     private void PlaceWalls()
@@ -422,6 +430,7 @@ public class GridController : MonoBehaviour
 
     private bool FogIsActive(Vector2 position)
     {
+        if (fogLayer[(int)position.x, (int)position.y] == null) return true;
         return fogLayer[(int)position.x, (int)position.y].activeSelf;
     }
     public GameObject grabEntity(Vector2 position){

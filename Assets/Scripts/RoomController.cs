@@ -171,7 +171,16 @@ public class RoomController : MonoBehaviour
     public void HideFogTiles(GameObject[,] gridFogLayer, int gridWidth, int gridHeight)
     {
         if (!hidden) return;
-        SetRoomFogInactive();
+        //SetRoomFogInactive();
+        for (int w = 0; w < width; w++)
+        {
+            for (int h = 0; h < height; h++)
+            {
+                //fogLayer[w, h].SetActive(false);
+                fogLayer[w, h].GetComponent<FogController>().lowerOpacity();
+            }
+        }
+
 
         for (int w = -1; w < width + 1; w++)
         {
@@ -215,6 +224,7 @@ public class RoomController : MonoBehaviour
             for (int h = 0; h < height; h++)
             {
                 fogLayer[w, h].SetActive(true);
+                fogLayer[w, h].GetComponent<FogController>().raiseOpacity();
             }
         }
         
