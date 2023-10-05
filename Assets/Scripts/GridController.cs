@@ -193,7 +193,11 @@ public class GridController : MonoBehaviour
         {
             for (int y = 0; y < height; y++)
             {
-                if (fogLayer[x, y] != null) continue;
+                if (fogLayer[x, y] != null)
+                {
+                    fogLayer[x, y] = null;
+                    continue;
+                }
                 GameObject fog = Instantiate(fogTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
                 fogLayer[x, y] = fog;
             }
@@ -357,6 +361,14 @@ public class GridController : MonoBehaviour
 
     public void ChangeToPlayerView()
     {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (fogLayer[x, y] == null) continue;
+                fogLayer[x, y].SetActive(true);
+            }
+        }
         for (int i = 0; i < rooms.Length; i++)
         {
             rooms[i].GetComponent<RoomController>().ShowFogTiles(fogLayer, width, height);
@@ -365,6 +377,15 @@ public class GridController : MonoBehaviour
 
     public void ChangeToDMView()
     {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (fogLayer[x, y] == null) continue;
+                fogLayer[x, y].SetActive(false);
+            }
+        }
+
         for (int i = 0; i < rooms.Length; i++)
         {
             rooms[i].GetComponent<RoomController>().HideFogTiles(fogLayer, width, height);
