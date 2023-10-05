@@ -57,6 +57,18 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
+      propertyPath: m_Color.b
+      value: 0.5372549
+      objectReference: {fileID: 0}
+    - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
+      propertyPath: m_Color.g
+      value: 0.7411765
+      objectReference: {fileID: 0}
+    - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
+      propertyPath: m_Color.r
+      value: 0.93725497
+      objectReference: {fileID: 0}
+    - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
       propertyPath: m_SortingLayer
       value: 1
       objectReference: {fileID: 0}
@@ -93,5 +105,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b8e0fa3b835d0045a67ed99318df0d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highOpacityTile: {fileID: 2800000, guid: 97e2688f64864a64e8f4cd2cc44d8f2e, type: 3}
-  lowOpacityTile: {fileID: 2800000, guid: 6eb2477a763503249838243e20df4186, type: 3}
+  highOpacityTile: {fileID: 2800000, guid: 41eaf7c924c98574eaadf29172655d5f, type: 3}
+  lowOpacityTile: {fileID: 2800000, guid: abe6a4496c35cc444a3e03b1f33d9e7b, type: 3}

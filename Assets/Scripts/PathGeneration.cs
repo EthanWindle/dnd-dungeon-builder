@@ -293,7 +293,6 @@ public class PathGenerator : MonoBehaviour
         {
             PlacePath(path, backgroundLayer, gridController);
             path.CreateFog(transformParent, gridFogLayer, size, margin);
-            Debug.Log("path.create fog called");
         }
 
     }

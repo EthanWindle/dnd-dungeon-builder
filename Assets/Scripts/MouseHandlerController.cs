@@ -44,6 +44,7 @@ public class MouseHandlerController : MonoBehaviour
     {
         HandleRemoveFog();
         HandleMoveEntity();
+        checkForSpace();
     }
 
     void HandleRemoveFog()
@@ -52,7 +53,13 @@ public class MouseHandlerController : MonoBehaviour
             controller.HandleFog(controller.GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
     }
 
-
+    void checkForSpace()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            controller.ChangePlayerDMView();
+        }
+    }
 
 
     private void HandleMoveEntity()

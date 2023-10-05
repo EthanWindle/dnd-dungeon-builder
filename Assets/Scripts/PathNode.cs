@@ -27,12 +27,17 @@ public class PathNode
         gridFogLayer[x, y] = fog;
     }
 
-    public void hideFogTile()
+    public void ClearFogTile()
     {
         fog.SetActive(false);
     }
 
-    public void showFogTile()
+    public void HideFogTile()
+    {
+        fog.SetActive(false);
+    }
+
+    public void ShowFogTile()
     {
         fog.SetActive(true);
     }

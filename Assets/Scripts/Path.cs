@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using Unity.VisualScripting;
@@ -8,7 +9,8 @@ public class Path
 	private List<PathNode> nodes {get;}
 
 	public RoomController originRoom{get; private set;}
-	public RoomController destinationRoom{get; private set;}
+	public RoomController destinationRoom{get; private set; }
+    private Boolean hidden = true;
 
     public Path(){
 		//nodes = new List<PathNode>();
@@ -33,18 +35,27 @@ public class Path
 
 	public void CreateFog(Transform transformParent, GameObject[,] gridFogLayer, float size, float margin)
     {
-        Debug.Log("tryin to create fog tiles");
         foreach (PathNode pathnode in nodes)
         {
             pathnode.CreateFog(transformParent, originRoom.fogPrefab, gridFogLayer, size, margin);
         }
     }
 
-    public void HideFogTiles()
+    public void ClearFogTiles()
     {
+        hidden = false;
         foreach (PathNode pathnode in nodes)
         {
-            pathnode.hideFogTile();
+            pathnode.ClearFogTile();
+        }
+    }
+
+    public void HideFogTiles()
+    {
+        if (hidden == false) return;
+        foreach (PathNode pathnode in nodes)
+        {
+            pathnode.HideFogTile();
         }
     }
 
@@ -52,10 +63,11 @@ public class Path
      * Shows all fog tiles
      */
 	public void ShowFogTiles()
-	{
+    {
+        if (hidden == false) return;
         foreach (PathNode pathnode in nodes)
         {
-            pathnode.showFogTile();
+            pathnode.ShowFogTile();
         }
     }
 

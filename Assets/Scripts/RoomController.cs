@@ -28,7 +28,7 @@ public class RoomController : MonoBehaviour
 
     private int x;
     private int y;
-    private Boolean hidden = false;
+    private Boolean hidden = true;
 
     private System.Random random;
 
@@ -135,17 +135,15 @@ public class RoomController : MonoBehaviour
      */
     public bool ClearFog(Vector3 mousePos, GameObject[,] gridFogLayer, int gridWidth, int gridHeight)
     {
-        if (InsideRoom(mousePos) && !hidden)
+        if (InsideRoom(mousePos) && hidden)
         {
-            hidden = true;
+            hidden = false;
             HideFogTiles(gridFogLayer, gridWidth, gridHeight);
-            fogLayer = new GameObject[width, height];
-            //fogLayer = new GameObject[width, height];
-            //TODO: check this!!!!!
+            SetRoomFogInactive();
 
             foreach (Path path in paths)
             {
-                path.HideFogTiles();
+                path.ClearFogTiles();
             }
             return true;
         }
@@ -172,20 +170,16 @@ public class RoomController : MonoBehaviour
      */
     public void HideFogTiles(GameObject[,] gridFogLayer, int gridWidth, int gridHeight)
     {
-        for (int w = 0; w < width; w++)
-        {
-            for (int h = 0; h < height; h++)
-            {
-                fogLayer[w, h].SetActive(false);
-            }
-        }
+        if (!hidden) return;
+        SetRoomFogInactive();
 
         for (int w = -1; w < width + 1; w++)
         {
             for (int h = -1; h < height + 1; h++)
             {
                 if (w > -1 && w < width && h > -1 && h < height) continue;
-                gridFogLayer[w + this.x, h + this.y].GetComponent<FogController>().lowerOpacity();
+                //gridFogLayer[w + this.x, h + this.y].GetComponent<FogController>().lowerOpacity();
+                //gridFogLayer[w + this.x, h + this.y].SetActive(false);
             }
         }
 
@@ -196,10 +190,26 @@ public class RoomController : MonoBehaviour
     }
 
     /*
+     * Helper method for setting this room as inactive
+     */
+    public void SetRoomFogInactive()
+    {
+        for (int w = 0; w < width; w++)
+        {
+            for (int h = 0; h < height; h++)
+            {
+                fogLayer[w, h].SetActive(false);
+                //fogLayer[w, h].GetComponent<FogController>().lowerOpacity();
+            }
+        }
+    }
+
+    /*
      * Shows all fog tiles
      */
     public void ShowFogTiles(GameObject[,] gridFogLayer, int gridWidth, int gridHeight)
     {
+        if (!hidden) return;
         for (int w = 0; w < width; w++)
         {
             for (int h = 0; h < height; h++)
@@ -213,12 +223,13 @@ public class RoomController : MonoBehaviour
             for (int h = -1; h < height + 1; h++)
             {
                 if (w > -1 && w < width && h > -1 && h < height) continue;
-                gridFogLayer[w + this.x, h + this.y].GetComponent<FogController>().raiseOpacity();
+                //gridFogLayer[w + this.x, h + this.y].GetComponent<FogController>().raiseOpacity();
+                //gridFogLayer[w + this.x, h + this.y].SetActive(true);
             }
         }
         foreach (Path path in paths)
         {
-            path.HideFogTiles();
+            path.ShowFogTiles();
         }
 
     }

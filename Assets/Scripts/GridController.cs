@@ -161,14 +161,6 @@ public class GridController : MonoBehaviour
         PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
         pathGen.ConnectAllRooms(backgroundLayer, rooms, width, height, gameObject.transform, fogLayer, cellSize, cellSpacing);
 
-        //TODO:
-        /* Upon path generation the fog has to be created for the path, inside the Path.cs class. 
-         *  This has to be done before the "filling" fog is generated in gridcontroller.
-         * Path.cs then needs functions to show and hide fog as well as to remove fog, same as room controller.
-         *  Will be called from roomcontroller
-         * 
-         */
-
         PlaceWalls();
         PlaceBackgroundFog();
         Vector2 playerPosition = PlacePlayer();
@@ -183,7 +175,7 @@ public class GridController : MonoBehaviour
             GlobalVariables.clearMap();
             SetObjects(deserializedRecorder);
         }
-        ChangeToDMView();
+        ChangeToPlayerView();
 
         //Test save to file
         //GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
@@ -256,7 +248,7 @@ public class GridController : MonoBehaviour
                     GameObject player = Instantiate(playerEntity,new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), -1), Quaternion.identity, gameObject.transform);
                     foregroundLayer[x,y] = player;
                     player.GetComponent<PlayerController>().Init(cellSize - cellSpacing * 2);
-                    firstRoomController.HideFogTiles(fogLayer, width, height);
+                    firstRoomController.ClearFog(new Vector3(x, y, 0), fogLayer, width, height);
                     return new Vector2(x,y);
                 }
             }
@@ -348,10 +340,23 @@ public class GridController : MonoBehaviour
         }
     }
 
+    public void ChangePlayerDMView()
+    {
+        if (inPlayerView)
+        {
+            inPlayerView = false;
+            Debug.Log("changing view to player");
+            ChangeToPlayerView();
+        } else if (!inPlayerView)
+        {
+            inPlayerView = true;
+            Debug.Log("changing view to DM");
+            ChangeToDMView();
+        }
+    }
+
     public void ChangeToPlayerView()
     {
-        if (!inPlayerView) inPlayerView = true;
-        else return;
         for (int i = 0; i < rooms.Length; i++)
         {
             rooms[i].GetComponent<RoomController>().ShowFogTiles(fogLayer, width, height);
@@ -360,8 +365,6 @@ public class GridController : MonoBehaviour
 
     public void ChangeToDMView()
     {
-        if (inPlayerView) inPlayerView = false;
-        else return;
         for (int i = 0; i < rooms.Length; i++)
         {
             rooms[i].GetComponent<RoomController>().HideFogTiles(fogLayer, width, height);
