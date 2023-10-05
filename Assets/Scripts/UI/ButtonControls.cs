@@ -76,7 +76,7 @@ public class ButtonControls : MonoBehaviour
         mainText.SetActive(false);
         flipPage.SetTrigger("LeftFlip");
         yield return new WaitForSeconds(1);
-        SceneManager.LoadScene("creditsPage");
+        SceneManager.LoadScene("optionsPage");
     }
 
     public void ExitGame(){
