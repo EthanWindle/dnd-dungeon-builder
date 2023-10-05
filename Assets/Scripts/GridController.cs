@@ -40,7 +40,7 @@ public class GridController : MonoBehaviour
     private GameObject[] propOptions;
     private GameObject[] monsterOptions;
 
-    private bool inPlayerView = false;
+    private bool inPlayerView = true;
 
     private CustomGeneration customGeneration = new CustomGeneration(20, true, true); //current default generation parameters
 
@@ -342,14 +342,14 @@ public class GridController : MonoBehaviour
 
     public void ChangePlayerDMView()
     {
-        if (inPlayerView)
-        {
-            inPlayerView = false;
-            Debug.Log("changing view to player");
-            ChangeToPlayerView();
-        } else if (!inPlayerView)
+        if (!inPlayerView)
         {
             inPlayerView = true;
+            Debug.Log("changing view to player");
+            ChangeToPlayerView();
+        } else if (inPlayerView)
+        {
+            inPlayerView = false;
             Debug.Log("changing view to DM");
             ChangeToDMView();
         }

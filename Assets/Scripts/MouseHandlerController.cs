@@ -49,7 +49,7 @@ public class MouseHandlerController : MonoBehaviour
 
     void HandleRemoveFog()
     {
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && !controller.isInPlayerView())
             controller.HandleFog(controller.GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
     }
 
