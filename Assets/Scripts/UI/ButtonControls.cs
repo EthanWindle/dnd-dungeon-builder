@@ -142,6 +142,10 @@ public class ButtonControls : MonoBehaviour
     public void SetSavedMap(string name, TMP_InputField mapName){
         mapName.text = name;
     }
+    public void SetSavedMapImage(string name, GameObject mapImage){
+        Sprite image = Resources.Load<Sprite>("Assets/Saves/name" + ".png");
+        mapImage.GetComponent<Image>().sprite = image;
+    }
     public void GetSavedMaps(TMP_InputField mapName) {
         DirectoryInfo dir = new DirectoryInfo("Assets/Saves");
         FileInfo[] files = dir.GetFiles("*.json");
@@ -151,6 +155,7 @@ public class ButtonControls : MonoBehaviour
             TMP_Text[] texts = newButton.GetComponentsInChildren<TMP_Text>();
             texts[0].text = fileName;
             newButton.GetComponent<Button>().onClick.AddListener(() => SetSavedMap(fileName, mapName));
+            newButton.GetComponent<Button>().onClick.AddListener(() => SetSavedMapImage(fileName, Override));
         }
     }
 
@@ -177,7 +182,7 @@ public class ButtonControls : MonoBehaviour
     }
 
     public void saveFile(TMP_InputField name){
-        string fullFileName = "Assets/Saves/" + name.text + ".json";
+        string fullFileName = "Assets/Saves/" + name.text;
         Grid.GetComponent<GridController>().Save(fullFileName);
     }
 }
