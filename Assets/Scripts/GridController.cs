@@ -208,8 +208,6 @@ public class GridController : MonoBehaviour
 
             }
         }
-
-        // check if there is a tile behind the fogtile, if not then place a fogtile there
     }
 
     private void PlaceWalls()
@@ -357,12 +355,10 @@ public class GridController : MonoBehaviour
         if (!inPlayerView)
         {
             inPlayerView = true;
-            Debug.Log("changing view to player");
             ChangeToPlayerView();
         } else if (inPlayerView)
         {
             inPlayerView = false;
-            Debug.Log("changing view to DM");
             ChangeToDMView();
         }
     }
@@ -430,7 +426,7 @@ public class GridController : MonoBehaviour
 
     private bool FogIsActive(Vector2 position)
     {
-        if (fogLayer[(int)position.x, (int)position.y] == null) return true;
+        if (fogLayer[(int)position.x, (int)position.y] == null) return false;
         return fogLayer[(int)position.x, (int)position.y].activeSelf;
     }
     public GameObject grabEntity(Vector2 position){
