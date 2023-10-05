@@ -9,6 +9,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEditor.MaterialProperty;
+using UnityEngine.U2D;
 
 /*
  * Controller for a Grid of tiles and props.
@@ -29,7 +30,7 @@ public class GridController : MonoBehaviour
     public int[] yOffsets; //y location of room, correlates with rooms array
     public GameObject wallTile;
     public GameObject playerEntity;
-
+    public String spritesheetName;
 
     private Recorder recorder; //Records events to save the current game state
     private GameObject tilePrefab;
@@ -37,6 +38,7 @@ public class GridController : MonoBehaviour
     private GameObject fogPrefab;
     private GameObject[] propOptions;
     private GameObject[] monsterOptions;
+    private SpritesheetManager spritesheetManager;
 
     private bool inPlayerView = false;
 
@@ -117,7 +119,7 @@ public class GridController : MonoBehaviour
                 GameObject tile = backgroundLayer[x, y];
                 if (tile != null && tile.GetComponent<TileController>() is WallController)
                 {
-                    tile.GetComponent<WallController>().SetTexture(GetAdjacentControllers(x, y));
+                    tile.GetComponent<WallController>().SetTexture(GetAdjacentControllers(x, y), spritesheetManager);
                 }
             }
         }
@@ -131,6 +133,8 @@ public class GridController : MonoBehaviour
         foregroundLayer = new GameObject[width, height];
 
         fogLayer = new GameObject[width, height];
+
+        spritesheetManager = new SpritesheetManager(spritesheetName);
 
         GenerateNewMap();
     }
@@ -214,7 +218,7 @@ public class GridController : MonoBehaviour
             }
 
             wall.GetComponent<WallController>().Init(cellSize - cellSpacing * 2);
-            wall.GetComponent<WallController>().SetTexture(GetAdjacentControllers(x, y));
+            wall.GetComponent<WallController>().SetTexture(GetAdjacentControllers(x, y), spritesheetManager);
             backgroundLayer[x, y] = wall;
             
         }
