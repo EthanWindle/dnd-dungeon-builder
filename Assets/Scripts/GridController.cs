@@ -30,6 +30,8 @@ public class GridController : MonoBehaviour
     public GameObject wallTile;
     public GameObject playerEntity;
 
+    
+    public GameObject fogTile;
 
     private Recorder recorder; //Records events to save the current game state
     private GameObject tilePrefab;
@@ -38,7 +40,7 @@ public class GridController : MonoBehaviour
     private GameObject[] propOptions;
     private GameObject[] monsterOptions;
 
-    private bool inPlayerView = false;
+    private bool inPlayerView = true;
 
     private CustomGeneration customGeneration = new CustomGeneration(20, true, true); //current default generation parameters
 
@@ -156,12 +158,13 @@ public class GridController : MonoBehaviour
 
         PlaceWalls();
 
+        PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
+        pathGen.ConnectAllRooms(backgroundLayer, rooms, width, height, gameObject.transform, fogLayer, cellSize, cellSpacing);
+
+        PlaceWalls();
+        PlaceBackgroundFog();
         Vector2 playerPosition = PlacePlayer();
 
-
-        PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
-        pathGen.ConnectAllRooms(backgroundLayer, rooms, width, height);
-        PlaceWalls();
         gameObject.transform.position -= new Vector3(playerPosition.x * cellSize, playerPosition.y * cellSize, 0); //Try to center the grid in the game space.    
 
         //Test load from file
@@ -172,6 +175,7 @@ public class GridController : MonoBehaviour
             GlobalVariables.clearMap();
             SetObjects(deserializedRecorder);
         }
+        ChangeToPlayerView();
 
         //Test save to file
         //GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
@@ -181,6 +185,29 @@ public class GridController : MonoBehaviour
         //Camera camera = topDownCamera.GetComponent<Camera>();
         //GridControllerJsonSerializer.SaveSceneAsPNG("saves/testImage.png", 3840, 2160, camera);
 
+    }
+
+    private void PlaceBackgroundFog()
+    {
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (fogLayer[x, y] != null)
+                {
+                    fogLayer[x, y] = null;
+                    if (backgroundLayer[x, y] == null)
+                    {
+                        GameObject cornerFog = Instantiate(fogTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                        fogLayer[x, y] = cornerFog;
+                    }
+                    continue;
+                }
+                GameObject fog = Instantiate(fogTile, new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
+                fogLayer[x, y] = fog;
+
+            }
+        }
     }
 
     private void PlaceWalls()
@@ -218,6 +245,7 @@ public class GridController : MonoBehaviour
             backgroundLayer[x, y] = wall;
             
         }
+
     }
 
     private Vector2 PlacePlayer(){
@@ -230,7 +258,7 @@ public class GridController : MonoBehaviour
                     GameObject player = Instantiate(playerEntity,new Vector3(x * (cellSize + cellSpacing), y * (cellSize + cellSpacing), -1), Quaternion.identity, gameObject.transform);
                     foregroundLayer[x,y] = player;
                     player.GetComponent<PlayerController>().Init(cellSize - cellSpacing * 2);
-                    firstRoomController.HideTiles();
+                    firstRoomController.ClearFog(new Vector3(x, y, 0), fogLayer, width, height);
                     return new Vector2(x,y);
                 }
             }
@@ -273,7 +301,7 @@ public class GridController : MonoBehaviour
             return backgroundLayer[x,y].GetComponent<TileController>() is WallController;
         } 
 
-        
+
         foreach (TileController controller in GetAdjacentControllers(x, y))
         {
             if (controller is FloorController) { return true; }
@@ -288,7 +316,7 @@ public class GridController : MonoBehaviour
         TileController[] controllers = new TileController[8];
         for (int xi = x - 1; xi <= x + 1; xi++)
         {
-            
+
             for (int yi = y - 1; yi <= y + 1; yi++)
             {
                 if (xi == x && yi == y) continue;
@@ -298,14 +326,15 @@ public class GridController : MonoBehaviour
                 else if (backgroundLayer[xi, yi] == null) controllers[index] = null;
                 else controllers[index] = backgroundLayer[xi, yi].GetComponent<TileController>();
                 index++;
-                
+
             }
         }
 
         return controllers;
     }
 
-    public void getGridBounds(out float topBound, out float leftBound, out float bottomBound, out float rightBound){
+    public void getGridBounds(out float topBound, out float leftBound, out float bottomBound, out float rightBound)
+    {
         topBound = gameObject.transform.position.y + (height * cellSize);
         leftBound = gameObject.transform.position.x;
         bottomBound = gameObject.transform.position.y;
@@ -316,27 +345,54 @@ public class GridController : MonoBehaviour
     {
         for (int i = 0; i < rooms.Length; i++)
         {
-            rooms[i].GetComponent<RoomController>().ClearFog(mousePos);
+            bool clear = rooms[i].GetComponent<RoomController>().ClearFog(mousePos, fogLayer, width, height);
+            if (clear) return;            
+        }
+    }
+
+    public void ChangePlayerDMView()
+    {
+        if (!inPlayerView)
+        {
+            inPlayerView = true;
+            ChangeToPlayerView();
+        } else if (inPlayerView)
+        {
+            inPlayerView = false;
+            ChangeToDMView();
         }
     }
 
     public void ChangeToPlayerView()
     {
-        if (!inPlayerView) inPlayerView = true;
-        else return;
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (fogLayer[x, y] == null) continue;
+                fogLayer[x, y].SetActive(true);
+            }
+        }
         for (int i = 0; i < rooms.Length; i++)
         {
-            rooms[i].GetComponent<RoomController>().ShowTiles();
+            rooms[i].GetComponent<RoomController>().ShowFogTiles(fogLayer, width, height);
         }
     }
 
     public void ChangeToDMView()
     {
-        if (inPlayerView) inPlayerView = false;
-        else return;
+        for (int x = 0; x < width; x++)
+        {
+            for (int y = 0; y < height; y++)
+            {
+                if (fogLayer[x, y] == null) continue;
+                fogLayer[x, y].SetActive(false);
+            }
+        }
+
         for (int i = 0; i < rooms.Length; i++)
         {
-            rooms[i].GetComponent<RoomController>().HideTiles();
+            rooms[i].GetComponent<RoomController>().HideFogTiles(fogLayer, width, height);
         }
     }
 
@@ -370,6 +426,7 @@ public class GridController : MonoBehaviour
 
     private bool FogIsActive(Vector2 position)
     {
+        if (fogLayer[(int)position.x, (int)position.y] == null) return false;
         return fogLayer[(int)position.x, (int)position.y].activeSelf;
     }
     public GameObject grabEntity(Vector2 position){

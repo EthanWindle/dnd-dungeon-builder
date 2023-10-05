@@ -10,7 +10,7 @@ using UnityEngine;
  */
 public class DungeonGenerator : MonoBehaviour
 {
-    public int numberOfRooms = 30;
+    public int numberOfRooms = 19;
     private bool[,] grid;
 
     public GameObject[] GenerateDungeon(GameObject[] initialRooms, int gridWidth, int gridHeight, CustomGeneration customGeneration)
