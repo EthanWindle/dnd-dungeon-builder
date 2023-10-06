@@ -181,9 +181,9 @@ public class GridController : MonoBehaviour
         //GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
 
         //Test save as PNG
-        //GameObject topDownCamera = GameObject.Find("topDownCamera");
-        //Camera camera = topDownCamera.GetComponent<Camera>();
-        //GridControllerJsonSerializer.SaveSceneAsPNG("saves/testImage.png", 3840, 2160, camera);
+        GameObject topDownCamera = GameObject.Find("Top-Down Camera");
+        Camera camera = topDownCamera.GetComponent<Camera>();
+        GridControllerJsonSerializer.SaveSceneAsPNG("saves/testImage.png", 3840, 2160, camera);
 
     }
 
@@ -454,6 +454,10 @@ public class GridController : MonoBehaviour
 
             entity.transform.position = GetWorldLocation(destination);
         }
+        Debug.Log("cum");
+        GameObject topDownCamera = GameObject.Find("Top-Down Camera");
+        Camera camera = topDownCamera.GetComponent<Camera>();
+        GridControllerJsonSerializer.SaveSceneAsPNG("saves/testImage.png", 3840, 2160, camera);
     }
 
     public void Save(string filePath){
