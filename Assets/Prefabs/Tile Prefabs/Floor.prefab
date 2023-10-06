@@ -72,6 +72,10 @@ PrefabInstance:
       propertyPath: m_DrawMode
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3811340503152543275, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 164585324546260798, guid: e1d82948ad629d641935dcad577f4f44, type: 3}
     m_RemovedGameObjects: []
@@ -98,10 +102,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3fca6357ffcb2384a920191c6c0602ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultFloor: {fileID: 2800000, guid: 3fbeca4968de1fd46aa4464424c9c442, type: 3}
-  differntFloorChance: 0.2
-  textures:
-  - {fileID: 2800000, guid: c04a85cb08ec9254086f7285b734df3d, type: 3}
-  - {fileID: 2800000, guid: 2d0c541f02bc4374dae0f92aa73e8f5f, type: 3}
-  - {fileID: 2800000, guid: 1a2f3aae63b0f2a4cb216b7c566edcb5, type: 3}
-  - {fileID: 2800000, guid: d41a3d1a258466a4f8606d9da224ff19, type: 3}
+  differntFloorChance: 0.3
