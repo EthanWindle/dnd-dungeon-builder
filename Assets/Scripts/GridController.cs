@@ -9,6 +9,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEditor.MaterialProperty;
+using UnityEngine.U2D;
 
 /*
  * Controller for a Grid of tiles and props.
@@ -32,6 +33,7 @@ public class GridController : MonoBehaviour
     public int[] yOffsets; //y location of room, correlates with rooms array
     public GameObject wallTile;
     public GameObject playerEntity;
+    public String spritesheetName;
 
     
     public GameObject fogTile;
@@ -42,6 +44,7 @@ public class GridController : MonoBehaviour
     private GameObject fogPrefab;
     private GameObject[] propOptions;
     private GameObject[] monsterOptions;
+    private SpritesheetManager spritesheetManager;
 
     private bool inPlayerView = true;
 
@@ -76,7 +79,7 @@ public class GridController : MonoBehaviour
             {
                 // Update the backgroundLayer with floor tiles
                 GameObject floorTile = Instantiate(tilePrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 0), Quaternion.identity, gameObject.transform);
-                floorTile.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                floorTile.GetComponent<FloorController>().Init(cellSize - cellSpacing * 2, spritesheetManager);
                 backgroundLayer[tile.x, tile.y] = floorTile;
             }
             else if (tile.type.Equals("wall"))
@@ -90,7 +93,7 @@ public class GridController : MonoBehaviour
             {
                 // Update the backgroundLayer with door tiles
                 GameObject newDoorPrefab = Instantiate(doorPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), 1), Quaternion.identity, gameObject.transform);
-                newDoorPrefab.GetComponent<TileController>().Init(cellSize - cellSpacing * 2);
+                newDoorPrefab.GetComponent<DoorController>().Init(cellSize - cellSpacing * 2, spritesheetManager);
                 backgroundLayer[tile.x, tile.y] = newDoorPrefab;
             }
             else if (tile.type.Equals("prop"))
@@ -122,7 +125,7 @@ public class GridController : MonoBehaviour
                 GameObject tile = backgroundLayer[x, y];
                 if (tile != null && tile.GetComponent<TileController>() is WallController)
                 {
-                    tile.GetComponent<WallController>().SetTexture(GetAdjacentControllers(x, y));
+                    tile.GetComponent<WallController>().SetTexture(GetAdjacentControllers(x, y), spritesheetManager);
                 }
             }
         }
@@ -137,6 +140,8 @@ public class GridController : MonoBehaviour
 
         fogLayer = new GameObject[width, height];
 
+        spritesheetManager = new SpritesheetManager(spritesheetName);
+
         GenerateNewMap();
     }
 
@@ -150,7 +155,7 @@ public class GridController : MonoBehaviour
         for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
             //int offsetx = xOffsets[i];
-            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder, customGeneration);
+            rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder, customGeneration, spritesheetManager);
             RoomController roomController = rooms[i].GetComponent<RoomController>();
             this.tilePrefab = roomController.tilePrefab;
             this.doorPrefab = roomController.doorPrefab;
@@ -162,9 +167,12 @@ public class GridController : MonoBehaviour
         PlaceWalls();
 
         PathGenerator pathGen = gameObject.GetComponent<PathGenerator>();
-        pathGen.ConnectAllRooms(backgroundLayer, rooms, width, height, gameObject.transform, fogLayer, cellSize, cellSpacing);
+        pathGen.ConnectAllRooms(backgroundLayer, rooms, width, height, gameObject.transform, fogLayer, cellSize, cellSpacing, spritesheetManager);
 
         PlaceWalls();
+
+        pathGen.CreatePathFog(backgroundLayer, width, height, gameObject.transform, fogLayer, cellSize, cellSpacing);
+    
         PlaceBackgroundFog();
         Vector2 playerPosition = PlacePlayer();
 
@@ -244,7 +252,7 @@ public class GridController : MonoBehaviour
             }
 
             wall.GetComponent<WallController>().Init(cellSize - cellSpacing * 2);
-            wall.GetComponent<WallController>().SetTexture(GetAdjacentControllers(x, y));
+            wall.GetComponent<WallController>().SetTexture(GetAdjacentControllers(x, y), spritesheetManager);
             backgroundLayer[x, y] = wall;
             
         }
@@ -345,13 +353,15 @@ public class GridController : MonoBehaviour
         rightBound = gameObject.transform.position.x + (width * cellSize);
     }
 
-    public void HandleFog(Vector3 mousePos)
+    public bool HandleFog(Vector3 mousePos)
     {
         for (int i = 0; i < rooms.Length; i++)
         {
             bool clear = rooms[i].GetComponent<RoomController>().ClearFog(mousePos, fogLayer, width, height);
-            if (clear) return;            
+            if (clear) return true;            
         }
+
+        return false;
     }
 
     public void ChangePlayerDMView()

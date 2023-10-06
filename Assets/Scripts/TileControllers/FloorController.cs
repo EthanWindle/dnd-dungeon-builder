@@ -10,32 +10,31 @@ public class FloorController : TileController
 
 
     
-    public Texture2D defaultFloor;
     public float differntFloorChance;
-    public Texture2D[] textures;
 
     public override bool CanEnter()
     {
         return true;
     }
 
-    public override void Init(float size)
+    public void Init(float size, SpritesheetManager sm)
     {
         System.Random random = new();
 
-        Texture2D texture;
+        Sprite sprite;
 
         if (random.NextDouble() < differntFloorChance)
         {
-            texture = textures[random.Next(textures.Length)];
+            int floorIndex = random.Next(1, 5);
+            sprite = sm.Get("Floor"+floorIndex);
         }
         else
         {
-            texture = defaultFloor;
+            sprite = sm.Get("Floor");
         }
 
         
-        Sprite sprite = Sprite.Create(texture, new Rect(0,0, texture.width, texture.height), new Vector2(0.5f, 0.5f), textureSize);
+        
 
         gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
 

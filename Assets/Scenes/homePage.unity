@@ -1859,8 +1859,8 @@ MonoBehaviour:
           m_BoolArgument: 0
         m_CallState: 2
       - m_Target: {fileID: 1919800627}
-        m_TargetAssemblyTypeName: NewBehaviourScript, Assembly-CSharp
-        m_MethodName: loadCredits
+        m_TargetAssemblyTypeName: ButtonControls, Assembly-CSharp
+        m_MethodName: loadOptions
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -3850,6 +3850,8 @@ MonoBehaviour:
   savePrefab: {fileID: 0}
   saveParent: {fileID: 0}
   map: {fileID: 0}
+  Grid: {fileID: 0}
+  Override: {fileID: 0}
 --- !u!1 &2055450849
 GameObject:
   m_ObjectHideFlags: 0

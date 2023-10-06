@@ -8,25 +8,6 @@ using UnityEngine;
  */
 public class WallController : TileController
 {
-
-
-    public Texture2D defaulWall;
-
-    public Texture2D rightWall;
-    public Texture2D leftWall;
-    public Texture2D topWall;
-    public Texture2D bottomWall;
-
-    public Texture2D topLeftWall;
-    public Texture2D topRightWall;
-    public Texture2D bottomLeftWall;
-    public Texture2D bottomRightWall;
-
-    public Texture2D smallTopLeftWall;
-    public Texture2D smallTopRightWall;
-    public Texture2D smallBottomLeftWall;
-    public Texture2D smallBottomRightWall;
-
     public override bool CanEnter()
     {
         return false;
@@ -35,66 +16,68 @@ public class WallController : TileController
     //2 4 7
     //1 x 6
     //0 3 5
-    public void SetTexture(TileController[] adjacentTiles)
+    public void SetTexture(TileController[] adjacentTiles, SpritesheetManager sm)
     {
-        Texture2D texture;
-        
+        Sprite sprite;
+
+
 
         if (CheckLocations(adjacentTiles, 1, 2, 4)) 
         {
-            texture = smallBottomRightWall;
+            sprite = sm.Get("Small Bottom Right");
         }
         else if (CheckLocations(adjacentTiles, 4, 7, 6))
         {
-            texture = smallBottomLeftWall;
+            sprite = sm.Get("Small Bottom Left");
+
         }
         else if (CheckLocations(adjacentTiles, 1, 0, 3))
         {
-            texture = smallTopRightWall;
+            sprite = sm.Get("Small Top Right");
         }
         else if (CheckLocations(adjacentTiles, 3, 5, 6))
         {
-            texture = smallTopLeftWall;
+            sprite = sm.Get("Small Top Left");
         }
         else if (CheckLocations(adjacentTiles,1, 2) || CheckLocations(adjacentTiles, 1, 0))
         {
-            texture = rightWall;
+            sprite = sm.Get("Right");
         }
         else if (CheckLocations(adjacentTiles, 6, 5) || CheckLocations(adjacentTiles, 6, 7))
         {
-            texture = leftWall;
+            sprite = sm.Get("Left");
         }
         else if (CheckLocations(adjacentTiles, 4, 2) || CheckLocations(adjacentTiles, 4, 7))
         {
-            texture = bottomWall;
+            sprite = sm.Get("Bottom");
         }
         else if (CheckLocations(adjacentTiles, 3, 0) || CheckLocations(adjacentTiles, 3, 5))
         {
-            texture = topWall;
+           sprite = sm.Get("Top");
         }
         else if (CheckLocations(adjacentTiles, 2))
         {
-            texture = bottomRightWall;
+            sprite = sm.Get("Bottom Right");
         }
         else if (CheckLocations(adjacentTiles, 7))
         {
-            texture = bottomLeftWall;
+           sprite = sm.Get("Bottom Left");
         }
         else if (CheckLocations(adjacentTiles, 0))
         {
-            texture = topRightWall;
+            sprite = sm.Get("Top Right");
         }
         else if (CheckLocations(adjacentTiles, 5))
         {
-            texture =topLeftWall;
+            sprite =sm.Get("Top Left");
         }
 
         else
         {
-            texture = defaulWall;
+            sprite = sm.Get("Bottom");
         }
 
-        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), textureSize);
+  
 
         gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
 
