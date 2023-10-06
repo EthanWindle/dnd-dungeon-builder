@@ -1698,7 +1698,7 @@ MonoBehaviour:
   yOffsets: 
   wallTile: {fileID: 1601085562768460819, guid: 33e47b85cf84c004e8e1e32d717da1ff, type: 3}
   playerEntity: {fileID: 5000523047403449022, guid: 244394696dce3784899b73e975f1a91b, type: 3}
-  spritesheetName: Ocean Dungeon Spritesheet
+  spritesheetName: Slime Dungeon Spritesheet
 --- !u!4 &735019962
 Transform:
   m_ObjectHideFlags: 0
