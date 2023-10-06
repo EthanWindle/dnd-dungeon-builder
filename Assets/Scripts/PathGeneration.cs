@@ -12,6 +12,7 @@ public class PathGenerator : MonoBehaviour
     int gridMaxX = 0;
     int gridMaxY = 0;
     const int MOVE_STRAIGHT_COST = 10;
+    private List<Path> finishedPaths;
 
     public Path FindPath(Vector2 door1, Vector2 door2, GameObject[,] backgroundLayer, int maxX, int maxY)
     {
@@ -292,9 +293,18 @@ public class PathGenerator : MonoBehaviour
         foreach(Path path in paths)
         {
             PlacePath(path, backgroundLayer, gridController, spritesheetManager);
-            path.CreateFog(transformParent, gridFogLayer, size, margin);
-        }
 
+        }
+        finishedPaths = paths;
+
+    }
+
+    public void CreatePathFog(GameObject[,] backgroundLayer, int maxX, int maxY, Transform transformParent, GameObject[,] gridFogLayer, float size, float margin)
+    {
+        foreach (Path path in finishedPaths)
+        {
+            path.CreateFog(transformParent, gridFogLayer, backgroundLayer, size, margin, maxX, maxY);
+        }
     }
 
     private void FindClosestDoors(List<RoomController> origins, List<RoomController> destinations, out Vector2Int originDoor, out Vector2Int destinationDoor){
