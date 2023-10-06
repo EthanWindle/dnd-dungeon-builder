@@ -50,6 +50,11 @@ public class DoorController : TileController
         gameObject.GetComponent<SpriteRenderer>().sprite = closeSprite;
     }
 
+
+    public void Switch(){
+        if (this._open) Close();
+        else Open();
+    }
     private RoomController Parent;
 
     public void SetParent(RoomController parent)

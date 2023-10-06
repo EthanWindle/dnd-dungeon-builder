@@ -346,13 +346,15 @@ public class GridController : MonoBehaviour
         rightBound = gameObject.transform.position.x + (width * cellSize);
     }
 
-    public void HandleFog(Vector3 mousePos)
+    public bool HandleFog(Vector3 mousePos)
     {
         for (int i = 0; i < rooms.Length; i++)
         {
             bool clear = rooms[i].GetComponent<RoomController>().ClearFog(mousePos, fogLayer, width, height);
-            if (clear) return;            
+            if (clear) return true;            
         }
+
+        return false;
     }
 
     public void ChangePlayerDMView()
