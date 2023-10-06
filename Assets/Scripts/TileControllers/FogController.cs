@@ -9,6 +9,8 @@ public class FogController : TileController
     public Texture2D highOpacityTile;
     public Texture2D lowOpacityTile;
 
+    private int textureSize = 16;
+
     private void Awake()
     {
         Sprite sprite = Sprite.Create(highOpacityTile, new Rect(0, 0, highOpacityTile.width, highOpacityTile.height), new Vector2(0.5f, 0.5f), textureSize);

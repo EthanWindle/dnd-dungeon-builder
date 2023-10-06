@@ -197,19 +197,19 @@ public class PathGenerator : MonoBehaviour
     }
 
 
-    private void PlacePath(Path path, GameObject[,] backgroundLayer, GridController gridController){
+    private void PlacePath(Path path, GameObject[,] backgroundLayer, GridController gridController, SpritesheetManager spritesheetManager){
         for (int pathIndex = 1; pathIndex < path.Count() - 1; pathIndex++)
                     {
                         PathNode p = path.get(pathIndex);
                         GameObject obj = Instantiate(walkway, new Vector3(p.x * gridController.cellSize, p.y * gridController.cellSize, 0), Quaternion.identity, gameObject.transform);
                         backgroundLayer[p.x,p.y] = obj;
-                        obj.GetComponent<TileController>().Init(gridController.cellSize - gridController.cellSpacing * 2);
+                        obj.GetComponent<FloorController>().Init(gridController.cellSize - gridController.cellSpacing * 2, spritesheetManager);
                         gridController.GetRecorder().AddTile(new RecorderTile("floor", p.x, p.y, -1));
                     
                 }
     }
 
-    public void ConnectAllRooms(GameObject[,] backgroundLayer, GameObject[] rooms, int maxX, int maxY, Transform transformParent, GameObject[,] gridFogLayer, float size, float margin)
+    public void ConnectAllRooms(GameObject[,] backgroundLayer, GameObject[] rooms, int maxX, int maxY, Transform transformParent, GameObject[,] gridFogLayer, float size, float margin, SpritesheetManager spritesheetManager)
     {
         DoorController door1;
         Vector2Int door1Coords;

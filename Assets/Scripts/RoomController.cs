@@ -51,7 +51,7 @@ public class RoomController : MonoBehaviour
     /**
      * Place all of the tiles and props into the game, and also insert them into the arrays for foreground and background objects.
      */
-    public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foreground, GameObject[,] gridFogLayer, float size, float margin, Recorder recorder, CustomGeneration customGeneration)
+    public void PlaceRoom(Transform transformParent, GameObject[,] background, GameObject[,] foreground, GameObject[,] gridFogLayer, float size, float margin, Recorder recorder, CustomGeneration customGeneration, SpritesheetManager spritesheetManager)
     {
 
         this.paths = new();
@@ -65,7 +65,7 @@ public class RoomController : MonoBehaviour
                 for (int y = shape.y1;  y < shape.y2; y++)
                 {
                     GameObject tile = Instantiate(tilePrefab, new Vector3((x + this.x) * (size + margin), (y + this.y) * (size + margin), 0), Quaternion.identity, transformParent);
-                    tile.GetComponent<TileController>().Init(size - margin * 2);
+                    tile.GetComponent<FloorController>().Init(size - margin * 2, spritesheetManager);
                     background[x + this.x, y + this.y] = tile;
                     recorder.AddTile(new RecorderTile("floor", x + this.x, y + this.y, roomCount));
                 }
@@ -76,7 +76,7 @@ public class RoomController : MonoBehaviour
         foreach (Vector2 doorLoc in doors)
         {
             GameObject door = Instantiate(doorPrefab, new Vector3((doorLoc.x + this.x) * (size + margin), (doorLoc.y + this.y) * (size + margin), 1), Quaternion.identity, transformParent);
-            door.GetComponent<TileController>().Init(size - margin * 2);
+            door.GetComponent<DoorController>().Init(size - margin * 2, spritesheetManager);
             door.GetComponent<DoorController>().SetParent(this);
             background[(int)doorLoc.x + this.x, (int)doorLoc.y + this.y] = door;
             recorder.AddTile(new RecorderTile("door", (int)doorLoc.x + this.x, (int)doorLoc.y + this.y, roomCount));
