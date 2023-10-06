@@ -65,6 +65,20 @@ public class ButtonControls : MonoBehaviour
         SceneManager.LoadScene("creditsPage");
     }
 
+    // Credits Page
+    public void loadOptions()
+    {
+        StartCoroutine(optionsPage());
+    }
+
+    IEnumerator optionsPage()
+    {
+        mainText.SetActive(false);
+        flipPage.SetTrigger("LeftFlip");
+        yield return new WaitForSeconds(1);
+        SceneManager.LoadScene("optionsPage");
+    }
+
     public void ExitGame(){
         StartCoroutine(exit());
     }
