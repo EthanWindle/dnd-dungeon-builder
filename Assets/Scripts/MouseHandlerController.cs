@@ -51,7 +51,12 @@ public class MouseHandlerController : MonoBehaviour
 
     void HandleDoors(){
         if (Input.GetMouseButtonDown(1) && !controller.isInPlayerView()){
-            DoorController doorController = controller.GetBackgroundObject(controller.GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition))).GetComponent<DoorController>();
+
+            GameObject gameObject = controller.GetBackgroundObject(controller.GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
+
+            if (gameObject == null) return;
+
+            DoorController doorController = gameObject.GetComponent<DoorController>();
 
             if (doorController == null) return;
 
