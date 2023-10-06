@@ -162,6 +162,9 @@ public class GridController : MonoBehaviour
         pathGen.ConnectAllRooms(backgroundLayer, rooms, width, height, gameObject.transform, fogLayer, cellSize, cellSpacing);
 
         PlaceWalls();
+
+        pathGen.CreatePathFog(backgroundLayer, width, height, gameObject.transform, fogLayer, cellSize, cellSpacing);
+    
         PlaceBackgroundFog();
         Vector2 playerPosition = PlacePlayer();
 

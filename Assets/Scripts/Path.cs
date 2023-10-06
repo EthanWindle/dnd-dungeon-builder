@@ -94,8 +94,6 @@ public class Path
     }
 
 
-
-
         /* GetAdjacentControllers will return the adjacent tiles. 
          * Perform this function on each tile, if the tile is a walltile then
          *		Check if the gridcontroller fog array contains a fogtile, if so
@@ -116,6 +114,10 @@ public class Path
         {
             pathnode.ClearFogTile();
         }
+        foreach (GameObject fogtileinst in pathWallFog)
+        {
+            fogtileinst.SetActive(false);
+        }
     }
 
     /*
@@ -129,6 +131,10 @@ public class Path
         {
             pathnode.HideFogTile();
         }
+        foreach (GameObject fogtileinst in pathWallFog)
+        {
+            fogtileinst.SetActive(false);
+        }
     }
 
     /*
@@ -141,6 +147,10 @@ public class Path
         foreach (PathNode pathnode in nodes)
         {
             pathnode.ShowFogTile();
+        }
+        foreach (GameObject fogtileinst in pathWallFog)
+        {
+            fogtileinst.SetActive(true);
         }
     }
 
