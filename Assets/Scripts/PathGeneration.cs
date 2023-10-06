@@ -292,7 +292,7 @@ public class PathGenerator : MonoBehaviour
         foreach(Path path in paths)
         {
             PlacePath(path, backgroundLayer, gridController);
-            path.CreateFog(transformParent, gridFogLayer, size, margin);
+            path.CreateFog(transformParent, gridFogLayer, backgroundLayer, size, margin, maxX, maxY);
         }
 
     }
