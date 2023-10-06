@@ -97,6 +97,19 @@ public class ButtonControls : MonoBehaviour
         mapText.text = name;
         
     }
+
+    public void SetSavedMapImage(string name, GameObject mapImage){
+        string imagePath = "Assets/Saves/" + name + ".png";
+        Debug.Log("Test image");
+        //Sprite image = new Sprite();
+        byte[] data = File.ReadAllBytes(imagePath);
+        Texture2D texture = new Texture2D(2, 2);
+        texture.LoadImage(data);
+
+        Sprite image = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),new Vector2(0,0), 100.0f);
+        Debug.Log(mapImage.name);
+        mapImage.GetComponent<Image>().overrideSprite  = image;
+    }
     public void GetSavedGames() {
         
         DirectoryInfo dir = new DirectoryInfo("Assets/Saves");
@@ -108,6 +121,7 @@ public class ButtonControls : MonoBehaviour
             TMP_Text[] texts = newButton.GetComponentsInChildren<TMP_Text>();
             texts[0].text = fileName;
             newButton.GetComponent<Button>().onClick.AddListener(() => SetSavedGame(fileName, map));
+            newButton.GetComponent<Button>().onClick.AddListener(() => SetSavedMapImage(fileName, Override));
 
         }
     }
@@ -142,10 +156,7 @@ public class ButtonControls : MonoBehaviour
     public void SetSavedMap(string name, TMP_InputField mapName){
         mapName.text = name;
     }
-    public void SetSavedMapImage(string name, GameObject mapImage){
-        Sprite image = Resources.Load<Sprite>("Assets/Saves/name" + ".png");
-        mapImage.GetComponent<Image>().sprite = image;
-    }
+    
     public void GetSavedMaps(TMP_InputField mapName) {
         DirectoryInfo dir = new DirectoryInfo("Assets/Saves");
         FileInfo[] files = dir.GetFiles("*.json");
@@ -155,7 +166,6 @@ public class ButtonControls : MonoBehaviour
             TMP_Text[] texts = newButton.GetComponentsInChildren<TMP_Text>();
             texts[0].text = fileName;
             newButton.GetComponent<Button>().onClick.AddListener(() => SetSavedMap(fileName, mapName));
-            newButton.GetComponent<Button>().onClick.AddListener(() => SetSavedMapImage(fileName, Override));
         }
     }
 
