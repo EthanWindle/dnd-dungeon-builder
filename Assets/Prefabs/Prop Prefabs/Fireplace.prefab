@@ -58,16 +58,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5042483346139501837, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
       propertyPath: m_Size.x
-      value: 7.68
+      value: 0.6666667
       objectReference: {fileID: 0}
     - target: {fileID: 5042483346139501837, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
       propertyPath: m_Size.y
-      value: 6.08
+      value: 0.6666667
       objectReference: {fileID: 0}
     - target: {fileID: 5042483346139501837, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 474710385, guid: e463c3c0bc2002d48918a29d0b7c4323, type: 3}
     - target: {fileID: 5042483346139501837, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
       propertyPath: m_SortingLayer
       value: 0
@@ -78,7 +78,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5042483346139501837, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
       propertyPath: m_WasSpriteAssigned
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8092213611795588142, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
       propertyPath: texture

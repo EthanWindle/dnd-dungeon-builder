@@ -198,7 +198,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: monsters.Array.data[0].y
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: propOptions.Array.data[0]

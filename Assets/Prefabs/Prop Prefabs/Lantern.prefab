@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1001 &5719594562202163451
+--- !u!1001 &3641175477794386831
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -50,7 +50,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4583820204440450163, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
       propertyPath: m_Name
-      value: Table
+      value: Lantern
+      objectReference: {fileID: 0}
+    - target: {fileID: 4583820204440450163, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
+      propertyPath: m_Layer
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 5042483346139501837, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
       propertyPath: m_Size.x
@@ -63,7 +67,7 @@ PrefabInstance:
     - target: {fileID: 5042483346139501837, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: 210549078, guid: e463c3c0bc2002d48918a29d0b7c4323, type: 3}
+      objectReference: {fileID: -1609363505, guid: e463c3c0bc2002d48918a29d0b7c4323, type: 3}
     - target: {fileID: 5042483346139501837, guid: 5acf4ac5563d8284c89e5dd3ef2a4136, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
