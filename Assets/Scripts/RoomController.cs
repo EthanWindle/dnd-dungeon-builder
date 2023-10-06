@@ -41,9 +41,7 @@ public class RoomController : MonoBehaviour
     public RoomController()
     {   
         random = new System.Random();
-        //TODO: Also make sure that the shapes are not overlapping
     }
-
 
     public void SetPosition(int x, int y){
         this.x = x;

@@ -16,7 +16,6 @@ public class Path
     private ArrayList pathWallFog;
 
     public Path(){
-		//nodes = new List<PathNode>();
         this.nodes = new();
     }
 
@@ -47,16 +46,6 @@ public class Path
             var x = pathnode.x;
             var y = pathnode.y;
             CreateAdjacentFogTiles(transformParent, gridFogLayer, x, y, backgroundLayer, width, height, size, margin);
-            /*
-            foreach (TileController controller in GetAdjacentControllers(x, y, backgroundLayer, width, height))
-            {
-                if (controller is WallController) {
-                    var fog = UnityEngine.Object.Instantiate(originRoom.fogPrefab, new Vector3((x) * (size + margin), (y) * (size + margin), -2), Quaternion.identity, transformParent);
-                    fog.GetComponent<TileController>().Init(size - margin * 2);
-                    gridFogLayer[x, y] = fog;
-                    pathWallFog.Add(fog);
-                }
-            }*/
         }
     }
 
@@ -66,7 +55,6 @@ public class Path
         TileController[] controllers = new TileController[8];
         for (int xi = x - 1; xi <= x + 1; xi++)
         {
-
             for (int yi = y - 1; yi <= y + 1; yi++)
             {
                 if (xi == x && yi == y) continue;
@@ -76,7 +64,6 @@ public class Path
                 else if (backgroundLayer[xi, yi] == null) controllers[index] = null;
                 else
                 {
-                    //controllers[index] = backgroundLayer[xi, yi].GetComponent<TileController>();
                     if (backgroundLayer[xi, yi].GetComponent<TileController>() is WallController)
                     {
                         var fog = UnityEngine.Object.Instantiate(originRoom.fogPrefab, new Vector3((xi) * (size + margin), (yi) * (size + margin), -2), Quaternion.identity, transformParent);
@@ -85,7 +72,6 @@ public class Path
                         pathWallFog.Add(fog);
                     }
                 }
-
                 index++;
 
             }
@@ -93,20 +79,10 @@ public class Path
 
     }
 
-
-        /* GetAdjacentControllers will return the adjacent tiles. 
-         * Perform this function on each tile, if the tile is a walltile then
-         *		Check if the gridcontroller fog array contains a fogtile, if so
-         *			Set the fogtile as permanently inactive
-         *		
-         * 
-         */
-
-
-        /*
-         * Removes the fog for paths connecting to room
-         * Called by right-clicking the room
-         */
+    /*
+     * Removes the fog for paths connecting to room
+     * Called by right-clicking the room
+     */
     public void ClearFogTiles()
     {
         hidden = false;
