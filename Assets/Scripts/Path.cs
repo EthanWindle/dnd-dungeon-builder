@@ -46,6 +46,8 @@ public class Path
             // Creating fog for path walls
             var x = pathnode.x;
             var y = pathnode.y;
+            CreateAdjacentFogTiles(transformParent, gridFogLayer, x, y, backgroundLayer, width, height, size, margin);
+            /*
             foreach (TileController controller in GetAdjacentControllers(x, y, backgroundLayer, width, height))
             {
                 if (controller is WallController) {
@@ -54,13 +56,11 @@ public class Path
                     gridFogLayer[x, y] = fog;
                     pathWallFog.Add(fog);
                 }
-            }
+            }*/
         }
-        /* could assign the fog in here
-         */
     }
 
-    private TileController[] GetAdjacentControllers(int x, int y, GameObject[,] backgroundLayer, int width, int height)
+    private void CreateAdjacentFogTiles(Transform transformParent, GameObject[,] gridFogLayer, int x, int y, GameObject[,] backgroundLayer, int width, int height, float size, float margin)
     {
         int index = 0;
         TileController[] controllers = new TileController[8];
@@ -74,12 +74,22 @@ public class Path
                 if (xi < 0 || xi >= width) controllers[index] = null;
                 else if (yi < 0 || yi >= height) controllers[index] = null;
                 else if (backgroundLayer[xi, yi] == null) controllers[index] = null;
-                else controllers[index] = backgroundLayer[xi, yi].GetComponent<TileController>();
+                else
+                {
+                    //controllers[index] = backgroundLayer[xi, yi].GetComponent<TileController>();
+                    if (backgroundLayer[xi, yi].GetComponent<TileController>() is WallController)
+                    {
+                        var fog = UnityEngine.Object.Instantiate(originRoom.fogPrefab, new Vector3((xi) * (size + margin), (yi) * (size + margin), -2), Quaternion.identity, transformParent);
+                        fog.GetComponent<TileController>().Init(size - margin * 2);
+                        gridFogLayer[xi, yi] = fog;
+                        pathWallFog.Add(fog);
+                    }
+                }
+
                 index++;
 
             }
         }
-        return controllers;
 
     }
 
@@ -99,7 +109,7 @@ public class Path
          * Removes the fog for paths connecting to room
          * Called by right-clicking the room
          */
-        public void ClearFogTiles()
+    public void ClearFogTiles()
     {
         hidden = false;
         foreach (PathNode pathnode in nodes)
