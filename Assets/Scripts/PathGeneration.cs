@@ -208,7 +208,7 @@ public class PathGenerator : MonoBehaviour
                 }
     }
 
-    public void ConnectAllRooms(GameObject[,] backgroundLayer, GameObject[] rooms, int maxX, int maxY, SpritesheetManager spritesheetManager)
+    public void ConnectAllRooms(GameObject[,] backgroundLayer, GameObject[] rooms, int maxX, int maxY, Transform transformParent, GameObject[,] gridFogLayer, float size, float margin, SpritesheetManager spritesheetManager)
     {
         DoorController door1;
         Vector2Int door1Coords;
@@ -292,6 +292,7 @@ public class PathGenerator : MonoBehaviour
         foreach(Path path in paths)
         {
             PlacePath(path, backgroundLayer, gridController, spritesheetManager);
+            path.CreateFog(transformParent, gridFogLayer, size, margin);
         }
 
     }

@@ -1666,7 +1666,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 972de3e5369545144912d87ad89d55d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfRooms: 20
+  numberOfRooms: 19
 --- !u!114 &735019961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1698,7 +1698,8 @@ MonoBehaviour:
   yOffsets: 
   wallTile: {fileID: 1601085562768460819, guid: 33e47b85cf84c004e8e1e32d717da1ff, type: 3}
   playerEntity: {fileID: 5000523047403449022, guid: 244394696dce3784899b73e975f1a91b, type: 3}
-  spritesheetName: Slime Dungeon Spritesheet
+  spritesheetName: General Dungeon Spritesheet
+  fogTile: {fileID: 101012713752661465, guid: cffa49d762e58c54e8f59de54b6e8c63, type: 3}
 --- !u!4 &735019962
 Transform:
   m_ObjectHideFlags: 0
@@ -3525,7 +3526,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.959961, y: 6.899994}
+  m_AnchoredPosition: {x: 2.960022, y: 6.899994}
   m_SizeDelta: {x: -187.43005, y: -163.74004}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1909964744
