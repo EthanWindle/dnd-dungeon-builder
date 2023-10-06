@@ -246,7 +246,7 @@ GameObject:
   - component: {fileID: 139368334}
   - component: {fileID: 139368333}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: RoomCountText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2217,7 +2217,7 @@ GameObject:
   - component: {fileID: 694996707}
   - component: {fileID: 694996706}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: MonsterText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3719,7 +3719,7 @@ GameObject:
   - component: {fileID: 1339800756}
   - component: {fileID: 1339800755}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: RoomSizeText
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
