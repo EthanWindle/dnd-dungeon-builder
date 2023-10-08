@@ -2,20 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
 public class MonsterMovementController : MonoBehaviour
 {
     private Transform monsterTransform;
     private Vector3 targetPosition;
-    private RoomController roomController;
     private float moveSpeed = 2.0f; // Adjust the movement speed as needed
+    public RoomController roomController;
 
     private void Start()
     {
         monsterTransform = transform;
         // Set the initial target position (where the monster should move to)
         SetRandomTargetPosition();
-        roomController = GetComponent<RoomController>();
     }
 
     private void Update()
