@@ -34,6 +34,7 @@ public class RoomController : MonoBehaviour
 
 
     public List<Path> paths {get; private set;}
+    private List<GameObject> monsterObjects = new List<GameObject>();
 
     private static int roomCount = 0; //Counts the number for each room for recorder, do not modify for anything else
 
@@ -107,7 +108,9 @@ public class RoomController : MonoBehaviour
                 monster.GetComponent<MonsterController>().Init(size - margin * 2);
                 foreground[(int)(monsterLoc.x + x), (int)(monsterLoc.y + y)] = monster;
                 recorder.AddTile(new RecorderTile("monster", (int)(monsterLoc.x + x), (int)(monsterLoc.y + y), roomCount, monsterOptions[monsterIndex].ToString()));
-                
+                MonsterMovementController movementController = monster.AddComponent<MonsterMovementController>();
+                movementController.roomController = this; // Pass a reference to the room controller
+                monsterObjects.Add(monster); // Add the monster to the list
             }
         }
 
