@@ -40,32 +40,23 @@ public class MonsterMovementController : MonoBehaviour
             float randomX = Random.Range(roomController.GetX(), roomController.GetX() + roomController.width);
             float randomY = Random.Range(roomController.GetY(), roomController.GetY() + roomController.height);
             targetPosition = new Vector3(randomX, randomY, monsterTransform.position.z);
-        } while (!IsTargetPositionValid(targetPosition)); // Check if the target position is valid
+        } while (IsTargetPositionValid(targetPosition) == false); // Check if the target position is valid
     }
 
-    private bool IsTargetPositionValid(Vector3 position)
+    private bool IsTargetPositionValid(Vector3 position) //tried to do this via grid for each room, but since that doesn't work, this is the next best thing raycasting to check for floors
     {
-        // Calculate grid coords
-        int xIndex = Mathf.FloorToInt((position.x - roomController.GetX()) / cellsize);
-        int yIndex = Mathf.FloorToInt((position.y - roomController.GetY()) / cellsize);
-        TileController tile;
+        RaycastHit2D hit = Physics2D.Raycast(position, Vector2.zero);
 
-        // Check if the calculated indices are within the bounds of the room
-        if (xIndex >= 0 && xIndex < roomController.width && yIndex >= 0 && yIndex < roomController.height)
+        // Check if the raycast hit something
+        if (hit.collider != null)
         {
-            // Get the tile at the calculated indices
-            for (int x = 0; x < roomController.width; x++)
+            // Check if the hit object has the "Floor" tag or any other identifying property you use
+            if (hit.collider.CompareTag("Floor"))
             {
-                for (int y = 0; y < roomController.height; y++)
-                {
-                    tile = roomController.GetComponent<TileController>();
-                    if (tile != null && tile.CompareTag("Floor"))
-                    {
-                        return true;
-                    }
-                }
-            }            
+                return true;
+            }
         }
+
         return false;
     }
 }
