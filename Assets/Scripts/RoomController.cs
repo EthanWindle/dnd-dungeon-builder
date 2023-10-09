@@ -109,7 +109,7 @@ public class RoomController : MonoBehaviour
                 foreground[(int)(monsterLoc.x + x), (int)(monsterLoc.y + y)] = monster;
                 recorder.AddTile(new RecorderTile("monster", (int)(monsterLoc.x + x), (int)(monsterLoc.y + y), roomCount, monsterOptions[monsterIndex].ToString()));
                 MonsterMovementController movementController = monster.AddComponent<MonsterMovementController>();
-                movementController.roomController = this; // Pass a reference to the room controller
+                movementController.roomController = this; // reference to the room controller
                 monsterObjects.Add(monster); // Add the monster to the list
             }
         }

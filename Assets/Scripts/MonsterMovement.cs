@@ -7,7 +7,10 @@ public class MonsterMovementController : MonoBehaviour
     private Transform monsterTransform;
     private Vector3 targetPosition;
     private float moveSpeed = 2.0f; // Adjust the movement speed as needed
+    public float cellsize;
+    public float cellspacing;
     public RoomController roomController;
+
 
     private void Start()
     {
@@ -31,9 +34,38 @@ public class MonsterMovementController : MonoBehaviour
 
     private void SetRandomTargetPosition()
     {
-        // Generate a random position within the room boundaries (adjust as needed)
-        float randomX = Random.Range(roomController.GetX(), roomController.GetX() + roomController.width);
-        float randomY = Random.Range(roomController.GetY(), roomController.GetY() + roomController.height);
-        targetPosition = new Vector3(randomX, randomY, monsterTransform.position.z);
+        do
+        {
+            // Generate a random position within the room boundaries
+            float randomX = Random.Range(roomController.GetX(), roomController.GetX() + roomController.width);
+            float randomY = Random.Range(roomController.GetY(), roomController.GetY() + roomController.height);
+            targetPosition = new Vector3(randomX, randomY, monsterTransform.position.z);
+        } while (!IsTargetPositionValid(targetPosition)); // Check if the target position is valid
+    }
+
+    private bool IsTargetPositionValid(Vector3 position)
+    {
+        // Calculate grid coords
+        int xIndex = Mathf.FloorToInt((position.x - roomController.GetX()) / cellsize);
+        int yIndex = Mathf.FloorToInt((position.y - roomController.GetY()) / cellsize);
+        TileController tile;
+
+        // Check if the calculated indices are within the bounds of the room
+        if (xIndex >= 0 && xIndex < roomController.width && yIndex >= 0 && yIndex < roomController.height)
+        {
+            // Get the tile at the calculated indices
+            for (int x = 0; x < roomController.width; x++)
+            {
+                for (int y = 0; y < roomController.height; y++)
+                {
+                    tile = roomController.GetComponent<TileController>();
+                    if (tile != null && tile.CompareTag("Floor"))
+                    {
+                        return true;
+                    }
+                }
+            }            
+        }
+        return false;
     }
 }
