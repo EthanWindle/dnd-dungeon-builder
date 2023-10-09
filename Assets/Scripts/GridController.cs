@@ -40,7 +40,7 @@ public class GridController : MonoBehaviour
 
     private bool inPlayerView = false;
 
-    private CustomGeneration customGeneration = new CustomGeneration(20, true, true); //current default generation parameters
+    private CustomGeneration customGeneration = new CustomGeneration(GlobalVariables.getRoomCount(), GlobalVariables.hasMonsters(), GlobalVariables.hasProps()); //current default generation parameters
 
     /*
      * Loads a save file from recorder

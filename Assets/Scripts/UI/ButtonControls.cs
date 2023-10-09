@@ -91,6 +91,25 @@ public class ButtonControls : MonoBehaviour
         SceneManager.LoadScene("mapScene");
     }
 
+    public void setRoomCount(Slider slider){
+        GlobalVariables.setRoomCount((int) slider.value);
+    }
+
+    public void setMonsters(Dropdown menu) {
+        if(menu.value == 0){
+            GlobalVariables.setMonsters(true);
+        } else if (menu.value == 1){
+            GlobalVariables.setMonsters(false);
+        }
+    }
+
+    public void setProps(Dropdown menu) {
+        if(menu.value == 0){
+            GlobalVariables.setProps(true);
+        } else if (menu.value == 1){
+            GlobalVariables.setProps(false);
+        }
+    }
 
     //load page 
     public void SetSavedGame(string name, TMP_Text mapText){
