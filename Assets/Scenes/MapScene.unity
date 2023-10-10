@@ -1298,6 +1298,8 @@ MonoBehaviour:
   yOffsets: 
   wallTile: {fileID: 1601085562768460819, guid: 33e47b85cf84c004e8e1e32d717da1ff, type: 3}
   playerEntity: {fileID: 5000523047403449022, guid: 244394696dce3784899b73e975f1a91b, type: 3}
+  spritesheetName: 
+  fogTile: {fileID: 0}
 --- !u!4 &345580329
 Transform:
   m_ObjectHideFlags: 0
@@ -2005,6 +2007,7 @@ GameObject:
   - component: {fileID: 725586747}
   - component: {fileID: 725586746}
   - component: {fileID: 725586745}
+  - component: {fileID: 735019961}
   m_Layer: 5
   m_Name: Regenerate
   m_TagString: Untagged
@@ -2120,7 +2123,12 @@ MonoBehaviour:
   m_PixelsPerUnitMultiplier: 1
 --- !u!222 &725586747
 CanvasRenderer:
-  numberOfRooms: 19
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 725586743}
+  m_CullTransparentMesh: 0
 --- !u!114 &735019961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2128,8 +2136,6 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 725586743}
-  m_CullTransparentMesh: 1
-  m_GameObject: {fileID: 735019957}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 25cfc505e774cda46a51910a3600b98e, type: 3}
@@ -2156,21 +2162,6 @@ MonoBehaviour:
   playerEntity: {fileID: 5000523047403449022, guid: 244394696dce3784899b73e975f1a91b, type: 3}
   spritesheetName: General Dungeon Spritesheet
   fogTile: {fileID: 101012713752661465, guid: cffa49d762e58c54e8f59de54b6e8c63, type: 3}
---- !u!4 &735019962
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 735019957}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &851810153
 GameObject:
   m_ObjectHideFlags: 0

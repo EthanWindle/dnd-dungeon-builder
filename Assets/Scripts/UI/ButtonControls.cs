@@ -109,7 +109,7 @@ public class ButtonControls : MonoBehaviour
         GlobalVariables.setRoomCount((int) slider.value);
     }
 
-    public void setMonsters(Dropdown menu) {
+    public void setMonsters(TMP_Dropdown menu) {
         if(menu.value == 0){
             GlobalVariables.setMonsters(true);
         } else if (menu.value == 1){
@@ -117,12 +117,16 @@ public class ButtonControls : MonoBehaviour
         }
     }
 
-    public void setProps(Dropdown menu) {
+    public void setProps(TMP_Dropdown menu) {
         if(menu.value == 0){
             GlobalVariables.setProps(true);
         } else if (menu.value == 1){
             GlobalVariables.setProps(false);
         }
+    }
+
+    public void setTheme(TMP_Dropdown menu){
+        GlobalVariables.setTheme(menu.options[menu.value].text);
     }
 
     //load page 
