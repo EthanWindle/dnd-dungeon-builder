@@ -2309,7 +2309,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Settings
+  m_text: 'Return
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 6df494c160353e046a01789fc1246fd4, type: 2}
   m_sharedMaterial: {fileID: 6676942440974456689, guid: 6df494c160353e046a01789fc1246fd4, type: 2}
@@ -2810,7 +2812,7 @@ GameObject:
   - component: {fileID: 1458641045}
   - component: {fileID: 1458641044}
   m_Layer: 5
-  m_Name: Settings
+  m_Name: Back
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
