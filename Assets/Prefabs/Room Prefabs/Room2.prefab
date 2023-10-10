@@ -29,10 +29,6 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
-      propertyPath: monsters.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: doors.Array.data[0].x
       value: 0
       objectReference: {fileID: 0}
@@ -111,14 +107,6 @@ PrefabInstance:
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: shapes.Array.data[0].y2
       value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
-      propertyPath: monsters.Array.data[0].x
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
-      propertyPath: monsters.Array.data[0].y
-      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5103073923086339983, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: m_LocalPosition.x

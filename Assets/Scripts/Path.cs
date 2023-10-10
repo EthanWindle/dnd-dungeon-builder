@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using Unity.VisualScripting;
 using UnityEngine;
-using System.Collections;
 
 public class Path
 {
@@ -13,9 +12,8 @@ public class Path
 	public RoomController destinationRoom{get; private set; }
     private Boolean hidden = true;
 
-    private ArrayList pathWallFog;
-
     public Path(){
+		//nodes = new List<PathNode>();
         this.nodes = new();
     }
 
@@ -35,54 +33,14 @@ public class Path
 		return nodes[i];
 	}
 
-	public void CreateFog(Transform transformParent, GameObject[,] gridFogLayer, GameObject[,] backgroundLayer, float size, float margin, int width, int height)
+	public void CreateFog(Transform transformParent, GameObject[,] gridFogLayer, float size, float margin)
     {
-        pathWallFog = new ArrayList();
         foreach (PathNode pathnode in nodes)
         {
             pathnode.CreateFog(transformParent, originRoom.fogPrefab, gridFogLayer, size, margin);
-
-            // Creating fog for path walls
-            var x = pathnode.x;
-            var y = pathnode.y;
-            CreateAdjacentFogTiles(transformParent, gridFogLayer, x, y, backgroundLayer, width, height, size, margin);
         }
     }
 
-    private void CreateAdjacentFogTiles(Transform transformParent, GameObject[,] gridFogLayer, int x, int y, GameObject[,] backgroundLayer, int width, int height, float size, float margin)
-    {
-        int index = 0;
-        TileController[] controllers = new TileController[8];
-        for (int xi = x - 1; xi <= x + 1; xi++)
-        {
-            for (int yi = y - 1; yi <= y + 1; yi++)
-            {
-                if (xi == x && yi == y) continue;
-
-                if (xi < 0 || xi >= width) controllers[index] = null;
-                else if (yi < 0 || yi >= height) controllers[index] = null;
-                else if (backgroundLayer[xi, yi] == null) controllers[index] = null;
-                else
-                {
-                    if (backgroundLayer[xi, yi].GetComponent<TileController>() is WallController)
-                    {
-                        var fog = UnityEngine.Object.Instantiate(originRoom.fogPrefab, new Vector3((xi) * (size + margin), (yi) * (size + margin), -2), Quaternion.identity, transformParent);
-                        fog.GetComponent<TileController>().Init(size - margin * 2);
-                        gridFogLayer[xi, yi] = fog;
-                        pathWallFog.Add(fog);
-                    }
-                }
-                index++;
-
-            }
-        }
-
-    }
-
-    /*
-     * Removes the fog for paths connecting to room
-     * Called by right-clicking the room
-     */
     public void ClearFogTiles()
     {
         hidden = false;
@@ -90,16 +48,8 @@ public class Path
         {
             pathnode.ClearFogTile();
         }
-        foreach (GameObject fogtileinst in pathWallFog)
-        {
-            fogtileinst.SetActive(false);
-        }
     }
 
-    /*
-     * Hides all fog tiles
-     * Called when switching to DM view
-     */
     public void HideFogTiles()
     {
         if (hidden == false) return;
@@ -107,28 +57,67 @@ public class Path
         {
             pathnode.HideFogTile();
         }
-        foreach (GameObject fogtileinst in pathWallFog)
-        {
-            fogtileinst.SetActive(false);
-        }
     }
 
-    /*
+	/*
      * Shows all fog tiles
-     * Called when switching to player view
      */
-    public void ShowFogTiles()
+	public void ShowFogTiles()
     {
         if (hidden == false) return;
         foreach (PathNode pathnode in nodes)
         {
             pathnode.ShowFogTile();
         }
-        foreach (GameObject fogtileinst in pathWallFog)
-        {
-            fogtileinst.SetActive(true);
-        }
     }
+
+    /*
+            var leftMostX = get(0).x;
+            var rightMostX = get(0).x;
+            var lowestY = get(0).y;
+            var highestY = get(0).y;
+
+            foreach (PathNode pathnode in nodes)
+            {
+                if (pathnode.x < leftMostX) leftMostX = pathnode.x;
+                if (pathnode.x > rightMostX) rightMostX = pathnode.x;
+                if (pathnode.y < lowestY) lowestY = pathnode.y;
+                if (pathnode.y > highestY) highestY = pathnode.y;
+            }
+            */
+
+    //fogLayer = new GameObject[rightMostX - leftMostX, highestY - lowestY];
+    //fogLayer = new GameObject[gridFogLayer.GetLength(0), gridFogLayer.GetLength(1)];
+
+    /*
+
+    foreach (PathNode pathnode in nodes)
+    {
+        var x = pathnode.x;
+        var y = pathnode.y;
+
+        GameObject fog = UnityEngine.Object.Instantiate(originRoom.fogPrefab, new Vector3((x) * (size + margin), (y) * (size + margin), -2), Quaternion.identity, transformParent);
+        fog.GetComponent<TileController>().Init(size - margin * 2);
+
+        if (fog == null)
+        {
+            Debug.Log("null");
+            continue;
+        }
+        //Debug.Log(x + " : " + y + " : " + (rightMostX - leftMostX) + " :" + (highestY - lowestY));
+        fogLayer[x, y] = fog;
+        gridFogLayer[x, y] = fog;
+        Debug.Log("creating fog tiles");
+    }
+
+    for (int i = 0; i < gridFogLayer.GetLength(0); i++)
+    {
+        for (int j = 0; j < gridFogLayer.GetLength(0); j++)
+        {
+            fogLayer[i][j]
+
+        }
+    }*/
 
     public void SetRooms(GameObject[,] backgroundLayer){
 		int ox = nodes[0].x;

@@ -2094,7 +2094,6 @@ MonoBehaviour:
   height: 70
   cellSize: 1
   cellSpacing: 0
-  mainCamera: {fileID: 519420031}
   rooms:
   - {fileID: 2616157474389735949, guid: 04b415f1fcefd764b8723f772b8810c6, type: 3}
   - {fileID: 1682151116209196268, guid: f903b8ade52deac4aa8994f25123ff06, type: 3}
