@@ -10,11 +10,12 @@ using UnityEngine;
  */
 public class DungeonGenerator : MonoBehaviour
 {
-    public int numberOfRooms = 30;
+    public int numberOfRooms = 19;
     private bool[,] grid;
 
-    public GameObject[] GenerateDungeon(GameObject[] initialRooms, int gridWidth, int gridHeight)
+    public GameObject[] GenerateDungeon(GameObject[] initialRooms, int gridWidth, int gridHeight, CustomGeneration customGeneration)
     {
+        numberOfRooms = customGeneration.GetRoomCount();
         GameObject[] finalRooms = new GameObject[numberOfRooms];
 
         grid = new bool[gridWidth, gridHeight];
@@ -31,9 +32,9 @@ public class DungeonGenerator : MonoBehaviour
             int maxAttempts = 100;
             for (int attempt = 0; attempt < maxAttempts; attempt++)
             {
-                // Generate random position within grid boundaries
-                int randomX = UnityEngine.Random.Range(0, gridWidth - roomToPlaceWidth + 1);
-                int randomY = UnityEngine.Random.Range(0, gridHeight - roomToPlaceHeight + 1);
+                // Generate random position within grid boundaries, leaving a 1 tile gap at the edges for pathfinding
+                int randomX = UnityEngine.Random.Range(1, gridWidth - roomToPlaceWidth);
+                int randomY = UnityEngine.Random.Range(1, gridHeight - roomToPlaceHeight);
 
                 // Check if the room would overlap with any existing rooms
                 bool overlap = false;

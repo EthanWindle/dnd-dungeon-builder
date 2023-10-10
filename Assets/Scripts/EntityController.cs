@@ -9,8 +9,6 @@ using UnityEngine;
 public abstract class EntityController : MonoBehaviour
 {
 
-    public Texture2D texture;
-    protected readonly int textureSize = 16;
 
     public virtual void Init(float size)
     {
@@ -21,10 +19,4 @@ public abstract class EntityController : MonoBehaviour
 
     public abstract bool canBeMovedByPlayer();
 
-    public void Awake()
-    {
-        Sprite sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(0.5f, 0.5f), textureSize);
-
-        gameObject.GetComponent<SpriteRenderer>().sprite = sprite;
-    }
 }

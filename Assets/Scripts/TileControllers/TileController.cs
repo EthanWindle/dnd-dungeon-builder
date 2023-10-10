@@ -8,7 +8,6 @@ using UnityEngine;
  */
 public abstract class TileController : MonoBehaviour
 {
-    protected readonly int textureSize = 16;
 
     public virtual void Init(float size)
     {
