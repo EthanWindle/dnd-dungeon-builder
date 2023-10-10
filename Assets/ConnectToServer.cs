@@ -8,6 +8,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
 {
     public GameObject Display;
     public GameObject Loading;
+    public GameObject ButtonControls;
 
     // Start is called before the first frame update
     void Start()
@@ -20,6 +21,7 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     }
 
     public override void OnJoinedLobby(){
+        ButtonControls.GetComponent<ButtonControls>().GetSavedGames();
         Display.SetActive(true);
         Loading.SetActive(false);
     }
