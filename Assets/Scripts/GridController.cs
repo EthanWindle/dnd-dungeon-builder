@@ -25,6 +25,9 @@ public class GridController : MonoBehaviour
     private GameObject[,] foregroundLayer; //Layer for props and entities like players and monsters
     private GameObject[,] fogLayer; //Layer for the fog
 
+    public Camera mainCamera;
+    public GameObject playerClone;
+
     public GameObject[] rooms; //Each instance of a room object is stored here
     public int[] xOffsets; //x location of room, correlates with rooms array
     public int[] yOffsets; //y location of room, correlates with rooms array
@@ -173,7 +176,9 @@ public class GridController : MonoBehaviour
         PlaceBackgroundFog();
         Vector2 playerPosition = PlacePlayer();
 
-        gameObject.transform.position -= new Vector3(playerPosition.x * cellSize, playerPosition.y * cellSize, 0); //Try to center the grid in the game space.    
+        gameObject.transform.position -= new Vector3(0,0,0); //actually center the grid in the game space.
+
+        MoveCameraToPlayer();
 
         //Test load from file
         if (!string.IsNullOrWhiteSpace(GlobalVariables.getMap()))
@@ -189,9 +194,7 @@ public class GridController : MonoBehaviour
         //GridControllerJsonSerializer.SerializeToJson(this, "testFile.json", recorder);
 
         //Test save as PNG
-        //GameObject topDownCamera = GameObject.Find("topDownCamera");
-        //Camera camera = topDownCamera.GetComponent<Camera>();
-        //GridControllerJsonSerializer.SaveSceneAsPNG("saves/testImage.png", 3840, 2160, camera);
+        //SaveAsPNG("testImage");
 
     }
 
@@ -267,6 +270,7 @@ public class GridController : MonoBehaviour
                     foregroundLayer[x,y] = player;
                     player.GetComponent<PlayerController>().Init(cellSize - cellSpacing * 2);
                     firstRoomController.ClearFog(new Vector3(x, y, 0), fogLayer, width, height);
+                    this.playerClone = player;
                     return new Vector2(x,y);
                 }
             }
@@ -464,9 +468,34 @@ public class GridController : MonoBehaviour
 
             entity.transform.position = GetWorldLocation(destination);
         }
+        MoveCameraToPlayer();
     }
 
     public void Save(string filePath){
         GridControllerJsonSerializer.SerializeToJson(this, filePath, recorder);
+    }
+
+    public void SaveAsPNG(string fileName)
+    {
+        ChangeToDMView();
+        GameObject topDownCamera = GameObject.Find("Top-Down Camera");
+        Camera camera = topDownCamera.GetComponent<Camera>();
+        GridControllerJsonSerializer.SaveSceneAsPNG("saves/" + fileName + ".png", 6000, 3000, camera);
+        ChangeToPlayerView();
+    }
+
+    public void MoveCameraToPlayer()
+    {
+        if (playerClone != null && mainCamera != null)
+        {
+            // Set the camera's position to match the target's position
+            mainCamera.transform.position = new Vector3(
+                playerClone.transform.position.x,
+                playerClone.transform.position.y,
+                mainCamera.transform.position.z
+            );
+            //Debug.Log("Player Position: " + playerClone.transform.position);
+            //Debug.Log("Camera Position: " + mainCamera.transform.position);
+        }
     }
 }
