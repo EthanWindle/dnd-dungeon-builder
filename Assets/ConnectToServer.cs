@@ -14,15 +14,18 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
     void Start()
     {
         PhotonNetwork.ConnectUsingSettings();
+        Debug.Log("connect");
     }
 
     public override void OnConnectedToMaster(){
         PhotonNetwork.JoinLobby();
+        Debug.Log("lobby");
     }
 
     public override void OnJoinedLobby(){
         ButtonControls.GetComponent<ButtonControls>().GetSavedGames();
         Display.SetActive(true);
         Loading.SetActive(false);
+        Debug.Log("in");
     }
 }
