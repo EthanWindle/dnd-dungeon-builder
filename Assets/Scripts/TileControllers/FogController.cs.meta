@@ -3,7 +3,9 @@ guid: 6b8e0fa3b835d0045a67ed99318df0d4
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - highOpacityTile: {fileID: 2800000, guid: 97e2688f64864a64e8f4cd2cc44d8f2e, type: 3}
+  - lowOpacityTile: {fileID: 2800000, guid: 6eb2477a763503249838243e20df4186, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

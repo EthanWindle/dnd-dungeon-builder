@@ -42,17 +42,39 @@ public class MouseHandlerController : MonoBehaviour
 
     void Update()
     {
-        HandleRemoveFog();
+        if (!HandleRemoveFog()){
+            HandleDoors();
+        }
         HandleMoveEntity();
+        checkForSpace();
     }
 
-    void HandleRemoveFog()
+    void HandleDoors(){
+        if (Input.GetMouseButtonDown(1) && !controller.isInPlayerView()){
+            DoorController doorController = controller.GetBackgroundObject(controller.GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition))).GetComponent<DoorController>();
+
+            if (doorController == null) return;
+
+            doorController.Switch();
+
+        }
+    }
+
+    bool HandleRemoveFog()
     {
-        if (Input.GetMouseButtonDown(1))
-            controller.HandleFog(controller.GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
+        if (Input.GetMouseButtonDown(1) && !controller.isInPlayerView()){
+            return controller.HandleFog(controller.GetGridPosition(Camera.main.ScreenToWorldPoint(Input.mousePosition)));
+        }
+        return false;
     }
 
-
+    void checkForSpace()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            controller.ChangePlayerDMView();
+        }
+    }
 
 
     private void HandleMoveEntity()

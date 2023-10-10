@@ -2120,12 +2120,57 @@ MonoBehaviour:
   m_PixelsPerUnitMultiplier: 1
 --- !u!222 &725586747
 CanvasRenderer:
+  numberOfRooms: 19
+--- !u!114 &735019961
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 725586743}
   m_CullTransparentMesh: 1
+  m_GameObject: {fileID: 735019957}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 25cfc505e774cda46a51910a3600b98e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  width: 70
+  height: 70
+  cellSize: 1
+  cellSpacing: 0
+  rooms:
+  - {fileID: 2616157474389735949, guid: 04b415f1fcefd764b8723f772b8810c6, type: 3}
+  - {fileID: 1682151116209196268, guid: f903b8ade52deac4aa8994f25123ff06, type: 3}
+  - {fileID: 8915521083888307281, guid: 629a254d551fd4d4a946688236857979, type: 3}
+  - {fileID: 1395502112492721383, guid: 1f1bf568ca9c77147924bb3baf3618ff, type: 3}
+  - {fileID: 7608064667348295095, guid: 4a7103a8cfdfb5d419c408e8d9f833c2, type: 3}
+  - {fileID: 5176107042835342550, guid: 95bbebd052c362d4b80451a8c0cc18ce, type: 3}
+  - {fileID: 6880877989680086973, guid: 23401c6cb79826145bed232f1c7bab5e, type: 3}
+  - {fileID: 709260183645416478, guid: 937910ad414b53945b348ab2c7e7c7a8, type: 3}
+  - {fileID: 2096278233171954284, guid: af826096091f248409afd182a185ada5, type: 3}
+  - {fileID: 4539105295993118851, guid: bdf6cd5d34a2e0e4aa8e7145f9bed2ad, type: 3}
+  xOffsets: 
+  yOffsets: 
+  wallTile: {fileID: 1601085562768460819, guid: 33e47b85cf84c004e8e1e32d717da1ff, type: 3}
+  playerEntity: {fileID: 5000523047403449022, guid: 244394696dce3784899b73e975f1a91b, type: 3}
+  spritesheetName: General Dungeon Spritesheet
+  fogTile: {fileID: 101012713752661465, guid: cffa49d762e58c54e8f59de54b6e8c63, type: 3}
+--- !u!4 &735019962
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 735019957}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &851810153
 GameObject:
   m_ObjectHideFlags: 0
@@ -4358,7 +4403,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 2.9599915, y: 6.899994}
+  m_AnchoredPosition: {x: 2.960022, y: 6.899994}
   m_SizeDelta: {x: -187.43005, y: -163.74004}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1909964744
