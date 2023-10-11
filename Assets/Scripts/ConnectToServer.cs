@@ -28,4 +28,12 @@ public class ConnectToServer : MonoBehaviourPunCallbacks
         Loading.SetActive(false);
         Debug.Log("in");
     }
+
+    public void Disconnect(){
+        PhotonNetwork.LeaveLobby();
+    }
+
+    public override void OnLeftLobby(){
+        PhotonNetwork.Disconnect();
+    }
 }

@@ -192,4 +192,9 @@ public class ButtonControls : MonoBehaviour
         string fullFileName = "Assets/Saves/" + name.text + ".json";
         Grid.GetComponent<GridController>().Save(fullFileName);
     }
+
+    public void LeaveMuliplayer(GameObject network){
+        network.GetComponent<ConnectToServer>().Disconnect();
+        SceneManager.LoadScene("homePage");
+    }
 }
