@@ -22,6 +22,7 @@ public class NetworkControls : MonoBehaviour, IChatClientListener
             leave.SetActive(true);
         }
         chat = new ClientChat(this);
+        chat.Connect(PhotonNetwork.PhotonServerSettings.AppSetings.AppIdChat, PhotonNetwork.AppVersion, new AuthenticationValues());
     }
 
     public void LeaveRoom(){
@@ -38,37 +39,37 @@ public class NetworkControls : MonoBehaviour, IChatClientListener
     
 
     //Chat Functions
-    public void DebugReturn(DebugLevel level, string message){
-        throws new System.NotImplementedException();
+    void DebugReturn(DebugLevel Level, string message){
+        throw new NotImplementedException();
     }
     public void OnChatStateChange(ChatState state){
-        throws new System.NotImplementedException();
+        throw new NotImplementedException();
     }
     public void OnConnected(){
-        throws new System.NotImplementedException();
+        throw new NotImplementedException();
     }
     public void OnDisconnected(){
-        throws new System.NotImplementedException();
+        throw new NotImplementedException();
     }
     public void OnGetMessages(string channelName, string[] senders, object[] messages){
-        throws new System.NotImplementedException();
+        throw new NotImplementedException();
     }
-    public void OnGetPrivateMessage(string sender, object message, string channelName){
-        throws new System.NotImplementedException();
+    public void OnPrivateMessage(string sender, object message, string channelName){
+        throw new NotImplementedException();
     }
-    public void OnStatusUpdate(string sender, int status, bool, gotMessage, object message){
-        throws new System.NotImplementedException();
+    public void OnStatusUpdate(string sender, int status, bool gotMessage, object message){
+        throw new NotImplementedException();
     }
     public void OnSubscribed(string[] channels, bool[] results){
-        throws new System.NotImplementedException();
+        throw new NotImplementedException();
     }
-    public void OnUnsubscribed(){
-        throws new System.NotImplementedException(string[] channels);
+    public void OnUnsubscribed(string[] channels){
+        throw new NotImplementedException();
     }
     public void OnUserSubscribed(string channel, string user){
-        throws new System.NotImplementedException();
+        throw new NotImplementedException();
     }
-    public void OnUserUnsubscribed(){
-        throws new System.NotImplementedException(string channel, string user);
+    public void OnUserUnsubscribed(string channel, string user){
+        throw new NotImplementedException();
     }
 }
