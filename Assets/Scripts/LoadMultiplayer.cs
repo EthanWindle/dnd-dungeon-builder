@@ -1,6 +1,14 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
+using Unity.VisualScripting;
+using System.Linq;
+using Unity.VisualScripting.FullSerializer;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.UIElements;
+using UnityEngine.U2D;
 
 public class LoadMultiplayer : MonoBehaviour
 {
@@ -16,7 +24,7 @@ public class LoadMultiplayer : MonoBehaviour
     public int[] yOffsets; //y location of room, correlates with rooms array
     public GameObject wallTile;
     public GameObject playerEntity;
-    public String spritesheetName;
+    public string spritesheetName;
     public GameObject fogTile;
 
     private Recorder recorder; //Records events to save the current game state
