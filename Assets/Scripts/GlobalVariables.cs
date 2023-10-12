@@ -21,4 +21,12 @@ public static class GlobalVariables
         Debug.Log("clear");
         mapName = null;
     }
+
+    private static string UserName;
+    public static void SetUserName(string name){
+        UserName = name;
+    }
+    public static string GetUserName(){
+        return UserName;
+    }
 }
