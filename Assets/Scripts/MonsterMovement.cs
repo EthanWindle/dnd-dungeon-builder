@@ -34,13 +34,13 @@ public class MonsterMovementController : MonoBehaviour
 
     private void SetRandomTargetPosition()
     {
-        do
+        if (IsTargetPositionValid(targetPosition) == true)
         {
             // Generate a random position within the room boundaries
             float randomX = Random.Range(roomController.GetX(), roomController.GetX() + roomController.width);
             float randomY = Random.Range(roomController.GetY(), roomController.GetY() + roomController.height);
             targetPosition = new Vector3(randomX, randomY, monsterTransform.position.z);
-        } while (!IsTargetPositionValid(targetPosition)); // Check if the target position is valid
+        }
     }
 
     private bool IsTargetPositionValid(Vector3 position)
