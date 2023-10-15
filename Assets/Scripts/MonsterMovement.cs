@@ -10,7 +10,7 @@ public class MonsterMovementController : MonoBehaviour
     public float cellsize;
     public float cellspacing;
     public RoomController roomController;
-
+    public GameObject monster;
 
     private void Start()
     {
@@ -46,8 +46,8 @@ public class MonsterMovementController : MonoBehaviour
     private bool IsTargetPositionValid(Vector3 position)
     {
         // Calculate grid coords
-        int xIndex = Mathf.FloorToInt((position.x - roomController.GetX()) / cellsize);
-        int yIndex = Mathf.FloorToInt((position.y - roomController.GetY()) / cellsize);
+        int xIndex = 
+        int yIndex = 
         TileController tile;
 
         // Check if the calculated indices are within the bounds of the room
