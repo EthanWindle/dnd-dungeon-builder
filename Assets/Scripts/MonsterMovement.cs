@@ -31,8 +31,12 @@ public class MonsterMovementController : MonoBehaviour
 
             if (!IsTileFloorAtPosition(nextPoint))
             {
-                nextPoint = pointA;
-                movingToB = false;
+                // Change direction instead of heading back to point A
+                Vector3 temp = pointA;
+                pointA = pointB;
+                pointB = temp;
+                movingToB = !movingToB;
+                nextPoint = movingToB ? pointB : pointA;
                 yield return StartCoroutine(MoveToNextPoint());
             }
         }
