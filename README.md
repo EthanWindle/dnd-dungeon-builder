@@ -15,12 +15,12 @@
 
 | Name | Area |
 | ------ | ------ |
-| Adam Roddick |        |
-| Benjamin McEvoy |        |
-| Braeden Windle |        |
+| Adam Roddick | Backend () |
+| Benjamin McEvoy | Frontend (Assets) |
+| Braeden Windle | Backend () |
 | Ethan Windle | Frontend (UI) |
-| Nathan Bennett |        |
-| Vedaanth Kannan |        |
+| Nathan Bennett | Backend () |
+| Vedaanth Kannan | Backend () |
 
 ## Scope
 
