@@ -48,7 +48,7 @@ public class GridController : MonoBehaviour
 
     private bool inPlayerView = true;
 
-    private CustomGeneration customGeneration = new CustomGeneration(20, true, true); //current default generation parameters
+    private CustomGeneration customGeneration = new CustomGeneration(15, true, true); //current default generation parameters
 
     /*
      * Loads a save file from recorder
@@ -155,6 +155,35 @@ public class GridController : MonoBehaviour
         for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
             //int offsetx = xOffsets[i];
+            if (rooms[i] == null)
+            {
+                Debug.Log("rooms[" + i + "] is null");
+            }
+            if (gameObject == null)
+            {
+                Debug.Log("gameObject is null");
+            }
+            if (backgroundLayer == null)
+            {
+                Debug.Log("backgroundLayer is null");
+            }
+            if (foregroundLayer == null)
+            {
+                Debug.Log("foregroundLayer is null");
+            }
+            if (fogLayer == null)
+            {
+                Debug.Log("fogLayer is null");
+            }
+            if (customGeneration == null)
+            {
+                Debug.Log("customGeneration is null");
+            }
+            if (spritesheetManager == null)
+            {
+                Debug.Log("spritesheetManager is null");
+            }
+
             rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder, customGeneration, spritesheetManager);
             RoomController roomController = rooms[i].GetComponent<RoomController>();
             this.tilePrefab = roomController.tilePrefab;
