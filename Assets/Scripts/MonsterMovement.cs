@@ -4,7 +4,11 @@ using System.Collections;
 
 public class MonsterMovementController : MonoBehaviour
 {
-    public Vector3 pointB;
+    public float moveSpeed = 3.0f;
+    private Vector3 pointA;
+    private Vector3 pointB;
+    private Vector3 nextPoint;
+    private bool movingToB = true;
 
     IEnumerator Start()
     {
@@ -17,17 +21,29 @@ public class MonsterMovementController : MonoBehaviour
             // Ensure the next point is not outside the room boundaries
             pointB.x = Mathf.Clamp(pointB.x, pointA.x - 1, pointA.x + 1);
             pointB.y = Mathf.Clamp(pointB.y, pointA.y - 1, pointA.y + 1);
+
+            // Start moving towards pointB
+            nextPoint = pointB;
+            movingToB = true;
+            yield return StartCoroutine(MoveToNextPoint());
+
+            // Switch direction and move back towards pointA
+            nextPoint = pointA;
+            movingToB = false;
+            yield return StartCoroutine(MoveToNextPoint());
         }
     }
 
-    IEnumerator MoveObject(Transform thisTransform, Vector3 startPos, Vector3 endPos, float time)
+    IEnumerator MoveToNextPoint()
     {
-        var i = 0.0f;
-        var rate = 1.0f / time;
-        while (i < 1.0f)
+        float distance = Vector3.Distance(transform.position, nextPoint);
+        float duration = distance / moveSpeed;
+
+        float startTime = Time.time;
+        while (Time.time < startTime + duration)
         {
-            i += Time.deltaTime * rate;
-            thisTransform.position = Vector3.Lerp(startPos, endPos, i);
+            float journey = (Time.time - startTime) / duration;
+            transform.position = Vector3.Lerp(transform.position, nextPoint, journey);
             yield return null;
         }
     }
