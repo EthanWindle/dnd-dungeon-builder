@@ -13,7 +13,6 @@ public class RoomController : MonoBehaviour
     public GameObject tilePrefab;
     public GameObject doorPrefab;
     public GameObject fogPrefab;
-    public GameObject patrolLocPrefab;
     public GameObject[] propOptions;
     public GameObject[] monsterOptions;
 
@@ -70,16 +69,7 @@ public class RoomController : MonoBehaviour
                     GameObject tile = Instantiate(tilePrefab, new Vector3((x + this.x) * (size + margin), (y + this.y) * (size + margin), 0), Quaternion.identity, transformParent);
                     tile.GetComponent<FloorController>().Init(size - margin * 2, spritesheetManager);
                     background[x + this.x, y + this.y] = tile;
-                    recorder.AddTile(new RecorderTile("floor", x + this.x, y + this.y, roomCount));
-                    GameObject patrol = Instantiate(patrolLocPrefab, new Vector3(shape.x1,shape.y1,0), Quaternion.identity, transformParent);
-                    GameObject patrolLoc1 = Instantiate(patrolLocPrefab, new Vector3(shape.x1+1,shape.y2-1,0), Quaternion.identity, transformParent);
-                    GameObject patrolLoc2 = Instantiate(patrolLocPrefab, new Vector3(shape.x2-1,shape.y1+1,0), Quaternion.identity, transformParent);
-                    patrolLoc1.transform.SetParent(patrol.transform);
-                    patrolLoc2.transform.SetParent(patrol.transform);
-                    MonsterMovementController patroller = patrol.AddComponent<MonsterMovementController>();
-                    patroller.node1 = patrolLoc1.transform;
-                    patroller.node2 = patrolLoc2.transform;
-                    
+                    recorder.AddTile(new RecorderTile("floor", x + this.x, y + this.y, roomCount));                    
                 }
             }
         }
@@ -119,6 +109,7 @@ public class RoomController : MonoBehaviour
                 monster.GetComponent<MonsterController>().Init(size - margin * 2);
                 foreground[(int)(monsterLoc.x + x), (int)(monsterLoc.y + y)] = monster;
                 recorder.AddTile(new RecorderTile("monster", (int)(monsterLoc.x + x), (int)(monsterLoc.y + y), roomCount, monsterOptions[monsterIndex].ToString()));
+                monster.AddComponent<MonsterMovementController>();
             }
         }
 
