@@ -11,8 +11,12 @@ public class MonsterMovementController : MonoBehaviour
         var pointA = transform.position;
         while (true)
         {
-            yield return StartCoroutine(MoveObject(transform, pointA, pointB, 3.0f));
-            yield return StartCoroutine(MoveObject(transform, pointB, pointA, 3.0f));
+            // Calculate a random pointB within a 1-unit radius of the current position
+            pointB = pointA + new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), 0f);
+
+            // Ensure the next point is not outside the room boundaries
+            pointB.x = Mathf.Clamp(pointB.x, pointA.x - 1, pointA.x + 1);
+            pointB.y = Mathf.Clamp(pointB.y, pointA.y - 1, pointA.y + 1);
         }
     }
 
