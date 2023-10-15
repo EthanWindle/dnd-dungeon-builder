@@ -10,6 +10,8 @@ public class MonsterMovementController : MonoBehaviour
     private Vector3 nextPoint;
     private bool movingToB = true;
 
+    public RoomController roomController;
+
     IEnumerator Start()
     {
         var pointA = transform.position;
@@ -27,10 +29,12 @@ public class MonsterMovementController : MonoBehaviour
             movingToB = true;
             yield return StartCoroutine(MoveToNextPoint());
 
-            // Switch direction and move back towards pointA
-            nextPoint = pointA;
-            movingToB = false;
-            yield return StartCoroutine(MoveToNextPoint());
+            if (!IsTileFloorAtPosition(nextPoint))
+            {
+                nextPoint = pointA;
+                movingToB = false;
+                yield return StartCoroutine(MoveToNextPoint());
+            }
         }
     }
 
@@ -46,5 +50,22 @@ public class MonsterMovementController : MonoBehaviour
             transform.position = Vector3.Lerp(transform.position, nextPoint, journey);
             yield return null;
         }
+    }
+
+    bool IsTileFloorAtPosition(Vector3 position)
+    {
+        // Get all objects with the type "floorcontroller" at the given position
+        FloorController[] controllers = GameObject.FindObjectsOfType<FloorController>();
+
+        foreach (FloorController controller in controllers)
+        {
+            // Check if the object is not an instance of FloorController at the specified position
+            if (controller.transform.position == position)
+            {
+                return false; // Yes There is a FloorController at the position
+            }
+        }
+
+        return true; // FloorController found at the position
     }
 }
