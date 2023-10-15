@@ -71,18 +71,15 @@ public class RoomController : MonoBehaviour
                     tile.GetComponent<FloorController>().Init(size - margin * 2, spritesheetManager);
                     background[x + this.x, y + this.y] = tile;
                     recorder.AddTile(new RecorderTile("floor", x + this.x, y + this.y, roomCount));
+                    GameObject patrol = Instantiate(patrolLocPrefab, new Vector3(shape.x1,shape.y1,0), Quaternion.identity, transformParent);
                     GameObject patrolLoc1 = Instantiate(patrolLocPrefab, new Vector3(shape.x1+1,shape.y2-1,0), Quaternion.identity, transformParent);
                     GameObject patrolLoc2 = Instantiate(patrolLocPrefab, new Vector3(shape.x2-1,shape.y1+1,0), Quaternion.identity, transformParent);
-                }
-            }
-            gridLocations = new GameObject[width, height];
-
-            // Store the locations in the gridLocations array
-            for (int w = shape.x1; w < shape.x2; w++)
-            {
-                for (int h = shape.y1; h < shape.y2; h++)
-                {
-                    gridLocations[w, h] = background[w + this.x, h + this.y];
+                    patrolLoc1.transform.SetParent(patrol.transform);
+                    patrolLoc2.transform.SetParent(patrol.transform);
+                    MonsterMovementController patroller = patrol.AddComponent<MonsterMovementController>();
+                    patroller.node1 = patrolLoc1.transform;
+                    patroller.node2 = patrolLoc2.transform;
+                    
                 }
             }
         }
@@ -122,10 +119,6 @@ public class RoomController : MonoBehaviour
                 monster.GetComponent<MonsterController>().Init(size - margin * 2);
                 foreground[(int)(monsterLoc.x + x), (int)(monsterLoc.y + y)] = monster;
                 recorder.AddTile(new RecorderTile("monster", (int)(monsterLoc.x + x), (int)(monsterLoc.y + y), roomCount, monsterOptions[monsterIndex].ToString()));
-                MonsterMovementController movementController = monster.AddComponent<MonsterMovementController>();
-                movementController.monster = monster; // reference to the monster
-                movementController.roomController = this; // reference to the room controller
-                monsterObjects.Add(monster); // Add the monster to the list
             }
         }
 
