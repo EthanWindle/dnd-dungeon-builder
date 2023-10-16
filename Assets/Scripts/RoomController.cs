@@ -34,7 +34,7 @@ public class RoomController : MonoBehaviour
 
 
     public List<Path> paths {get; private set;}
-    private List<GameObject> monsterObjects = new List<GameObject>();
+    public List<GameObject> monsterObjects = new List<GameObject>();
     public GameObject[,] gridLocations;
 
     private static int roomCount = 0; //Counts the number for each room for recorder, do not modify for anything else
@@ -106,6 +106,7 @@ public class RoomController : MonoBehaviour
                 //monsterIndex is used to store the random number to choose which prop is shown so that it can be given to the recorder.
                 int monsterIndex = random.Next(monsterOptions.Length);
                 GameObject monster = Instantiate(monsterOptions[monsterIndex], new Vector3((monsterLoc.x + this.x) * (size + margin), (monsterLoc.y + this.y) * (size + margin), -1), Quaternion.identity, transformParent);
+                monster.tag = "Monster";
                 monster.GetComponent<MonsterController>().Init(size - margin * 2);
                 foreground[(int)(monsterLoc.x + x), (int)(monsterLoc.y + y)] = monster;
                 recorder.AddTile(new RecorderTile("monster", (int)(monsterLoc.x + x), (int)(monsterLoc.y + y), roomCount, monsterOptions[monsterIndex].ToString()));
@@ -151,6 +152,21 @@ public class RoomController : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void ToggleMonsterControllers(bool activate)
+    {
+        foreach (GameObject monster in monsterObjects)
+        {
+            if (monster != null)
+            {
+                MonsterMovementController monsterController = monster.GetComponent<MonsterMovementController>();
+                if (monsterController != null)
+                {
+                    monsterController.isControllerActive = activate;
+                }
+            }
+        }
     }
 
     /**

@@ -11,6 +11,7 @@ public class MonsterMovementController : MonoBehaviour
     private bool movingToB = true;
 
     public RoomController roomController;
+    public bool isControllerActive = true;
 
     IEnumerator Start()
     {
