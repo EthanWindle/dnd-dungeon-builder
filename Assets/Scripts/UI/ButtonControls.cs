@@ -205,6 +205,22 @@ public class ButtonControls : MonoBehaviour
         }
     }
 
+    public void AddMonsterMovementControllers()
+    {
+        // Find all game objects with the "Monster" tag
+        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+
+        foreach (GameObject monster in monsters)
+        {
+            // Check if the MonsterMovementController component doesn't already exist
+            if (monster.GetComponent<MonsterMovementController>() == null)
+            {
+                // Add the MonsterMovementController component
+                monster.AddComponent<MonsterMovementController>();
+            }
+        }
+    }
+
     public void saveFile(TMP_InputField name){
         string fullFileName = "Assets/Saves/" + name.text + ".json";
         Grid.GetComponent<GridController>().Save(fullFileName);

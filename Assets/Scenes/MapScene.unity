@@ -2796,11 +2796,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Padding: {x: -8, y: -5, z: -8, w: -5}
   m_Softness: {x: 0, y: 0}
-<<<<<<< HEAD
---- !u!1 &1234702478
-=======
 --- !u!1 &1151047243
->>>>>>> 338adb8 (Feat: Added a button to kill the Monster movement controller component, so that monsters will stop when clicked. If movement is wanted again, map must be regenerated.)
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2808,76 +2804,41 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-<<<<<<< HEAD
-  - component: {fileID: 1234702479}
-  - component: {fileID: 1234702481}
-  - component: {fileID: 1234702480}
-  m_Layer: 5
-  m_Name: Background
-=======
   - component: {fileID: 1151047244}
   - component: {fileID: 1151047246}
   - component: {fileID: 1151047245}
   m_Layer: 5
   m_Name: Text (TMP)
->>>>>>> 338adb8 (Feat: Added a button to kill the Monster movement controller component, so that monsters will stop when clicked. If movement is wanted again, map must be regenerated.)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
-<<<<<<< HEAD
---- !u!224 &1234702479
-=======
 --- !u!224 &1151047244
->>>>>>> 338adb8 (Feat: Added a button to kill the Monster movement controller component, so that monsters will stop when clicked. If movement is wanted again, map must be regenerated.)
 RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-  m_GameObject: {fileID: 1234702478}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-=======
   m_GameObject: {fileID: 1151047243}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
->>>>>>> 338adb8 (Feat: Added a button to kill the Monster movement controller component, so that monsters will stop when clicked. If movement is wanted again, map must be regenerated.)
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-<<<<<<< HEAD
-  m_Father: {fileID: 1462390309}
-=======
   m_Father: {fileID: 2065470015}
->>>>>>> 338adb8 (Feat: Added a button to kill the Monster movement controller component, so that monsters will stop when clicked. If movement is wanted again, map must be regenerated.)
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
-<<<<<<< HEAD
---- !u!114 &1234702480
-=======
 --- !u!114 &1151047245
->>>>>>> 338adb8 (Feat: Added a button to kill the Monster movement controller component, so that monsters will stop when clicked. If movement is wanted again, map must be regenerated.)
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-  m_GameObject: {fileID: 1234702478}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0.392}
-=======
   m_GameObject: {fileID: 1151047243}
   m_Enabled: 1
   m_EditorHideFlags: 0
@@ -2886,31 +2847,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
->>>>>>> 338adb8 (Feat: Added a button to kill the Monster movement controller component, so that monsters will stop when clicked. If movement is wanted again, map must be regenerated.)
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-<<<<<<< HEAD
-  m_Sprite: {fileID: 21300000, guid: 7d06b353cf2d42b43bfcccbe02965f1b, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
---- !u!222 &1234702481
-=======
-  m_text: 'Stop Monster Movement
+  m_text: 'Start Monster Movement
 
 '
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 6df494c160353e046a01789fc1246fd4, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2935,8 +2882,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
-  m_fontSizeBase: 24
+  m_fontSize: 18
+  m_fontSizeBase: 18
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2974,21 +2921,16 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1151047246
->>>>>>> 338adb8 (Feat: Added a button to kill the Monster movement controller component, so that monsters will stop when clicked. If movement is wanted again, map must be regenerated.)
 CanvasRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-<<<<<<< HEAD
-  m_GameObject: {fileID: 1234702478}
-=======
   m_GameObject: {fileID: 1151047243}
->>>>>>> 338adb8 (Feat: Added a button to kill the Monster movement controller component, so that monsters will stop when clicked. If movement is wanted again, map must be regenerated.)
   m_CullTransparentMesh: 1
 --- !u!1 &1271642336
 GameObject:
@@ -3340,7 +3282,6 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1234702479}
   - {fileID: 1020500978}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5043,7 +4984,7 @@ GameObject:
   - component: {fileID: 2065470017}
   - component: {fileID: 2065470016}
   m_Layer: 5
-  m_Name: MonsterMovementStopButton
+  m_Name: MonsterMovementStartButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5115,7 +5056,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 196871922}
         m_TargetAssemblyTypeName: ButtonControls, Assembly-CSharp
-        m_MethodName: RemoveMonsterControllers
+        m_MethodName: AddMonsterMovementControllers
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
