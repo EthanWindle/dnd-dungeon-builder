@@ -4,7 +4,7 @@ using System.Collections;
 
 public class MonsterMovementController : MonoBehaviour
 {
-    public float moveSpeed = 3.0f;
+    public float moveSpeed = 1.0f;
     private Vector3 pointA;
     private Vector3 pointB;
     private Vector3 nextPoint;
