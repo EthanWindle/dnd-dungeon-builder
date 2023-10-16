@@ -30,7 +30,7 @@ public class MonsterMovementController : MonoBehaviour
             movingToB = true;
             yield return StartCoroutine(MoveToNextPoint());
 
-            if (!IsTileFloorAtPosition(nextPoint))
+            if (!IsTileFloorAtPosition(nextPoint) || IsTileWallAtPosition(nextPoint))
             {
                 // Change direction instead of heading back to point A
                 Vector3 temp = pointA;
@@ -72,5 +72,22 @@ public class MonsterMovementController : MonoBehaviour
         }
 
         return true; // FloorController found at the position
+    }
+
+    bool IsTileWallAtPosition(Vector3 position)
+    {
+        // Get all objects with the type "wallController" at the given position
+        WallController[] controllers = GameObject.FindObjectsOfType<WallController>();
+
+        foreach (WallController controller in controllers)
+        {
+            // Check if the object is not an instance of WallController at the specified position
+            if (controller.transform.position == position)
+            {
+                return true; // There is a WallController at the position (it's a wall)
+            }
+        }
+
+        return false; // No WallController found at the position (it's not a wall)
     }
 }
