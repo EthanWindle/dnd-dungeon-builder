@@ -3,7 +3,11 @@ guid: e6161543e1fd6d54ca2111a53f3242d1
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - tilePrefab: {instanceID: 0}
+  - doorPrefab: {instanceID: 0}
+  - fogPrefab: {instanceID: 0}
+  - patrolLocPrefab: {fileID: 6191439329803534729, guid: ea2cb33eb86eff2479939ef1f9af4ca7, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

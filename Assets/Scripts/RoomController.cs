@@ -34,6 +34,8 @@ public class RoomController : MonoBehaviour
 
 
     public List<Path> paths {get; private set;}
+    public List<GameObject> monsterObjects = new List<GameObject>();
+    public GameObject[,] gridLocations;
 
     private static int roomCount = 0; //Counts the number for each room for recorder, do not modify for anything else
 
@@ -67,7 +69,7 @@ public class RoomController : MonoBehaviour
                     GameObject tile = Instantiate(tilePrefab, new Vector3((x + this.x) * (size + margin), (y + this.y) * (size + margin), 0), Quaternion.identity, transformParent);
                     tile.GetComponent<FloorController>().Init(size - margin * 2, spritesheetManager);
                     background[x + this.x, y + this.y] = tile;
-                    recorder.AddTile(new RecorderTile("floor", x + this.x, y + this.y, roomCount));
+                    recorder.AddTile(new RecorderTile("floor", x + this.x, y + this.y, roomCount));                    
                 }
             }
         }
@@ -104,9 +106,12 @@ public class RoomController : MonoBehaviour
                 //monsterIndex is used to store the random number to choose which prop is shown so that it can be given to the recorder.
                 int monsterIndex = random.Next(monsterOptions.Length);
                 GameObject monster = Instantiate(monsterOptions[monsterIndex], new Vector3((monsterLoc.x + this.x) * (size + margin), (monsterLoc.y + this.y) * (size + margin), -1), Quaternion.identity, transformParent);
+                monster.tag = "Monster";
                 monster.GetComponent<MonsterController>().Init(size - margin * 2);
                 foreground[(int)(monsterLoc.x + x), (int)(monsterLoc.y + y)] = monster;
                 recorder.AddTile(new RecorderTile("monster", (int)(monsterLoc.x + x), (int)(monsterLoc.y + y), roomCount, monsterOptions[monsterIndex].ToString()));
+                monsterObjects.Add(monster);
+                //monster.AddComponent<MonsterMovementController>();
             }
         }
 
@@ -147,6 +152,33 @@ public class RoomController : MonoBehaviour
             return true;
         }
         return false;
+    }
+
+    public void ToggleMonsterControllers(bool activate)
+    {
+        foreach (GameObject monster in monsterObjects)
+        {
+            if (monster != null)
+            {
+                MonsterMovementController monsterController = monster.GetComponent<MonsterMovementController>();
+                if (monsterController != null)
+                {
+                    monsterController.isControllerActive = activate;
+                }
+            }
+        }
+    }
+
+    /**
+     * Get the grid location at a specific position.
+     */
+    public GameObject GetGridLocation(int x, int y)
+    {
+        if (x >= this.x && x < this.x + width && y >= this.y && y < this.y + height)
+        {
+            return gridLocations[x - this.x, y - this.y];
+        }
+        return null;
     }
 
     /*
