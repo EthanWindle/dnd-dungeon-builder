@@ -54,7 +54,7 @@ AnimationClip:
   - time: 0
     functionName: GetSavedGames
     data: 
-    objectReferenceParameter: {fileID: 11500000, guid: 90035300a1ed5c2408fbc4b21c1cff3a, type: 3}
+    objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

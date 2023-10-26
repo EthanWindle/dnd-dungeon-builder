@@ -105,10 +105,47 @@ public class ButtonControls : MonoBehaviour
         SceneManager.LoadScene("mapScene");
     }
 
+    public void setRoomCount(Slider slider){
+        GlobalVariables.setRoomCount((int) slider.value);
+    }
+
+    public void setMonsters(TMP_Dropdown menu) {
+        if(menu.value == 0){
+            GlobalVariables.setMonsters(true);
+        } else if (menu.value == 1){
+            GlobalVariables.setMonsters(false);
+        }
+    }
+
+    public void setProps(TMP_Dropdown menu) {
+        if(menu.value == 0){
+            GlobalVariables.setProps(true);
+        } else if (menu.value == 1){
+            GlobalVariables.setProps(false);
+        }
+    }
+
+    public void setTheme(TMP_Dropdown menu){
+        GlobalVariables.setTheme(menu.options[menu.value].text);
+    }
 
     //load page 
     public void SetSavedGame(string name, TMP_Text mapText){
         mapText.text = name;
+        
+    }
+
+    public void SetSavedMapImage(string name, GameObject mapImage){
+        string imagePath = "Assets/Saves/" + name + ".png";
+        Debug.Log("Test image");
+        //Sprite image = new Sprite();
+        byte[] data = File.ReadAllBytes(imagePath);
+        Texture2D texture = new Texture2D(2, 2);
+        texture.LoadImage(data);
+
+        Sprite image = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),new Vector2(0,0), 100.0f);
+        Debug.Log(mapImage.name);
+        mapImage.GetComponent<Image>().overrideSprite  = image;
     }
     public void GetSavedGames() {
         
@@ -121,6 +158,8 @@ public class ButtonControls : MonoBehaviour
             TMP_Text[] texts = newButton.GetComponentsInChildren<TMP_Text>();
             texts[0].text = fileName;
             newButton.GetComponent<Button>().onClick.AddListener(() => SetSavedGame(fileName, map));
+            newButton.GetComponent<Button>().onClick.AddListener(() => SetSavedMapImage(fileName, Override));
+
         }
     }
 
@@ -154,6 +193,7 @@ public class ButtonControls : MonoBehaviour
     public void SetSavedMap(string name, TMP_InputField mapName){
         mapName.text = name;
     }
+    
     public void GetSavedMaps(TMP_InputField mapName) {
         DirectoryInfo dir = new DirectoryInfo("Assets/Saves");
         FileInfo[] files = dir.GetFiles("*.json");
@@ -222,7 +262,7 @@ public class ButtonControls : MonoBehaviour
     }
 
     public void saveFile(TMP_InputField name){
-        string fullFileName = "Assets/Saves/" + name.text + ".json";
+        string fullFileName = "Assets/Saves/" + name.text;
         Grid.GetComponent<GridController>().Save(fullFileName);
     }
 }

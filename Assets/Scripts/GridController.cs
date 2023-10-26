@@ -48,7 +48,7 @@ public class GridController : MonoBehaviour
 
     private bool inPlayerView = true;
 
-    private CustomGeneration customGeneration = new CustomGeneration(15, true, true); //current default generation parameters
+    private CustomGeneration customGeneration = new CustomGeneration(GlobalVariables.getRoomCount(), GlobalVariables.hasMonsters(), GlobalVariables.hasProps()); //current default generation parameters
 
     /*
      * Loads a save file from recorder
@@ -502,7 +502,12 @@ public class GridController : MonoBehaviour
     }
 
     public void Save(string filePath){
-        GridControllerJsonSerializer.SerializeToJson(this, filePath, recorder);
+        string json = filePath + ".json";
+        string png = filePath +".png";
+        GridControllerJsonSerializer.SerializeToJson(this, json, recorder);
+        GameObject topDownCamera = GameObject.Find("topDownCamera");
+        Camera camera = topDownCamera.GetComponent<Camera>();
+        GridControllerJsonSerializer.SaveSceneAsPNG(png, 3840, 2160, camera);
     }
 
     public void SaveAsPNG(string fileName)
