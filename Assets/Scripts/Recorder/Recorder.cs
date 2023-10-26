@@ -1,7 +1,6 @@
+using System.IO;
 using UnityEngine;
 using System.Collections.Generic;
-
-using System.IO;
 
 [System.Serializable]
 public class Recorder
@@ -50,7 +49,7 @@ public class GridControllerJsonSerializer : MonoBehaviour
         }
         else
         {
-            Debug.LogError("File not found: " + filePath);
+            Debug.Log("File not found: " + filePath);
             return null;
         }
     }
@@ -65,9 +64,9 @@ public class GridControllerJsonSerializer : MonoBehaviour
         topDownCamera.Render();
 
         // Create a Texture2D and read the RenderTexture data into it
-        Texture2D screenshot = new Texture2D(width, height, TextureFormat.RGB24, false);
+        Texture2D screenshot = new Texture2D(width / 4 + 150, height / 2 + 100, TextureFormat.RGB24, false);
         RenderTexture.active = rt;
-        screenshot.ReadPixels(new Rect(0, 0, width, height), 0, 0);
+        screenshot.ReadPixels(new Rect(width / 2, 0, width / 4 + 200, height), 0, 0);
         topDownCamera.targetTexture = null;
         RenderTexture.active = null;
         Destroy(rt);

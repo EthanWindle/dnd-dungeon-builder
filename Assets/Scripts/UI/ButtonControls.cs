@@ -228,6 +228,39 @@ public class ButtonControls : MonoBehaviour
         }
     }
 
+    public void RemoveMonsterControllers()
+    {
+        // Find all game objects with the "Monster" tag
+        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+
+        //Debug.Log("Array Count: " + monsters.Length);
+        foreach (GameObject monster in monsters)
+        {
+            // Remove the MonsterMovementController component immediately
+            MonsterMovementController controller = monster.GetComponent<MonsterMovementController>();
+            if (controller != null)
+            {
+                DestroyImmediate(controller);
+            }
+        }
+    }
+
+    public void AddMonsterMovementControllers()
+    {
+        // Find all game objects with the "Monster" tag
+        GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
+
+        foreach (GameObject monster in monsters)
+        {
+            // Check if the MonsterMovementController component doesn't already exist
+            if (monster.GetComponent<MonsterMovementController>() == null)
+            {
+                // Add the MonsterMovementController component
+                monster.AddComponent<MonsterMovementController>();
+            }
+        }
+    }
+
     public void saveFile(TMP_InputField name){
         string fullFileName = "Assets/Saves/" + name.text;
         Grid.GetComponent<GridController>().Save(fullFileName);

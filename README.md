@@ -1,9 +1,9 @@
 # DnD World Builder
 
 ### Areas to work on:
- - [ ] Domain (Rooms, towns, entities, etc)
+ - [x] Domain (Rooms, towns, entities, etc)
  - [ ] Fog of War (Split view for players and DM)
- - [ ] Generator
+ - [x] Generator
  - [ ] Editor
  - [ ] Downloader/Saver (he can keep a map he likes) 
  - [ ] Requirements/Specification settings
@@ -15,12 +15,12 @@
 
 | Name | Area |
 | ------ | ------ |
-| Adam Roddick |        |
-| Benjamin McEvoy |        |
-| Braeden Windle |        |
-| Ethan Windle |        |
-| Nathan Bennett |        |
-| Vedaanth Kannan |        |
+| Adam Roddick | Backend () |
+| Benjamin McEvoy | Frontend (Assets) |
+| Braeden Windle | Backend () |
+| Ethan Windle | Frontend (UI) |
+| Nathan Bennett | Backend () |
+| Vedaanth Kannan | Backend () |
 
 ## Scope
 
