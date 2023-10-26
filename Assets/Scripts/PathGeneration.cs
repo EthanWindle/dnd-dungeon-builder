@@ -286,7 +286,6 @@ public class PathGenerator : MonoBehaviour
             paths.Add(path);
             
             disjointGroups = GetDisjointRoomGroups(rooms);
-
         }
         
 
