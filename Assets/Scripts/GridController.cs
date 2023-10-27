@@ -166,7 +166,7 @@ public class GridController : MonoBehaviour
         for (int i = 0; i < rooms.Length; i++) //Place each room in the Grid
         {
             //int offsetx = xOffsets[i];
-            /*
+            
             if (rooms[i] == null)
             {
                 Debug.Log("rooms[" + i + "] is null");
@@ -194,7 +194,7 @@ public class GridController : MonoBehaviour
             if (spritesheetManager == null)
             {
                 Debug.Log("spritesheetManager is null");
-            }*/
+            }
 
             rooms[i].GetComponent<RoomController>().PlaceRoom(gameObject.transform, backgroundLayer, foregroundLayer, fogLayer, cellSize, cellSpacing, recorder, customGeneration, spritesheetManager);
             RoomController roomController = rooms[i].GetComponent<RoomController>();
@@ -509,7 +509,6 @@ public class GridController : MonoBehaviour
 
             entity.transform.position = GetWorldLocation(destination);
         }
-        MoveCameraToPlayer();
     }
 
     public void Save(string filePath){

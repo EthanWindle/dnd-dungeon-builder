@@ -8,7 +8,7 @@ using System.IO;
 public static class GlobalVariables
 {
     private static string mapName;
-    private static int roomCount = 25;
+    private static int roomCount = 15;
     private static bool monsters = true;
     private static bool props = true;
     private static string theme;

@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: width
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: height
-      value: 7
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: doors.Array.size
@@ -26,7 +26,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: shapes.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: monsters.Array.size
@@ -82,35 +82,35 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: shapes.Array.data[0].x1
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: shapes.Array.data[0].x2
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: shapes.Array.data[0].y1
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: shapes.Array.data[0].y2
-      value: 3
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: shapes.Array.data[1].x1
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: shapes.Array.data[1].x2
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: shapes.Array.data[1].y1
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: shapes.Array.data[1].y2
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: shapes.Array.data[2].x1
