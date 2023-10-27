@@ -2213,7 +2213,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 972de3e5369545144912d87ad89d55d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  numberOfRooms: 50
+  numberOfRooms: 15
 --- !u!114 &735019961
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2231,7 +2231,7 @@ MonoBehaviour:
   cellSize: 1
   cellSpacing: 0
   mainCamera: {fileID: 519420031}
-  playerClone: {fileID: 0}
+  playerClone: {fileID: 5000523047403449022, guid: 244394696dce3784899b73e975f1a91b, type: 3}
   rooms:
   - {fileID: 2616157474389735949, guid: 04b415f1fcefd764b8723f772b8810c6, type: 3}
   - {fileID: 1682151116209196268, guid: f903b8ade52deac4aa8994f25123ff06, type: 3}

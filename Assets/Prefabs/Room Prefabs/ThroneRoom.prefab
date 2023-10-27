@@ -10,11 +10,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: width
-      value: 9
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: height
-      value: 9
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: doors.Array.size
