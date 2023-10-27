@@ -33,7 +33,8 @@ public class GridController : MonoBehaviour
     public int[] yOffsets; //y location of room, correlates with rooms array
     public GameObject wallTile;
     public GameObject playerEntity;
-    public String spritesheetName;
+    private string spritesheetName;
+    private string spritesheetPath = " Spritesheet";
 
     
     public GameObject fogTile;
@@ -139,6 +140,16 @@ public class GridController : MonoBehaviour
         foregroundLayer = new GameObject[width, height];
 
         fogLayer = new GameObject[width, height];
+
+        if (GlobalVariables.getTheme() != null)
+        {
+            spritesheetName = GlobalVariables.getTheme() + spritesheetPath;
+        }
+        else
+        {
+            spritesheetName = "General Dungeon" + spritesheetPath;
+        }
+ 
 
         spritesheetManager = new SpritesheetManager(spritesheetName);
 
