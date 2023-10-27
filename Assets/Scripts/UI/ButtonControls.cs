@@ -180,7 +180,6 @@ public class ButtonControls : MonoBehaviour
 
     IEnumerator returnToSettings() {
         mainText.SetActive(false);
-        flipPage.SetTrigger("Close");
         yield return new WaitForSeconds(2); 
         SceneManager.LoadScene("settingPage");
     }
