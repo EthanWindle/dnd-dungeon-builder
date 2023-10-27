@@ -14,6 +14,7 @@ public class ButtonControls : MonoBehaviour
     public GameObject savePrefab;
     public Transform saveParent;
     public TMP_Text map;
+    private bool monsterMove = false;
 
     public GameObject Grid;
     public GameObject Override;
@@ -180,7 +181,6 @@ public class ButtonControls : MonoBehaviour
 
     IEnumerator returnToSettings() {
         mainText.SetActive(false);
-        flipPage.SetTrigger("Close");
         yield return new WaitForSeconds(2); 
         SceneManager.LoadScene("settingPage");
     }
@@ -228,8 +228,9 @@ public class ButtonControls : MonoBehaviour
         }
     }
 
-    public void RemoveMonsterControllers()
+    private void RemoveMonsterControllers()
     {
+        monsterMove = false;
         // Find all game objects with the "Monster" tag
         GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
 
@@ -245,8 +246,9 @@ public class ButtonControls : MonoBehaviour
         }
     }
 
-    public void AddMonsterMovementControllers()
+    private void AddMonsterMovementControllers()
     {
+        monsterMove = true;
         // Find all game objects with the "Monster" tag
         GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
 
@@ -258,6 +260,18 @@ public class ButtonControls : MonoBehaviour
                 // Add the MonsterMovementController component
                 monster.AddComponent<MonsterMovementController>();
             }
+        }
+    }
+
+    public void controlMonsterMovement()
+    {
+        if (monsterMove == false)
+        {
+            AddMonsterMovementControllers();
+        }
+        else 
+        { 
+            RemoveMonsterControllers();
         }
     }
 
