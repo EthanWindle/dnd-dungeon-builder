@@ -498,7 +498,6 @@ public class GridController : MonoBehaviour
 
             entity.transform.position = GetWorldLocation(destination);
         }
-        MoveCameraToPlayer();
     }
 
     public void Save(string filePath){

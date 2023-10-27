@@ -14,7 +14,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: height
-      value: 11
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 1351106602410471340, guid: 7b6f945fcbe3bf0469f246cd16845b38, type: 3}
       propertyPath: doors.Array.size
