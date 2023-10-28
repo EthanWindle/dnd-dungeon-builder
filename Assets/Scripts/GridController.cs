@@ -1,16 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
-using Unity.VisualScripting;
 using System.Linq;
-using Unity.VisualScripting.FullSerializer;
 using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
-using static UnityEditor.MaterialProperty;
-using UnityEngine.U2D;
-
 /*
  * Controller for a Grid of tiles and props.
  */
@@ -70,9 +62,20 @@ public class GridController : MonoBehaviour
         foregroundLayer = new GameObject[width, height];
         fogLayer = new GameObject[width, height];
 
-        rooms = new GameObject[30];
-        xOffsets = new int[30];
-        yOffsets = new int[30];
+        rooms = new GameObject[deserializedRecorder.rooms.Count];
+        xOffsets = new int[deserializedRecorder.rooms.Count];
+        yOffsets = new int[deserializedRecorder.rooms.Count];
+
+
+        for (int i = 0; i < rooms.Length; i++)
+        {
+            RecorderRoom recorderRoom = deserializedRecorder.rooms[i];
+           
+
+            GameObject gameObject = new GameObject();
+            gameObject.AddComponent<RoomController>().SetPosition(recorderRoom.XPos, recorderRoom.YPos);
+        }
+
 
         foreach (RecorderTile tile in deserializedRecorder.tiles)
         {
@@ -100,8 +103,8 @@ public class GridController : MonoBehaviour
             else if (tile.type.Equals("prop"))
             {
                 // Update the backgroundLayer with prop tiles
-                String propPath = "Assets/Prefabs/Prop Prefabs/" + tile.option + ".prefab";
-                GameObject propPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(propPath, typeof(GameObject));
+                string propPath = "Prefabs/Prop Prefabs/" + tile.option;
+                GameObject propPrefab = (GameObject)Resources.Load(propPath, typeof(GameObject));
 
                 GameObject newPropPrefab = Instantiate(propPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), -2), Quaternion.identity, gameObject.transform);
                 newPropPrefab.GetComponent<PropController>().Init(cellSize - cellSpacing * 2);
@@ -110,8 +113,8 @@ public class GridController : MonoBehaviour
             else if (tile.type.Equals("monster"))
             {
                 // Update the backgroundLayer with monster tiles
-                String monsterPath = "Assets/Prefabs/Entity Prefabs/" + tile.option + ".prefab";
-                GameObject mosterPrefab = (GameObject)AssetDatabase.LoadAssetAtPath(monsterPath, typeof(GameObject));
+                string monsterPath = "Prefabs/Entity Prefabs/" + tile.option;
+                GameObject mosterPrefab = (GameObject)Resources.Load(monsterPath, typeof(GameObject));
 
                 GameObject newMonsterPrefab = Instantiate(mosterPrefab, new Vector3(tile.x * (cellSize + cellSpacing), tile.y * (cellSize + cellSpacing), -2), Quaternion.identity, gameObject.transform);
                 Debug.Log(newMonsterPrefab);
