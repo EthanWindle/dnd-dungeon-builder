@@ -1,0 +1,20 @@
+{
+    "name": "ScriptsAssemblyDef",
+    "references": [
+        "Unity.TextMeshPro",
+        "../EditModeTests/EditModeTests",
+        "Unity.RenderPipelines.Universal.Runtime",
+        "Unity.VisualScripting.Runtime",
+        "Unity.VisualScripting.Core",
+        "Unity.VisualScripting.Core.Editor",
+        "Unity.VisualScripting.Flow",
+        "Unity.VisualScripting.Flow.Editor",
+        "Unity.VisualScripting.SettingsProvider.Editor",
+        "Unity.VisualScripting.Shared.Editor",
+        "Unity.VisualScripting.State",
+        "Unity.VisualScripting.State.Editor"
+    ],
+    "optionalUnityReferences": [
+        "TestAssemblies"
+    ]
+}

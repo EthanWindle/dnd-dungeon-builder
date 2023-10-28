@@ -1,0 +1,32 @@
+{
+    "name": "EditModeTests",
+    "rootNamespace": "",
+    "references": [
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner",
+        "ScriptsAssemblyDef",
+        "Unity.VisualScripting.Core",
+        "Unity.VisualScripting.Core.Editor",
+        "Unity.VisualScripting.Flow",
+        "Unity.VisualScripting.Flow.Editor",
+        "Unity.VisualScripting.SettingsProvider.Editor",
+        "Unity.VisualScripting.Shared.Editor",
+        "Unity.VisualScripting.State",
+        "Unity.VisualScripting.State.Editor"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
