@@ -1,9 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor.Sprites;
 using UnityEngine;
-using UnityEngine.Rendering.Universal.Internal;
-using UnityEngine.U2D;
 
 public class SpritesheetManager
 {

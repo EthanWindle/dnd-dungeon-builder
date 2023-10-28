@@ -20,7 +20,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/loadPage.unity
     guid: 1307d873794ff97498fa6d20bac6e835
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/mapPage.unity
     guid: fa9ed6709930c02439bcd67f6183ed7d
   - enabled: 1
