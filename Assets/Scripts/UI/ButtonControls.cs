@@ -147,7 +147,7 @@ public class ButtonControls : MonoBehaviour
         Sprite image = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height),new Vector2(0,0), 100.0f);
         Debug.Log(mapImage.name);
         mapImage.GetComponent<Image>().overrideSprite  = image;
-        mapImage.GetComponent<image>().color = Color.white;
+        mapImage.GetComponent<Image>().color = Color.white;
     }
     public void GetSavedGames() {
         
